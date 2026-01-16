@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Tracker</title>
+    <link rel="icon" href="./Logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+        
+        * {
+            font-family: 'DM Sans', sans-serif;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .animate-slide-up { animation: slideUp 0.6s ease-out; }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
+        <div class="container mx-auto flex h-16 items-center justify-between px-4">
+            <a href="./study.html" class="flex items-center gap-2">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-0">
+                    <img src="./Logo.png" alt="logo">
+                </div>
+                <span class="text-xl font-bold text-gray-900">Study Planner</span>
+            </a>
+
+            <nav class="hidden items-center gap-6 md:flex text-sm">
+                <a href="./study.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Dashboard</a>
+                <a href="./scheduler.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Scheduler</a>
+                <a href="./resource-curator.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Resources</a>
+                <a href="./progress-tracker.html" class="nav-link font-medium text-gray-900 hover:text-amber-700 transition-colors">Progress</a>
+                <a href="./analytics.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Analytics</a>
+                <a href="./quiz-generator.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Quizzes</a>
+                <a href="./study-groups.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Groups</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button id="notification-btn" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 relative">
+                    <span class="text-lg">🔔</span>
+                </button>
+                <button id="profile-btn" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100">
+                    <span class="text-lg">👤</span>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100">
+                    <span class="text-lg">☰</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <nav id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white">
+            <div class="container mx-auto px-4 py-4 space-y-2">
+                <a href="./study.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-900 font-medium">Dashboard</a>
+                <a href="./scheduler.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Scheduler</a>
+                <a href="./resource-curator.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Resources</a>
+                <a href="./progress-tracker.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-900 font-medium">Progress</a>
+                <a href="./analytics.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Analytics</a>
+                <a href="./quiz-generator.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Quizzes</a>
+                <a href="./study-groups.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Study Groups</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-12 md:py-16">
+        <div class="container mx-auto px-4">
+            <!-- Page Header -->
+            <div class="mb-12 animate-slide-up">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+                    <span>📊</span> Progress Tracker
+                </h1>
+                <p class="text-gray-600 text-lg">Monitor your learning journey with detailed analytics</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-lg">
+                    <p class="text-gray-600 text-sm font-medium mb-2">Total Study Hours</p>
+                    <p class="text-3xl font-bold text-amber-700" id="total-hours">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-lg">
+                    <p class="text-gray-600 text-sm font-medium mb-2">Current Streak</p>
+                    <p class="text-3xl font-bold text-orange-600" id="current-streak">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-lg">
+                    <p class="text-gray-600 text-sm font-medium mb-2">Tasks Completed</p>
+                    <p class="text-3xl font-bold text-green-600" id="tasks-completed">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-lg">
+                    <p class="text-gray-600 text-sm font-medium mb-2">Avg Score</p>
+                    <p class="text-3xl font-bold text-blue-600" id="avg-score">0%</p>
+                </div>
+            </div>
+
+            <!-- Time Period Selector -->
+            <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg mb-8 animate-fade-in flex gap-2 justify-center">
+                <button onclick="showPeriod('week')" class="px-6 py-2 rounded-lg bg-amber-700 text-white font-medium">📅 Week</button>
+                <button onclick="showPeriod('month')" class="px-6 py-2 rounded-lg bg-gray-200 text-gray-900 font-medium hover:bg-gray-300 transition">📆 Month</button>
+                <button onclick="showPeriod('year')" class="px-6 py-2 rounded-lg bg-gray-200 text-gray-900 font-medium hover:bg-gray-300 transition">📈 Year</button>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Chart -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 p-8 shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">📈 Daily Progress</h2>
+                    <div class="relative h-96">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-600 text-center mt-4">💡 Click on a day to see detailed breakdown</p>
+                </div>
+
+                <!-- Day Details Panel -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">📅 Day Details</h2>
+                    <div id="day-details-panel" class="space-y-4">
+                        <p class="text-gray-600 text-center py-8">Click on a day in the chart to view details</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Progress Entry -->
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg mt-8 animate-fade-in">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">➕ Log Today's Progress</h2>
+                
+                <form id="progress-form" class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Study Subject</label>
+                        <input type="text" id="progress-subject" placeholder="e.g., Mathematics" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Hours Studied</label>
+                        <input type="number" id="progress-hours" min="0.5" step="0.5" placeholder="2" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Quizzes Taken</label>
+                        <input type="number" id="progress-quizzes" min="0" placeholder="0"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Average Score (%)</label>
+                        <input type="number" id="progress-score" min="0" max="100" placeholder="85"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700" />
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                        <textarea id="progress-notes" placeholder="What did you learn today?" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700"></textarea>
+                    </div>
+                    <button type="submit" class="md:col-span-2 py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition">
+                        📝 Log Progress
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Panel Modal -->
+    <div id="notification-panel" class="fixed right-0 top-16 h-screen w-80 bg-white border-l border-gray-200 shadow-2xl transform translate-x-full transition-transform duration-300 z-40 overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+            <h2 class="text-xl font-bold text-gray-900">Notifications</h2>
+        </div>
+        <div id="notification-list" class="divide-y divide-gray-100">
+            <!-- Notifications will be populated here by JavaScript -->
+        </div>
+        <div class="p-4 text-center border-t border-gray-200">
+            <button onclick="clearAllNotifications()" class="text-sm text-amber-700 hover:text-amber-800 font-medium">
+                Clear All
+            </button>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Login/Register) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <div class="text-center mb-8">
+                <h2 id="auth-title" class="text-2xl font-bold text-gray-900 mb-2">Welcome to Study Planner</h2>
+                <p class="text-gray-600 text-sm">Sign in to continue learning</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="login-email" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="login-password" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                >
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Register Form (hidden initially) -->
+            <form id="register-form" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="register-name" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="John Doe"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="register-email" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="register-password" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="register-confirm" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                >
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Toggle Form -->
+            <div class="mt-6 text-center text-sm text-gray-600">
+                <span id="toggle-text">Don't have an account?</span>
+                <button 
+                    type="button"
+                    id="toggle-form-btn"
+                    class="text-amber-700 hover:text-amber-800 font-medium ml-1"
+                >
+                    Sign up
+                </button>
+            </div>
+
+            <!-- Close Button -->
+            <button 
+                onclick="closeAuthModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resource-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <h2 id="modal-resource-title" class="text-2xl font-bold text-gray-900 mb-4">Resource Title</h2>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Type</span>
+                    <span id="modal-resource-type" class="font-semibold text-gray-900">Video</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Subject</span>
+                    <span id="modal-resource-subject" class="font-semibold text-gray-900">Mathematics</span>
+                </div>
+            </div>
+
+            <button 
+                id="modal-download-btn"
+                href="#"
+                class="w-full py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all mb-4"
+            >
+                📥 Download
+            </button>
+
+            <button 
+                onclick="closeResourceModal()"
+                class="w-full py-2 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Group Modal -->
+    <div id="group-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <h2 id="modal-group-name" class="text-2xl font-bold text-gray-900 mb-2">Group Name</h2>
+            <p id="modal-group-subject" class="text-gray-600 mb-6">Subject</p>
+            
+            <div class="space-y-4 mb-6 bg-gray-50 p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Members</span>
+                    <span id="modal-group-members" class="font-semibold text-gray-900">0/0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Next Session</span>
+                    <span id="modal-group-session" class="font-semibold text-gray-900">TBD</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm text-gray-600 mb-3">Members</p>
+                <div id="modal-group-avatars" class="flex gap-2"></div>
+            </div>
+
+            <button 
+                id="modal-join-btn"
+                class="w-full py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all mb-4"
+            >
+                Join Group
+            </button>
+
+            <button 
+                onclick="closeGroupModal()"
+                class="w-full py-2 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid gap-8 md:grid-cols-4 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-0 to-orange-600 hover:shadow-lg transition-shadow">
+                            <img src="./Logo.png" alt="logo">
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Study Planner</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Your intelligent study companion for smarter learning and better results.
+                    </p>
+                    <div class="flex gap-2">
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            𝕏
+                        </a>
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            ⚙️
+                        </a>
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            🔗
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Product</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Features</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Resources</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Company</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">About</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Legal</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Privacy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Terms</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-200">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <p class="text-sm text-gray-600">© 2026 Study Planner. All rights reserved.</p>
+                    <div class="flex gap-6 mt-4 md:mt-0 text-sm text-gray-600">
+                        <a href="#" class="hover:text-amber-700 transition-colors">Sitemap</a>
+                        <a href="#" class="hover:text-amber-700 transition-colors">Security</a>
+                        <a href="#" class="hover:text-amber-700 transition-colors">Status</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./study.js"></script>
+    <script>
+        let progressData = JSON.parse(localStorage.getItem('progress_data')) || [];
+        let chart = null;
+        let currentPeriod = 'week';
+
+        function getDateString(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function getProgressChartData(period) {
+            const today = new Date();
+            let startDate, labels, dateFormat;
+
+            if (period === 'week') {
+                startDate = new Date(today);
+                startDate.setDate(today.getDate() - 6);
+                labels = [];
+                dateFormat = 'ddd';
+            } else if (period === 'month') {
+                startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                labels = [];
+                dateFormat = 'MMM d';
+            } else {
+                startDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+                labels = [];
+                dateFormat = 'MMM';
+            }
+
+            const dates = [];
+            const hoursData = [];
+            const scoresData = [];
+
+            let current = new Date(startDate);
+            while (current <= today) {
+                const dateStr = getDateString(current);
+                dates.push(dateStr);
+                
+                // Format label
+                if (period === 'week') {
+                    labels.push(current.toLocaleDateString('en-US', { weekday: 'short' }));
+                } else if (period === 'month') {
+                    labels.push(current.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                } else {
+                    labels.push(current.toLocaleDateString('en-US', { month: 'short' }));
+                }
+
+                const dayData = progressData.filter(d => d.date === dateStr);
+                const hours = dayData.reduce((sum, d) => sum + parseFloat(d.hours), 0);
+                const avgScore = dayData.length > 0 ? 
+                    dayData.reduce((sum, d) => sum + parseFloat(d.score || 0), 0) / dayData.length : 0;
+
+                hoursData.push(hours);
+                scoresData.push(Math.round(avgScore));
+
+                if (period === 'week') {
+                    current.setDate(current.getDate() + 1);
+                } else if (period === 'month') {
+                    current.setDate(current.getDate() + 1);
+                } else {
+                    current.setMonth(current.getMonth() + 1);
+                }
+            }
+
+            return { labels, hoursData, scoresData, dates };
+        }
+
+        function initializeChart() {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            const data = getProgressChartData(currentPeriod);
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: 'Study Hours',
+                            data: data.hoursData,
+                            borderColor: '#b45309',
+                            backgroundColor: 'rgba(180, 83, 9, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 6,
+                            pointBackgroundColor: '#b45309',
+                            pointHoverRadius: 8,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Avg Score (%)',
+                            data: data.scoresData,
+                            borderColor: '#ea580c',
+                            backgroundColor: 'rgba(234, 88, 12, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 6,
+                            pointBackgroundColor: '#ea580c',
+                            pointHoverRadius: 8,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { size: 14, weight: 'bold' },
+                                padding: 20
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Study Hours'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Score (%)'
+                            },
+                            grid: { drawOnChartArea: false }
+                        }
+                    }
+                },
+                plugins: [{
+                    id: 'chartClick',
+                    afterDatasetsDraw: function(chart) {
+                        const canvasPosition = Chart.helpers.getRelativePosition(event, chart);
+                        const dataX = chart.scales.x.getValueForPixel(canvasPosition.x);
+                        const dataPoints = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+                    }
+                }]
+            });
+
+            // Add click event to chart
+            const canvas = document.getElementById('progressChart');
+            canvas.addEventListener('click', (e) => {
+                const points = chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+                if (points.length > 0) {
+                    const dataIndex = points[0].index;
+                    const selectedDate = data.dates[dataIndex];
+                    showDayDetails(selectedDate);
+                }
+            });
+        }
+
+        function showDayDetails(dateStr) {
+            const dayData = progressData.filter(d => d.date === dateStr);
+            const date = new Date(dateStr);
+            const dateDisplay = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            let html = `<div class="mb-6"><h3 class="font-bold text-lg text-gray-900 mb-2">${dateDisplay}</h3>`;
+
+            if (dayData.length === 0) {
+                html += '<p class="text-gray-600">No progress recorded this day</p></div>';
+            } else {
+                const totalHours = dayData.reduce((sum, d) => sum + parseFloat(d.hours), 0);
+                const totalQuizzes = dayData.reduce((sum, d) => sum + parseFloat(d.quizzes || 0), 0);
+                const avgScore = dayData.reduce((sum, d) => sum + parseFloat(d.score || 0), 0) / dayData.length;
+
+                html += `
+                    <div class="space-y-3 mb-4">
+                        <div class="flex justify-between py-2 border-b border-gray-200">
+                            <span class="text-gray-600">Total Hours:</span>
+                            <span class="font-bold">${totalHours.toFixed(1)}h</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-200">
+                            <span class="text-gray-600">Quizzes:</span>
+                            <span class="font-bold">${totalQuizzes}</span>
+                        </div>
+                        <div class="flex justify-between py-2">
+                            <span class="text-gray-600">Avg Score:</span>
+                            <span class="font-bold">${avgScore.toFixed(1)}%</span>
+                        </div>
+                    </div>
+                </div>
+                <div><h4 class="font-semibold text-gray-900 mb-3">Sessions:</h4>`;
+
+                dayData.forEach(entry => {
+                    html += `
+                        <div class="bg-gray-50 rounded-lg p-3 mb-2">
+                            <p class="font-medium text-gray-900">${entry.subject}</p>
+                            <p class="text-sm text-gray-600">${entry.hours}h • ${entry.quizzes || 0} quizzes • ${entry.score || 0}%</p>
+                            ${entry.notes ? `<p class="text-sm text-gray-600 mt-1">${entry.notes}</p>` : ''}
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            document.getElementById('day-details-panel').innerHTML = html;
+        }
+
+        function updateStats() {
+            let totalHours = 0, totalTasks = 0, totalScore = 0, scoreCount = 0;
+
+            progressData.forEach(entry => {
+                totalHours += parseFloat(entry.hours);
+                totalTasks += parseFloat(entry.quizzes || 0);
+                if (entry.score) {
+                    totalScore += parseFloat(entry.score);
+                    scoreCount++;
+                }
+            });
+
+            document.getElementById('total-hours').textContent = totalHours.toFixed(1);
+            document.getElementById('tasks-completed').textContent = totalTasks;
+            document.getElementById('avg-score').textContent = scoreCount > 0 ? Math.round(totalScore / scoreCount) + '%' : '0%';
+
+            // Calculate streak
+            let streak = 0;
+            const today = new Date();
+            for (let i = 0; i < 365; i++) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = getDateString(date);
+                if (progressData.some(d => d.date === dateStr)) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            document.getElementById('current-streak').textContent = streak;
+        }
+
+        function showPeriod(period) {
+            currentPeriod = period;
+            document.querySelectorAll('[onclick^="showPeriod"]').forEach(btn => 
+                btn.classList.remove('bg-amber-700', 'text-white')
+            );
+            document.querySelectorAll('[onclick^="showPeriod"]').forEach(btn => 
+                btn.classList.add('bg-gray-200', 'text-gray-900')
+            );
+            event.target.classList.add('bg-amber-700', 'text-white');
+            event.target.classList.remove('bg-gray-200', 'text-gray-900');
+            
+            initializeChart();
+        }
+
+        document.getElementById('progress-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const entry = {
+                date: getDateString(new Date()),
+                subject: document.getElementById('progress-subject').value,
+                hours: parseFloat(document.getElementById('progress-hours').value),
+                quizzes: parseFloat(document.getElementById('progress-quizzes').value) || 0,
+                score: parseFloat(document.getElementById('progress-score').value) || 0,
+                notes: document.getElementById('progress-notes').value
+            };
+
+            progressData.push(entry);
+            localStorage.setItem('progress_data', JSON.stringify(progressData));
+
+            document.getElementById('progress-form').reset();
+            updateStats();
+            initializeChart();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            initializeChart();
+        });
+    </script>
+</body>
+</html>

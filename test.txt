@@ -1,0 +1,2003 @@
+Introduction
+Chemistry is the study of the properties and behaviour of matter. Matter is the physical
+material of the universe; it is anything that has mass and occupies space.
+Although the materials in our world vary greatly in their properties, everything is formed
+from only about 100 elements and, therefore, from only about 100 chemically different
+kinds of atoms. (118 elements have been discovered so far but the heavier atoms are short
+lived and not found naturally.)
+1.1 The atomic theory of matter
+Philosophers from the earliest times speculated about the nature of the fundamental
+components from which the world is made. Empedocles (~ 440 BC) believed that the
+four elements-earth, fire, air and water made up all things. The Hindus believed that the
+four elements stated above makeup the world and space. However, Democritus (460–
+370 BC) and other early Greek philosophers described the material world as being made
+up of tiny, invisible, indivisible particles that they called ‘atomos’, meaning “indivisible”
+or “uncuttable.”
+Later, however, Plato and Aristotle formulated the notion that there can be no ultimately
+indivisible particles, and the “atomic” view of matter faded for many centuries during
+which Aristotelean philosophy dominated the Western culture.
+It was in 1808 that an English scientist and school teacher, John Dalton (1766-1844),
+formulated a precise definition of the indivisible building blocks of matter that we call
+atoms. Dalton’s atomic theory was based on four postulates.
+1. Elements are made out of extremely small, indivisible particles called atoms.
+2. All atoms of a given element are identical in mass and size, but the atoms of one
+element are different from the atoms of all other elements.
+3. Atoms of one element cannot be changed into atoms of a different element by
+chemical reactions; atoms are neither created nor destroyed in chemical reactions.
+4. Compounds are formed by union of two or more atoms of different elements in a
+simple numerical ratio.
+Dalton’s atomic model is called the "Golf ball model".
+
+Figure1.1 (a) John Dalton and (b) the golf ball model
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+3
+
+Johnstone G. Stoney (1826-1911) named the fundamental unit carrying electricity as
+“electrons” in 1891 but did not have any experimental evidence of its existence. During
+the mid-1800s, scientists began to study electrical discharge through a glass tube pumped
+almost empty of air. This device was an invention of the British chemist and physicist Sir
+William Crookes (1832-1919) and is called Crookes tube or cathode ray tube.
+
+Figure 1.2 A cathode ray tube
+
+The experiment of Crookes and the others showed that when two electrodes are connected
+to a high-voltage source, the heated negatively charged plate, called the cathode, produced
+a stream of invisible radiation. Although the rays could not be seen, their presence was
+detected because they cause gases at low pressure to glow and which made other
+substances to fluoresce, or to give off light. The radiation emitted from the cathode was
+given the name 'cathode rays'.
+Later it was known that these rays could be deflected by a magnetic field and they carried
+a negative electrical charge. Some scientists felt that these rays were waves and others
+were inclined to think they were particles.
+The British scientist J. J. Thomson (1856–1940) observed that cathode rays are the same
+regardless of the identity of the cathode material or the gas in the tube. In 1897 he
+described cathode rays as streams of negatively charged particles. He used a cathode tube
+with an anode that had a hole at the centre. Using experimental measurements obtained
+from that cathode tube he then calculated a value of 1.76 x 108
+
+coulombs per gram
+
+(C g-1
+) for the ratio of the electron’s electrical charge to its mass.
+
+Figure 1.3 Thomson’s cathode ray tube
+Cathode (-)
+
+Anode (+)
+
+High voltage
+
+Fluorescent screen
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+4
+
+1.1.1 Properties of cathode rays (Experimental observations)
+ Cathode rays travel in straight lines. When an opaque object like a metal cross is
+placed in the path of cathode rays in a discharge tube, a shadow with sharp edges
+of the metal cross is formed at the end opposite to the cathode. The placement of
+the shadow proves that cathode rays emit from the cathode and they travel in a
+straight line.
+
+Figure 1.4 Cathode ray properties
+
+ Cathode rays are a beam of particles having mass and possess kinetic energy. On
+placing a light paddle wheel in the path of cathode rays in a discharge tube, the
+blades of the paddle wheel rotate. This was considered evidence that electrons
+(cathode rays) have momentum.
+(However there is doubt on this conclusion as heating of the tube can also make the
+paddles move.)
+ When an electric field is applied in the path of cathode rays, they are deflected
+towards the positively charged plate. Hence the cathode rays are composed of
+negatively charged particles. They are affected by magnetic fields showing a
+deflection perpendicular to the magnetic field. The direction of deflection is similar
+to the deflection of any other negatively charged particles. Therefore electron can
+be concluded as a negatively charged particle too.
+
+Figure 1.5 Interaction of cathode rays with external electrical fields
+
+Cathode
+rays
+
+Cathode Anode
+
+Paddle
+wheel
+
+Cathode Anode
+
+Cathode Electric field
+rays
+
+Cathode
+
+Anode
+(metal object)
+
+Shadow of
+the metal
+Cathode
+rays
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+5
+
+ The nature of the cathode rays does not depend on the nature of the gas taken in the
+discharge tube or the material of the cathode.
+ The ratio of the charge to mass (e/m ratio) of cathode ray particles obtained from
+different gases was found to be exactly the same.
+
+Figure 1.6 J. J. Thomson and his model
+
+Using his findings in 1899 J.J. Thomson postulated the “plum-pudding” model of atomic
+structure. In 1909, Robert Millikan (1868–1953) succeeded in measuring the charge of
+an electron as 1.602 x 10-19 C by performing the oil drop experiment. The mass of the
+electron could be calculated by using the experimental values for the charge of electron
+and Thomson’s charge-to-mass ratio.
+
+Figure 1.7 Robert Millikan and mass of an electron
+
+This mass is about 1/1837 of a hydrogen atom which is the lightest atom. The relative
+charge of an electron is -1.
+1.1.2 The nucleus of the atom
+The German physicist, Eugen Goldstein experimentally proved the existence of positive
+charges in matter. In his experiments, a perforated cathode was used in a discharge tube
+along with air at very low pressure. When a high voltage of about 10,000 volts was applied
+across the electrodes, a faint red glow was observed behind the perforated cathode. When
+the high voltage is applied, its electric field accelerates the small number of ions present
+
+Electron mass = 1.602 ×10−19 C
+
+1.76 ×108 C g−1 = 9.10 × 10−28 g
+Electron
+s
+Positively
+charged sphere
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+6
+
+in the gas. These collide with atoms of the gas, knocking electrons off of them and
+creating more positive ions. These ions and electrons in turn strike more atoms, creating
+more positive ions. The positive ions are all attracted to the cathode, and some pass
+through the holes in the cathode. Goldstein called these positive rays "canal rays", because
+they were produced by the holes or channels in the cathode. Although the rays are not
+exactly formed at the positive electrode or anode, since they are formed away from the
+cathode close to the anode, they were also known as anode rays or positive rays.
+
+Figure 1.8 A cathode ray tube with a perforated cathode
+1.1.3 Properties of positive rays (Experimental observations)
+ They travel in straight lines and cast a shadow of the objects placed in their way.
+ They can move a paddle wheel placed in their path.
+ These rays are positively charged and when an electric field is applied in the path
+of the rays, they are deflected towards the negative plate of an electric field.
+ The nature of the positive rays depends upon the gas taken in the discharge tube.
+Different gases give different types of positive rays, which contain particles having
+different masses and different charges. Therefore the e/m ratio is not constant for
+positive ray particles obtained from different gases.
+In 1907 a study of how this "ray" was deflected in a magnetic field, revealed that the
+particle making up the ray were not all the same mass. The lightest ones, formed when
+there was some hydrogen gas in the tube, were calculated to be about 1840 times heavier
+than an electron. The mass of any other positive particle is a multiplication of the mass of
+the lightest positive particle. Therefore it should be a subatomic particle. They were
+named as protons. The relative mass of a proton is 1, hence, the mass of a proton is 1.6
+x 10-24 g or 1.007276 u (atomic mass units) or Da (Daltons). (The unit was earlier given
+the name amu.)
+The proton has a charge equal and opposite to that of an electron. Hence the absolute
+charge of a proton is 1.6 x 10-19 coulomb and its charge is positive. Proton is the smallest
+positive charge carrying particle in an atom and the relative charge of proton is +1.
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+7
+
+(a) (b)
+
+Following the discovery of radioactivity in 1896 by the French scientist Henri Becquerel
+(1852–1908), the British physicist Lord Ernest Rutherford (1871-1937) showed that
+radioactive materials produce three types of emissions alpha (), beta () and gamma ().
+The paths of  and  radiation are bent by an electric field.
+Alpha () rays consist of positively charged particles, called  particles, and therefore
+are deflected towards the positively charged plate. Beta () rays or particles have the
+identity of electrons and are deflected towards the negatively charged plate. The third
+type of radioactive radiation consists of high–energy rays called gamma () rays. Like X
+rays,  rays have no charge and are not affected by an external electric or magnetic field.
+
+Figure 1.9 Behaviour of alpha (), beta () and gamma () rays in an electric field
+
+Figure 1.10 (a) Henri Becquerel and (b) Lord Ernest Rutherford
+
+1.1.4 Rutherford’s gold foil experiment
+In 1908-09, Rutherford together with his associate Johannes Hans Wilhelm Geiger
+(1882-1945) a German physicist and an undergraduate named Ernest Marsden, carried
+out a series of experiments using very thin foils of gold and other metals as targets for
+particles from a radioactive source.
+Radioactive
+substance
+
+Electrically
+charged plates
+
+Lead block
+
+ rays
+ rays
+ rays
+
+Slit
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+8
+
+Figure 1.11 Rutherford’s gold foil experiment
+
+They observed that the majority of particles penetrated the foil either unreflected or only
+with a slight deflection. They also noticed that a few  particles were scattered (or
+deflected) at a large angle. Very few  particles bounced back in the direction from which
+it came.
+To explain the results of the experiment, Rutherford devised a new model of atomic
+structure, suggesting that most of the atom must be empty. This structure would allow
+most of the  particles to pass through the gold foil with little or no deflection. The atom’s
+positive charges, Rutherford proposed, are all concentrated in the nucleus, a dense central
+core within the atom. Whenever an  particle came close to a nucleus in the scattering
+experiment, it experienced a large repulsive force and therefore a large deflection.
+Moreover, an  particle traveling directly toward a nucleus would experience an
+enormous repulsion that could completely reverse the direction of the moving particle.
+
+Figure 1.12 Rutherford’s model (1911)
+
+Subsequent studies, mainly based on mass spectroscopy revealed that the masses of atoms
+were much greater than the masses of protons and electrons present. Therefore another
+
+Nucleus
+Electron
+
+Source of alpha
+particles
+
+Deflected
+particles
+Thin gold foil Scattered 
+particles
+
+Circular
+fluorescent screen
+Beam of
+particles
+
+Most particles are
+undeflected Thin gold foil
+Fluorescent
+screen
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+9
+
+(a) (b)
+
+subatomic particle should be present to contribute towards the mass of the atom. In1932
+Sir James Chadwick (1891-1972) a British scientist discovered the ‘neutron’. The
+charge of a neutron is 0 (zero) and its mass is 1.6749 x 10-24g or 1.008665 amu.
+
+Figure 1.13 (a) James Chadwick and (b) Niels Bohr
+
+Since Rutherford’s time, physicists have learned more and more about atomic nuclei. In
+1913 Niels Henrik David Bohr (1885-1962) a Danish physicist, combined the ideas at
+that time and suggested that the atomic nucleus was surrounded by electrons moving in
+orbit, like planets around the sun. He postulated that the electrons in order to remain in
+orbit, the electrostatic attraction between the nucleus and electron must be equal to the
+centrifugal force. In other words, the electrons have to travel in a constant speed around
+the nucleus keeping the distance from the nucleus constant. The model he introduced is
+known as the Rutherford–Bohr model or the Bohr model. Particles found in the nucleus
+are called nucleons, including the protons and neutrons in to the atom. A nuclide is the
+nucleus of an atom that has specific numbers of protons and neutrons (all nucleons).
+Therefore, nuclides are composite particles of nucleons.
+
+Figure 1.14 The Bohr model
+1.1.5 Atomic number, isotopes and mass number
+Henry Gwynn Jeffrey Moseley (1887-1915), an English physicist and a co-worker of
+Rutherford, found that the number of positive charges on the nucleus increases in atoms
+
+Nucleus
+
+Electrons
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+10
+
+Mass number (A) = Number of protons (Z) + Number of neutrons
+by single electron units. The atoms of each element have a characteristic number of
+protons. The number of protons in an atom of any particular element is called that
+element’s atomic number.
+
+= =
+
+Since an atom has no net electrical charge, the number of electrons it contains is equal to
+the number of protons found in its nucleus. All atoms of carbon, for example, have six
+protons and six electrons, whereas all atoms of oxygen have eight protons and eight
+electrons. Thus, carbon has atomic number 6 and oxygen has atomic number 8.
+British scientists J. J. Thomson and Francis William Aston (1877-1945) perfected the
+‘mass spectrometer' which they used in 1912-13 to discover the first isotopes (of neon).
+Atoms of a given element can differ in the number of neutrons they contain and therefore
+their mass can also vary. The number of protons plus neutrons (nuclide) in an atom is
+called its mass number.
+
+In the atomic symbol used to represent a particular atom the mass number is given at the
+top left of the element symbol and the atomic number may be given at the bottom left.
+However, since the symbol also gives the same information, the atomic number usually
+may not be shown in the symbol.
+
+Figure 1.15 Atomic symbol of carbon
+
+Atomic
+number (Z)
+
+Number of protons
+in the nucleus
+
+Number of electrons
+in an atom
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+11
+1 u or 1Da (earlier amu) 
+12 g
+6.02214 ×1023 ×
+1
+12
+= 1.66054 × 10−24g
+1 u = 1.66054 x 10-24 g and 1 g = 6.02214 x 1023 u or Da
+
+Average atomic mass = isotope mass) x (fractional isotope abundance)]
+Atoms with identical atomic numbers but different mass numbers (that is, same number
+of protons but different numbers of neutrons) are called isotopes of one another.
+For example, while most atoms of carbon have six neutrons, some have more. The carbon
+atoms containing six protons and six neutrons have a mass number 12 and are depicted
+as 12C, while atoms that contain six protons and seven neutrons have mass number 13 and
+are depicted as 13C. The atoms with six protons and eight neutrons have mass number 14
+and are depicted as 14C. Isotopes of an element that are stable in nature are called stable
+isotopes and those that are not stable called radioisotopes.
+1.1.6 The atomic mass scale
+Atoms are very small pieces of matter, however they have a mass. However, it is
+convenient to use the unified atomic mass unit (u) when dealing with these extremely
+small masses, where;
+
+The unified atomic mass unit is defined as a mass of exactly 1/12 of a chemically unbound
+atom of the 12C isotope of carbon. In these units, a 1H atom has a mass of 1.0078 u or Da
+and a 16O atom has a mass of 15.9949 u or Da.
+1.1.7 Average atomic mass and relative atomic mass of an element
+Most elements occur in nature as mixtures of isotopes. The mass of an atom can be given
+as relative atomic mass or atomic mass. It can be obtained by summing over the masses
+of its isotopes multiplied by their relative abundances:
+Example 1.1
+How many protons, neutrons and electron are there in an atom of 197Au?
+Answer:
+The superscript 197 is the mass number (protons + neutrons). According to the
+periodic table gold has atomic number 79. Hence, an atom of 197 Au has 79 protons,
+79 electrons and 197-79 = 118 neutrons.
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+12
+
+When the atomic mass is given as mass per mole of atoms (in units of g mol-1
+
+), it is known
+
+as the molar mass of the element or atom.
+Since 1 g = 6.02214 x 1023 u and 1 mole of atoms = 6.02214 x 1023 atoms, the molar mass
+of carbon will be 12.01 g mol-1
+.
+
+Relative atomic mass (Ar) is a dimensionless physical quantity. It is the ratio of the
+average mass of atoms of an element to 1
+
+⁄12 the mass of an atom of carbon-12 (known as
+the unified atomic mass unit). Hence the relative atomic mass of carbon will be 12.01.
+In periodic tables the relative atomic mass of the element is usually given below the
+symbol of the element.
+
+1.1.8 Ions
+The nucleus of an atom is unchanged by chemical processes, but some atoms can readily
+gain or lose electrons. If electrons are removed from or added to an atom, a charged
+particle called an ion is formed. An ion with a positive charge is a cation and a negatively
+charged ion is an anion.
+Example 1.2
+Naturally occurring carbon is composed of 98.93% 12C, 1.07% 13C and a negligible
+amount of 14C. The relative masses of two initial isotopes are 12 u (exactly) and
+13.00335 u, respectively. Calculate the average atomic mass of carbon.
+Answer:
+(0.9893 × 12.00 u) + (0.0107 × 13.00335 u) = 12.01 u
+Relative atomic mass = 12.01
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+13
+
+e.g.: The sodium atom, which has11 protons and 11 electrons can easily lose one electron.
+The resulting cation has 11 protons and 10 electrons, which means it has a net charge of
++1.
+
+Figure 1.16 Ionization of sodium atom
+
+e.g.: Chlorine, with 17 protons and 17 electrons, can gain an electron in chemical
+reactions, producing the Clion.
+
+Figure 1.17 Formation of chloride ion
+
+The net charge on an ion is represented by a superscript right to the atomic symbol. Hence
+the symbol for the ferric ion (an iron atom that has lost 3 electrons) will be:
+
+In addition to simple ions such as Na+
+and Cl-
+, there are polyatomic ions, given as NH4
++
+
+(ammonium ion) and SO4
+
+2−(sulfate ion), which consist of joined atoms to form molecules
+
+carrying a net positive or negative charge.
+1.2 Electromagnetic radiation and wave like properties of matter
+Much of our present understanding of the electronic structure of atoms has come from
+analysis of the light either emitted or absorbed by substances. Electromagnetic radiation
+(EMR) consists of electromagnetic waves, which are synchronized oscillations of
+electric and magnetic fields that propagate at the speed of light through a vacuum. The
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+14
+c = 
+
+oscillations of the two fields are perpendicular to each other and perpendicular to the
+direction of wave propagation.
+
+Figure 1.18 Electro-magnetic radiation
+
+The light we see with our eyes, visible light, is one type of electromagnetic radiation. All
+types of electromagnetic radiation move through a vacuum at a speed of
+2.998 x108 m s-1
+
+, the speed of light (c) and have wave-like characteristics.
+
+Waves are periodic, which means that the pattern of peaks and troughs repeats itself at
+regular intervals. The distance between two adjacent peaks or between two adjacent
+troughs (distance between a cycle) is called the wavelength (). The number of complete
+wavelengths, or cycles, that pass a given point each second is the frequency () of the
+wave. Frequency is expressed in cycles per second using a unit called hertz (Hz). Since
+it is understood that cycles are involved, it may also be simply called “per second,” which
+is denoted by s- 1
+. Hence,
+
+
+
+Figure 1.19 An electromagnetic wave
+
+
+
+
+
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+15
+E = h
+
+Different types of electromagnetic radiations have different properties due to their
+different wavelengths. The display of electromagnetic radiation arranged in order of
+increasing wavelength is called the electromagnetic spectrum.
+
+Figure 1.20 The electromagnetic spectrum
+
+1.2.1 Quantization of energy
+In 1900 a German physicist named Max Planck (1858–1947) proposed that energy is
+quantized; that is the energy can be either released or absorbed by atoms only in discrete
+quantities of some minimum size. Planck gave the name quantum (meaning “fixed
+amount”) to the smallest quantity of energy that can be emitted or absorbed as
+electromagnetic radiation. He proposed that the energy E, of a single quantum equals a
+constant time the frequency of the radiation:
+
+The constant h is called Planck constant and has a value of 6.626 x 10-34 J s.
+Example 1.3
+The yellow light given off by a sodium vapour lamp used for public lighting has a
+wavelength of 589 nm. Calculate the frequency of this radiation.
+Answer:
+
+
+c
+
+= (
+3.00 × 108 m/s
+589 nm ) (
+1 nm
+10−9 m
+) = 5.09 × 1014 s
+-1
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+16
+
+(a) (b)
+Figure 1.21 (a) Albert Einstein and (b) Max Planck
+
+In 1905, Albert Einstein (1879–1955) extending Planck’s quantum theory, deduced that
+the radiant from a metal surface behaves like a stream of tiny energy packets. Each packet,
+which is like a “particle” of energy, is called a photon and each photon must have an
+energy equal to Planck constant times the frequency of the light:
+
+In the years following the development of Bohr’s model for the hydrogen atom, scientists
+established that depending on the experimental circumstances, radiation appears to have
+a wave-like and a particle-like (photon) character.
+Louis de Broglie (1892–1987), extended the idea that if radiant energy could, under
+appropriate conditions, behave as though it were a stream of particles (photons), matter
+under appropriate conditions, possibly would show the properties of a wave.
+
+Energy of a photon = E = h
+
+Example 1.4
+Calculate the energy of one photon of yellow light that has a wavelength of 589 nm.
+Answer:
+
+
+c
+
+= 5.09 × 1014 s
+-1
+
+E = hv = (6.626 × 10−34 J s × 5.09 × 1014 s
+−1
+)
+
+= 3.37 × 10−19 J
+If one photon of radiant energy supplies 3.37 x 10-19 J,
+Energy of one mole of photons = (6.02 x 1023 mol-1
+
+) (3.37 x10-19 J)
+
+= 2.03 x 105
+
+J mol-1 of energy.
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+17
+ =
+h
+p
+=
+h
+mv
+
+De Broglie suggested that an electron moving about the nucleus of an atom behaves like
+a wave and therefore has a wavelength. He proposed that the wavelength of the electron,
+or of any other particle, depends on its mass, m, and on its velocity, :
+
+where h is the Planck constant. The quantity mv for any object is called its momentum
+(p).
+Because de Broglie’s hypothesis is applicable to all matter, any object of mass (m) and
+velocity(v) would give rise to a characteristic matter wave. However, the wavelength
+associated with an object of ordinary size, such as a golf ball, is so tiny as to be completely
+unobservable. This is not so for an electron because its mass is so small.
+1.3 Electronic energy levels of atoms
+The ionization energy of an atom or ion is the minimum energy required to remove an
+electron from the ground state of the isolated gaseous atom or ion. The magnitude of the
+ionization energy tells us how much energy is required to remove an electron; the greater
+the ionization energy, the more difficult it is to remove an electron.
+The ionization energies for a given element increase as successive electrons are removed.
+This trend is because with each successive removal, an electron is being pulled from an
+increasingly more positive ion, requiring increasingly more energy.
+The sharp increase in ionization energy that occurs when an inner-shell electron is
+removed is a clear evidence for the fact that electrons are in discrete energy levels.
+Table 1.1 Successive values of ionization energies I, for the elements from sodium to
+argon (kJ mol-1
+)
+
+Element I1 I2 I3 I4 I5 I6 I7
+Na 496 4562
+Mg 738 1451 7733 (Inner-shell electrons)
+Al 578 1817 2745 11577
+Si 786 1577 3232 4356 16091
+P 1012 1907 2914 4964 6274 21267
+S 1000 2252 3357 4556 7004 8496 27107
+Cl 1251 2298 3822 5159 6542 9362 11018
+Ar 1521 2666 3931 5771 7238 8781 11995
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+18
+
+1.3.1 The hydrogen spectrum
+Most common radiation sources, including light bulbs and stars, produce radiation
+containing many different wavelengths. A spectrum is produced when radiation from
+such sources is separated into its component wavelengths. This range of colours,
+containing light of all wavelengths, is called a continuous spectrum. Not all radiation
+sources produce a continuous spectrum. When a high voltage is applied to tubes that
+contain different gases under reduced pressure, the gases emit different colours of light.
+For example the light emitted by neon gas is the familiar red-orange glow of many “neon”
+lights. When light emitted from such tubes is passed through a prism, only a few
+wavelengths are present in the resultant spectrum. A spectrum containing radiation of
+only specific wavelengths is called a line spectrum.
+
+Figure 1.22 Line spectrum of hydrogen
+
+Scientists studied the line spectrum of hydrogen thoroughly in the mid-1800s. At that
+
+time, only four lines at wavelengths of 410 nm (violet), 434 nm (blue) 486 nm (blue-
+green) and 656 nm (red) were observed in the spectrum.
+
+Bohr's atomic model together with Planck’s idea that energies are quantized was capable
+of explaining the line spectrum of hydrogen.
+400 450 500 550 600 650 700 nm
+H
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+19
+
+Figure 1.23 Possible electron emissions in hydrogen
+
+Each allowed orbit around the atom corresponds to a different value of n (n is a whole
+number). The radius of the orbit gets larger as n increases. Thus, the first allowed orbit
+(the one closest to the nucleus) has n = 1, the next allowed orbit (the one second closest
+to the nucleus) has n = 2, and so forth.
+The line spectra are the result of emission when electrons fall from an initial energy level
+(ni) to a final energy level (nf), so Ephoton = h = hc/  = -E = (Ef - Ei) for these
+transitions. E is negative for emission as nf is less than ni; the electron is falling in energy
+to a lower-energy orbit. The possible emissions results in the line spectra seen in
+hydrogen.
+
+Pfund series
+
+Paschen series
+Brackett series
+
+Lyman series
+
+Balmer series
+
+0 kJ
+
+-82 kJ
+-146 kJ
+
+-328 kJ
+
+-1312 kJ
+Energy (kJ mol
+-1
+)
+
+Continuum
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+20
+
+Figure 1.24 (a) The line spectrum of hydrogen
+
+Figure 1.24(a) shows the spectrum as it varies with frequency. However, the variation of
+wavelength has shown in Figure 1.24(b).
+
+Figure 1.24 (b) The line spectrum of hydrogen
+
+1.3.2 Shapes of orbitals
+An electron’s probable location in space around an atom (shapes of orbitals) shows us
+how the electron density is distributed around the nucleus.
+The electron density for an s orbital is spherically symmetric and centered on the nucleus
+or in other words the s orbitals are spherical in shape.
+
+Figure 1.25 Shapes of the s orbitals
+
+0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+
+Frequency (Hz)/ 1015
+
+Paschen series
+(infra-red)
+
+Balmer series
+(partly visible)
+
+Lyman series
+(ultra-violet)
+
+ni = 2 ni = 4 ni = 3 ni = 6 ni = 5 ni = 4
+
+Paschen series
+nf = 3
+
+Balmer series
+nf = 2
+
+Lyman series
+nf = 1
+
+Wavelength ()
+
+91 nm
+122 nm
+365 nm
+
+656 nm
+820 nm
+
+1875 nm
+
+1s 2s 3s
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+21
+
+Each p subshell has three orbitals, corresponding to the three allowed values of ml: -1, 0
+and +1. The electron density is not distributed spherically as in an s orbital. Instead, the
+density is concentrated in two regions on either side of the nucleus, separated by a node
+at the nucleus. This dumbbell-shaped orbital has two lobes.
+For each value of n, the three p orbitals have the same size and shape but differ from one
+another in spatial orientation. It is convenient to label these as px, py, and pz orbitals where
+the letter subscript indicates the Cartesian axis along which the orbital is oriented.
+
+Figure 1.26 Shapes of the p orbitals
+
+The different d orbitals in a given shell have different shapes and orientations in space.
+The shapes of the f orbitals are even more complicated than those of the d orbitals.
+1.3.3 Orbitals and Quantum Numbers
+The Bohr model introduced a single quantum number, n, to describe an orbit. The
+quantum mechanical model uses three quantum numbers, n, l and ml, which result
+naturally from the mathematics used to describe an orbital that electrons occupy in an
+atom and ms that describes the spin of the electron.
+1. The principal quantum number n, can have positive integral values 1, 2, 3, . . . . This
+quantum number defines the main energy level (electron shell) that the electron
+occupies in the atom. As n increases, the orbital becomes larger, and the electron
+spends more time further from the nucleus.
+2. The angular momentum (or azimuthal) quantum number l, can have integral
+values from 0 to (n - 1) for each value of n. This quantum number defines the shape of
+the orbital. The value of l for a particular orbital is generally designated by the letters
+s, p, d and f corresponding to l values of 0, 1, 2 and 3 respectively.
+The set of orbitals that have the same n and l values is called a subshell. Each subshell
+is designated by a number (the value of n) and a letter (s, p, d or f corresponding to the
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+22
+
+value of l). For example, the orbitals that have n = 3 and l = 2 are called 3d orbitals
+and are in the 3d sub shell.
+3. The magnetic quantum number ml, can have integral values between -l and l,
+including zero. This quantum number describes the orientation of the orbital in space
+and the number of possible values for l denotes the number of orbitals in the subshell.
+For example for l = 2 the values possible will be 2, 1, 0, -1 and -2 denoting that a d
+subshell has five orbitals.
+4. The spin quantum number ms. Two possible values are allowed for ms, + 1⁄2 or -1/2,
+which indicate the two opposite directions in which the electron can spin. A spinning
+charge produces a magnetic field. The two opposite directions of spin therefore
+produce oppositely directed magnetic fields.
+Table 1.2 Relationship between values n, l, and ml
+n Possible
+values of l
+
+Subshell
+designation
+
+Possible
+values of ml
+
+Number of
+orbitals in
+subshell
+
+Total number
+of orbitals in
+shell
+1 0 1s 0 1 1
+2 0 2s 0 1 4
+1 2p -1, 0, 1 3
+3 0 3s 0 1 9
+1 3p -1, 0, 1 3
+2 3d -2, -1, 0, 1, 2 5
+4 0 4s 0 1 16
+1 4p -1, 0, 1 3
+2 4d -2, -1, 0, 1, 2 5
+3 4f -3, -2, -1, 0,
+1, 2, 3
+
+7
+
+The restrictions on possible values for quantum numbers give rise to the following very
+important observations:
+1. The shell with principal quantum number n consists of exactly n subshells. Each
+subshell corresponds to a different allowed value of l from 0 to (n - 1). Thus, the first
+shell (n = 1) consists of only one subshell, the 1s (l = 0); the second shell (n = 2)
+consists of two subshells, the 2s (l = 0) and 2p (l = 1); the third shell consists of three
+subshells, 3s, 3p, and 3d, and so forth.
+2. Each subshell consists of a specific number of orbitals. Each orbital corresponds to a
+different allowed value of ml. For a given value of l, there are (2l + 1) allowed values
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+23
+
+of ml, ranging from -l to +l. Thus, each s (l = 0) subshell consists of one orbital; each
+p (l = 1) subshell consists of three orbitals; each d (l = 2) subshell consists of five
+orbitals, and so forth.
+3. The total number of orbitals in a shell is n
+2
+, where n is the principal quantum number
+of the shell. The resulting number of orbitals for the shells 1, 4, 9 and 16 is related to
+a pattern seen in the periodic table: We see that the number of elements in the rows of
+the periodic table 2, 8, 18 and 32 equals twice these numbers.
+1.4 Electron configuration
+When considering the electronic structures of atoms: In a many-electron atom, for a given
+value of n, the energy of an orbital increases with increasing value of l. For example,
+n = 3 orbitals increase in energy in the order 3s < 3p < 3d and all orbitals of a given
+subshell (such as the five 3d orbitals) have the same energy, just as they do in the
+hydrogen atom. Orbitals with the same energy are said to be degenerate.
+1.4.1 The Aufbau principle
+The filling of electrons in an atom begins with the subshell lowest energy and continues
+upwards according to the “Aufbau principle” (The German word 'Aufbau' means 'building
+up').
+
+Figure 1.27 Sequence of filling of electrons
+
+Thus the general order of energies of energy levels and sub energy levels are shown in
+Figure 1.28.
+
+Start here and move along the
+arrows one by one.
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+24
+
+Figure 1.28 Order of the energy levels in an atom
+
+1.4.2 The Pauli exclusion principle
+The Pauli Exclusion Principle, which was postulated by Wolfgang Pauli in 1925, states
+that no two electrons in an atom can have the same set of four quantum numbers n, l, ml,
+and ms.
+For a given orbital, the values of n, l, and ml are fixed. Thus, if we want to put more than
+one electron in an orbital and satisfy the Pauli Exclusion Principle, our only choice is to
+assign different ms values to the electrons. This indicates that an orbital can hold a
+maximum of two electrons and they must have opposite spins. This restriction allows us
+to index the electrons in an atom by giving their quantum numbers.
+Thus, each s subshell which consists of one orbital can hold a maximum of two electrons;
+each p subshell that consists of three orbitals can hold a maximum of six electrons; each
+d subshell which consists of five orbitals can hold a maximum of ten electrons, and so
+forth.
+Electrons are distributed among the various orbitals of an atom based on the relative
+energies of orbitals and the Pauli Exclusion Principle and this distribution is called the
+electron configuration of the atom. The most stable electron configuration, known as
+the ground state, is that in which the electrons are in the lowest possible energy states.
+According to the Pauli Exclusion Principle however, there can be only two electrons in
+any single orbital. Thus, the orbitals are filled in the order of increasing energy, with no
+more than two electrons per orbital. Potential Energy
+
+1s
+2s
+3s
+4s
+5s
+6s
+7s
+
+2p
+3p
+4p
+5p
+6p
+
+3d
+4d
+5d
+6d
+
+5f
+4f
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+25
+
+For example, in the lithium atom, which has three electrons, the 1s orbital can
+accommodate two electrons. The third one goes into the next lowest-energy orbital, the
+2s.
+Any electron configuration can be represented by writing the symbol for the occupied
+subshell and adding a superscript to indicate the number of electrons in that subshell. For
+example, for lithium we write 1s
+2
+2s
+1
+and for sodium 1s
+2
+2s
+2
+2p
+6
+3s
+1
+.
+
+In another representation, called an orbital diagram, each orbital is denoted by a box or
+circle and each electron by a half arrow/ full arrow. A half/ full arrow pointing up
+represents an electron with a positive spin magnetic quantum number (ms = +1/2) and a
+half/ full arrow pointing down represents an electron with a negative spin magnetic
+quantum number (ms = -1/2).
+
+Electrons having opposite spins are said to be paired when they are in the same orbital.
+An unpaired electron is one not accompanied by a partner of opposite spin.
+In the lithium atom the two electrons in the 1s orbital are paired and the electron in the 2s
+orbital is unpaired.
+1.4.3 Hund’s rule
+The Hund’s rule states that for degenerate orbitals, the lowest energy is attained when the
+number of electrons having the same spin is maximized.
+This means that electrons occupy orbitals singly to the maximum extent possible and that
+these single electrons in a given subshell all have the same spin magnetic quantum
+number. Electrons arranged in this way are said to have parallel spins.
+e.g. Carbon atom; the two 2p electrons singly occupy two of the three 2p orbitals and they
+will be parallel to each other so that they can have the same spin.
+
+1s 2s
+Li
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+26
+
+Table 1.3 Electron distribution of some elements in second and third period
+Element Total
+electrons
+
+Orbital diagram Electron configuration
+1s 2s
+
+2p 3s
+Li 3 1s
+2
+2s
+1
+Be 4 1s
+2
+2s
+2
+
+B 5 1s
+2
+2s
+2 2p
+1
+
+C 6 1s
+2
+2s
+2 2p
+2
+
+N 7 1s
+2
+2s
+2 2p
+3
+
+Ne 10 1s
+2
+2s
+2 2p
+6
+
+Na 11 1s
+2
+2s
+2 2p
+6
+3s
+1
+
+1.4.4 Condensed electron configurations
+The electron configuration (also known as the electron distribution) of sodium, atomic
+number 11, is written as 1s
+2
+2s
+2
+2p
+6
+3s
+1
+. However, the filling of the 2p subshell is complete
+at neon, which has a stable configuration with eight electrons (an octet) in the outermost
+occupied shell. The next element, sodium, marks the beginning of a new row of the
+periodic table. Sodium has a single 3s electron beyond the stable configuration of neon.
+The configuration of sodium can therefore be abbreviated as [Ne]3s
+1
+.
+
+The part represented by the bracketed symbol is the noble-gas core of the atom. More
+usually, these inner-shell electrons are referred to as the core electrons.
+The electrons given after the noble-gas core are called the outer-shell electrons or
+valence shell electrons. The outer-shell electrons include the electrons involved in
+chemical bonding, as they are called the valence electrons.
+Similarly, phosphorous, which has 15 electrons can be represented as 1s
+2
+2s
+2
+2p
+6
+3s
+2
+3p
+3 or
+
+[Ne]3s
+2
+3p
+3
+.
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+27
+After the noble-gas element argon (1s
+2
+2s
+2
+2p
+6
+3s
+2
+3p
+6
+), according to Aufbau principle, it is
+not the 3d but 4s orbital that the next electron goes to. Hence, the element that follows
+Argon, which is potassium (K) has the electronic configuration of 1s
+2
+2s
+2
+2p
+6
+3s
+2
+3p
+6
+4s
+1
+or
+
+[Ar]4s
+1
+. Calcium, with 20 electrons hence is written as 1s
+2
+2s
+2
+2p
+6
+3s
+2
+3p
+6 4s
+2 or [Ar]4s
+2
+.
+Following the complete filling of the 4s orbital (this occurs in the calcium atom), the next
+set of orbitals to be filled is the 3d.
+
+Once all the 3d orbitals have been filled with two electrons each, the 4p orbitals begin to
+be occupied until the completed octet of outer electrons (4s
+2
+4p
+6
+) is reached with krypton
+
+(Kr), atomic number 36, another of the noble gases.
+Elements with completely filled or precisely half-filled sub energy levels appear to be
+relatively more stable than elements with other electron configurations. Thus elements
+with configurations ending with s
+2
+, p6
+and d
+10 will be more stable.
+
+e.g.: Zn: [Ar]3d
+104s
+2
+, Mg: [Ne]3s
+2
+, Ar: [Ne]3s
+2
+3p
+6
+, N: [He]2s
+2
+2p
+3
+and Mn: [Ar]3d
+5
+4s
+2
+
+will be relatively stable atoms.
+Example 1.5
+(a) Write the electron configuration for silicon, element 14, in its ground state.
+(b) How many unpaired electrons does a ground-state silicon atom possess?
+Answer:
+(a) 1s
+2
+2s
+2
+2p
+6
+3s
+2
+3p
+2 or [Ne]3s
+2
+3p
+2
+
+(b)
+
+two unpaired electrons.
+
+4s 3d
+
+Mn: [Ar] 3d
+5 4s
+2
+or [Ar]
+
+Zn: [Ar] 3d
+10 4s
+2
+or [Ar]
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+28
+
+The electron configurations of certain elements appear to deviate from the rules of
+configuration discussed. For an example, the electron configuration of chromium
+(element 24) is [Ar]3d
+5
+4s
+1
+rather than [Ar]3d
+4
+4s
+2 which we might expect. Similarly, the
+
+configuration of copper (element 29) is [Ar]3d
+104s
+1
+instead of [Ar]3d
+9
+4s
+2
+.This anomalous
+behaviour is largely a consequence of the closeness of the 3d and 4s orbital energies. It
+frequently occurs when there are enough electrons to form precisely half-filled sub energy
+levels (as in chromium) or a completely filled sub energy levels (as in copper), that would
+result in relatively stable configurations. (Note that the filling of the 3d orbitals occurs
+after filling of 4s. However, the electronic configuration is commonly written as 3d first
+and then 4s).
+1.5 Building of the periodic table
+The discovery of chemical elements has been ongoing since ancient times. Certain
+elements, such as gold (Au), appear in nature in elemental form and were thus discovered
+thousands of years ago. In contrast, some elements, such as technetium (Tc), are
+radioactive and intrinsically unstable and were discovered after the development of
+technology during the twentieth century.
+As the number of known elements increased, scientists began classifying them. In 1869,
+Dmitri Ivanovich Mendeleev in Russia and Lothar Meyer in Germany published nearly
+identical classification schemes. Both noted that similar chemical and physical properties
+occur periodically when the elements are arranged in order of increasing atomic mass.
+Scientists at that time had no knowledge of atomic numbers. However with the
+introduction of the concept of atomic number the modern periodic table was constructed.
+
+:
+
+(a) (b)
+Figure 1.29 (a) Dmitri Mendeleev and (b) Lothar Meyer
+
+-
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+29
+
+Figure 1.30 The periodic table of elements
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+30
+
+The way in which the columns (groups) are labeled is somewhat arbitrary. The labeling
+scheme widely used in the past had Arabic numerals and A and B designations. Thus the
+numbers ran from 1A-8A and 1B-8B. The group headed by fluorine (F) hence was group
+7A.
+In a similar convention, the columns are numbered using Roman numerals rather than
+Arabic numerals together with the letters A and B.
+In an effort to eliminate this confusion, the International Union of Pure and Applied
+Chemistry (IUPAC) has proposed a convention that numbers the groups from 1 to18 with
+no A or B designations, as shown in the Figure 1.30.
+The electron configurations of the elements correspond to their locations in the periodic
+table. The rows of the table are called periods and elements of the same row show trends
+in some of their properties.
+
+Elements in the same column of the table, which are called groups, have related outer-
+shell (valence) electron configurations. For example, all group 2 elements have an ns
+
+2
+
+outer configuration, and all group 3 elements have an ns
+2
+np
+1
+outer configuration, with the
+
+value of ‘n’ increasing as we move down each column.
+Table 1.4 Electron configurations of Group 2 and 13 elements
+Group 2 Group 13
+Be [He]2s
+
+2 B [He]2s
+2
+2p
+1
+
+Mg [Ne]3s
+
+2 Al [Ne]3s
+2
+3p
+1
+
+Ca [Ar]4s
+
+2 Ga [Ar]4s
+2
+4p
+1
+
+Sr [Kr]5s
+2
+In [Kr]5s
+2
+5p
+1
+
+Ba [Xe]6s
+
+2 Tl [Xe]6s
+2
+6p
+1
+
+Ra [Rn]7s
+2
+
+Elements in a group in the periodic table, often exhibit similarities in physical and
+chemical properties.
+Table 1.5 Names of some groups in the periodic table
+
+Group Name Elements
+1 Alkali metals Li, Na, K, Rb, Cs, Fr
+2 Alkaline earth metals Be, Mg, Ca, Sr, Ba, Ra
+16 Chalcogens O, S, Se, Te, Po
+17 Halogens F, Cl, Br, I, At
+18 Noble gases (rare gases) Ne, Ar, Kr, Xe, Rn
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+31
+Since the total number of orbitals in each shell equals n
+2
+: 1, 4, 9 and 16 respectively and
+because two electrons can be placed in each orbital, each shell accommodates up to 2n
+2
+electrons: 2, 8, 18, or 32. The overall structure of the periodic table too reflects these
+electron numbers: Each row of the table has 2, 8, 18 or 32 elements in it.
+The periodic table can be further divided into four blocks based on the filling order of
+orbitals.
+
+Figure1.31 Regions of the periodic table
+
+The two columns of elements on the left known as the alkali metals (group 1) and alkaline
+earth metals (group 2), are those in which the valence s orbitals are being filled. These
+two columns make up the s block of the periodic table.
+The block on the far right with six columns (group 13 to group 18) comprises the p block,
+where the valence p orbitals are being filled. The s block and the p block elements together
+are the representative elements, sometimes called the main-group elements.
+The block before the p-block in the Figure 1.31 has ten columns containing the transition
+metals. However in general practice group 1 and 10 elements are not considered as
+transition metals. These are the elements in which the valence d orbitals are being filled
+and make up the d block.
+The elements in the two rows between and s block and d block, containing 14 columns
+are the ones in which the valence f orbitals are being filled and make up the f block.
+(However filling of electrons and hence their electron configurations are complicated).
+These elements are often referred to as the f block metals or inner transition elements.
+The number of columns in each block corresponds to the maximum number of electrons
+that can occupy each kind of subshell. Since that 2, 6, 10, and 14 are the numbers of
+electrons that can fill the s, p, d and f subshells, respectively, the s block has 2 columns,
+the p block has 6, the d block has 10 and the f block has 14.
+3
+2
+1
+
+4
+5
+6
+7
+s-block f- block d- block p- block
+1s
+2s
+3s
+4s
+5s
+6s
+7s
+5d
+6d
+4f
+5f
+
+3p
+
+3d
+
+2p
+4p
+4d 5p
+6p
+7p
+
+1s
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+32
+
+1.6 Periodic trends shown by s and p block elements
+Many properties of atoms depend on their electron configuration and on how strongly the
+outer electrons in the atoms are attracted to the nucleus. Coulomb’s law tells us that the
+strength of the interaction between two electrical charges depends on the magnitudes of
+the charges and on the distance between them. Therefore, the attractive force between an
+electron and the nucleus depends on the magnitude of the nuclear charge and on the
+average distance between the nucleus and the electron. The force increases as the nuclear
+charge increases and decreases as the electron moves further from the nucleus.
+In an atom that containing a large number of electrons, in addition to the attraction of
+each electron to the nucleus, each electron experiences a repulsion due to the proximity
+of other electrons. These electron–electron repulsions cancel some of the attraction of the
+electron to the nucleus so that the electron experiences less attraction than it would if the
+other electrons were not there. The outer electrons are said to be screened or shielded
+from the nucleus by the inner electrons close to the nucleus and this phenomenon is hence
+termed the screening effect or shielding effect of electrons.
+An electron, therefore, experiences a net attraction by the nucleus that is less than it would
+be in the absence of other electrons. This partially screened nuclear charge is termed the
+effective nuclear charge, Zeff. The effective nuclear charge is always less than the actual
+nuclear charge (Zeff < Z).
+For a valence electron, most of the shielding is due to the core electrons, which are much
+closer to the nucleus. As a result, the greater the number of core electrons and the higher
+the number of core shells, the greater will be the screening effect.
+The effective nuclear charge increases from left to right across any period of the periodic
+table. Although the number of core electrons stays the same across the period, the number
+of protons increases. The valence electrons added to counterbalance the increasing
+nuclear charge thus it screens ineffectively. Thus, Zeff increases steadily across the period.
+1.6.1 Sizes of atoms and ions
+Atoms are not hard, spherical objects as many of us think. According to the quantum
+mechanical model, atoms do not have sharply defined boundaries. We can define atomic
+size in several ways, based on the distances between atoms in various situations.
+van der Waals radius
+The van der Waals radius (nonbonding atomic radius) refers to one half the distance
+between two equivalent non-bonded atoms in their most stable arrangement, that is, where
+attractive forces are maximum.
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+33
+
+Covalent radius
+A chemical bond is the attractive interaction between any two adjacent atoms in a
+molecule. The two bonded atoms are closer together than they would be in a nonbonding
+collision. The bonding atomic radius for any atom in a molecule is equal to half of the
+bond distance (the distance between two bonded atoms). The bonding atomic radius (also
+known as the covalent radius) is smaller than the nonbonding atomic radius.
+
+Figure 1.32 Covalent and van der Waals radius for Iodine (I2)
+
+Metallic radius
+Metal atoms in a metallic structure are bonded to each other by metallic bonds. Half of
+the bond distance between the nuclei of two adjacent metal atoms in a metallic structure
+is called the metallic radius.
+
+Figure 1.33 The metallic radius
+van der Waals
+distance = 430 pm
+
+van der Waals
+radius = 215 pm
+
+Covalent distance
+= 266 pm
+
+Covalent radius
+= 133 pm
+
+Metallic radius
+
+Metallic diameter
+
+I I I
+
+I
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+34
+
+Periodic trends in atomic radii
+The atomic sizes within the periodic table show two interesting trends:
+Within each group, the atomic radius tends to increase from top to bottom. This trend
+results primarily from the increase in the principal quantum number (n) of the outer
+electrons. As we go down a column, the outer electrons have a greater probability of being
+further away from the nucleus, causing the atomic radius to increase.
+Within each period, the atomic radius generally tends to decrease from left to right. The
+major factor influencing this trend is the increase in effective nuclear charge across a
+period. The increasing effective nuclear charge steadily draws the valence electrons closer
+to the nucleus, causing the atomic radius to decrease.
+
+Figure 1.34 (a) Trends in atomic radii in the periodic table in pm
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+35
+
+Figure 1.34 (b) Trends in atomic radii in the periodic table
+
+Electron configurations of ions
+When electrons are removed from an atom to form a cation, they are always removed first
+from the occupied orbitals having the highest principal quantum number, n.
+For example, when one electron is removed from a sodium atom (1s
+2
+2s
+2
+2p6
+3s1
+), it is the
+
+3s
+1
+electron that is removed.
+Na(1s
+2
+2s
+2
+2p6
+3s
+1
+or [Ne]3s
+1
+) Na+
+(1s
+2
+2s
+2
+2p6
+or [Ne]) + e
+
+If there is more than one occupied subshell for a given value of n, the electrons are first
+removed from the orbital with the highest value of l. For example, a boron atom loses its
+2p electron before it loses its 2s electrons.
+
+B(1s
+2
+2s
+2
+2p
+1
+) B
++
+(1s
+2
+2s
+2
+) + e
+
+B
++
+(1s
+2
+2s
+2
+) B
+3+(1s
+2
+) + 2e
+
+When two electrons are removed from Fe ([Ar]3d
+6
+4s
+2
+), the 4s
+2
+electrons are the ones that
+
+are removed even though in filling the 4s fills before the 3d.
+
+Fe([Ar] 3d
+6
+4s
+2
+) Fe2+([Ar]3d
+6
+) + 2e
+
+If an additional electron is removed, forming Fe3+, it comes from a 3d orbital because
+all the orbitals with n = 4 are empty.
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+36
+
+Fe2+([Ar]3d
+6
+) Fe3+([Ar]3d
+5
+) + e
+
+Electrons added to an atom to form an anion are added to the empty or partially filled
+orbital having the highest value of n, which is the valence shell. For example, an electron
+added to a fluorine atom to form the Fion goes into the one remaining vacancy in the 2p
+subshell.
+
+F(1s
+2
+2s
+2
+2p
+5
+) + e F
+-
+(1s
+2
+2s
+2
+2p
+6
+)
+
+Periodic Trends in Ionic Radii
+Like the size of an atom, the size of an ion depends on its nuclear charge, the number of
+electrons it possesses, and the orbitals in which the valence electrons reside. When a
+cation is formed from a neutral atom, electrons are removed from the occupied atomic
+orbitals that are the most spatially extended from the nucleus. Also, when a cation is
+formed the number of electron–electron repulsions is reduced. Therefore, cations are
+smaller than their parent atoms.
+
+Figure 1.35 Radii of cations and anions compared to parent atoms in pm
+
+The opposite is true of anions. When electrons are added to an atom to form an anion, the
+increased electron–electron repulsions cause the electrons to spread out more in space.
+Thus, anions are larger than their parent atoms.
+For ions carrying the same charge (both positively or negatively charged ions), ionic
+radius increases as we move down a column in the periodic table. In other words, as the
+principal quantum number of the outermost occupied orbital of an ion increases, the
+radius of the ion increases.
+An isoelectronic series is a group of ions/ atoms containing the same number of electrons.
+For example, each ion/ atom in the isoelectronic series O2-
+, F-
+, Ne, Na+
+and Mg2+ has a
+total number of 10 electrons. In any isoelectronic series the nuclear charge increases with
+
+Cation Anion Parent atom
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+37
+
+increasing atomic number in the series. Because the number of electrons remains
+constant, ionic radius decreases with increasing nuclear charge as the electrons are more
+strongly attracted to the nucleus.
+
+Figure 1.36 Radii in an isoelectronic series
+
+1.6.2 Ionization energy
+As explained at the beginning of section 1.3, the ionization energy of an atom or ion is
+the minimum energy required to remove an electron from the ground state of the isolated
+gaseous atom or ion.
+In general, the first ionization energy (I1) is the energy needed to remove the most loosely
+bound electron from a neutral gaseous atom. For example, the first ionization energy for
+the lithium atom is the energy required for the process; Li(g) Li+
+(g) + e
+The second ionization energy (I2) is the energy needed to remove the second loosely
+bound electron of an atom from a gaseous monovalent cation to form a gaseous divalent
+cation, and so forth, for successive removals of additional electrons. Thus, second
+ionisation energy for the lithium atom is the energy associated with the process;
+Li+
+(g) Li2+(g) + e
+The ionization energies for a given element increase as successive electrons are removed;
+I1 < I2< I3, and so forth. This trend is because with each successive removal, an electron
+is being pulled away from an increasingly more positive ion, requiring increasingly more
+energy. Furthermore, a sharp increase in ionization energy occurs when an inner-shell
+electron is removed compared to the removal of outer shell electrons. This is because the
+electrons of the inner shell are closer to the nucleus and hence are attracted to it more
+strongly.
+Electron configurations of the neutral
+atoms: 2s
+2
+2p
+4
+
+2s
+2
+2p
+5
+
+2s
+2
+2p
+6 2s
+2
+2p
+6
+3s
+1
+2s
+2
+2p
+6
+3s
+2
+
+8 + 9 + 10 + 11 + 12 +
+
+O
+2− F
+−
+
+O
+2−
+
+Ne Na+ Mg2+
+
+Isoelectronic series: all these species have ten electrons: 1s
+2
+2s
+2
+2p
+6
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+38
+Frequently ionization energy is expressed in kJ mol-1
+
+by considering one mole of atom/
+
+ion.
+Periodic trends in the first ionization energies
+The first ionization energy generally increases as we move across a period. The alkali
+metals show the lowest ionization energy in each period, and the noble gases show the
+highest.
+Generally, the first ionization energy decreases as we move down any column in the
+periodic table. For example, the ionization energies of the group 1 elements (alkali metals)
+follow the following order
+Li >Na > K > Rb > Cs > Fr.
+The s and p block elements show a larger range of I1 values than do the transition metal
+elements. Generally, the ionization energies of the transition metals increases slightly
+from left to right in a period.
+The same factors that influence atomic size also influence ionization energies. The energy
+needed to remove an electron from the outermost occupied shell depends on both the
+effective nuclear charge and the average distance of the electron from the nucleus. Either
+increasing the effective nuclear charge or decreasing the distance from the nucleus
+increases the attraction between the electron and the nucleus. As this attraction increases,
+it becomes more difficult to remove the electron, and thus the ionization energy increases.
+
+Figure 1.37 Trends in the first ionization energies in the periodic table
+Ionization energy increases
+
+Ionization energy increases
+1 2 13 14 15 16 17 18
+H
+1312.0
+Li
+520.2
+Na
+495.8
+K
+418.8
+Rb
+403.0
+Cs
+375.7
+Ra
+514.6
+Ba
+508.1
+Sr
+549.5
+Ca
+589.8
+Mg
+737.7
+Be
+899.4
+
+B
+800.6
+Al
+577.6
+Ga
+578.8
+In
+558.3
+Tl
+595.4
+Pb
+722.9
+Sn
+708.6
+Ge
+762.1
+Si
+786.4
+C
+1086.4
+N
+1420.3
+P
+1011.7
+As
+947
+Sb
+833.7
+Bi
+710.6
+Po
+821
+Te
+869.2
+Se
+940.9
+S
+999.6
+O
+1313.9
+F
+1681.0
+
+I
+1008.4
+Br
+1139.9
+Cl
+1251.1
+Ne
+2080.6
+
+Xe
+1170.4
+Kr
+1360.7
+Ar
+1520.5
+H
+1312.0
+He
+2372.3
+
+Rn
+1047.8
+
+Unit kJ mol-1
+
+Fr
+--
+
+At
+--
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+39
+
+Figure 1.38 Variation of the first ionization energies with atomic number of elements
+The irregularities in the trend of the first ionization energy in a given period are small but
+still readily explained. Removal of electrons from a completely filled subshell (e.g. group
+2, group 12 and group 18) or a half filled subshell (e.g. group 7 and group 15), which are
+generally stable, will require more energy and thus the ionization energy will be higher
+than is expected from the common trend.
+For example, in the second period neon with a completely filled shell has the highest first
+ionization energy. Beryllium with a complete s sub shell shows the first ionization energy
+greater than expected and it even exceeds the I1 of boron. Similarly nitrogen with an
+exactly half filled p subshell shows an I1 higher than what the common trend predicts.
+
+He
+Ne
+Ar Kr
+
+Xe
+
+Li Na K Rb Cs
+0 10 20 30 40 50 60
+Atomic number
+
+500
+1000
+1500
+2000
+2500
+Ionization energy (kJ mol
+-1)
+1s
+2
+[He]2s
+2 2p
+6
+[Ne]3s
+2
+3p
+6
+[Ar]3d
+10 4s
+2 4p
+6
+
+[Xe]6s
+1
+
+[Kr]5s
+1
+
+[Ar]4s
+1
+[Ne]3s
+1
+[He]2s
+1
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+40
+
+Figure 1.39 Variation of the first ionization energies along the first and second periods
+
+1.6.3 Electron gain energy
+The energy change that occurs when an electron is added to a gaseous atom is called the
+electron gain energy. For most atoms, energy is released when an electron is added.
+For example, electron gain energy for the chlorine atom shown in the process below is
+-349 kJ mol-1
+
+. The negative sign indicates that energy is released during the process.
+Cl(g) + e Cl-
+
+(g) EEG = -349 kJ mol-1
+
+(EEG = Electron gain energy)
+However, there are few atoms with positive electron gain energy. E.g.: Be, N. This is
+because they possess relatively stable configuration Be (s
+2
+) and N (p
+3
+) and as a result
+adding of an electron would be somewhat difficult with electron – electron repulsion is
+the dominating factor.
+
+N(g) + e N
+-
+(g) EEG = +134 kJ mol-1
+
+Be(g) + e Be-
+
+(g) EEG = +231 kJ mol-1
+
+The electron gain energy become less positive across a period and more positive down a
+group.
+
+He
+
+H
+
+Be
+
+N
+
+Ne
+
+F
+
+C
+O
+Filled shell
+2s
+2 2p
+6 1s
+2
+Filled shell
+
+2400
+
+Half -filled
+subshell
+2s
+22p
+3
+
+2000
+
+Filled
+subshell
+2s
+2
+
+1600
+1200
+
+B
+Li Na
+Mg
+3s 2s 1
+1
+
+800
+400
+
+1 2 3 4 5 6 7 8 9 10 11 12
+
+Atomic number
+
+Ionization energy kJ/ mol
+-1
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+41
+
+As accepted internationally, EEG is used as a quantitative physical quantity to measure
+the attraction of an electron by an atom and related to electron affinity as follows.
+Electron gain energy (EEG) = - Electron affinity (EA)
+
+Thus the electron affinity of an atom can be closely related to EEG and defined as the
+change in energy when the anion of the element loses an electron in the gaseous phase
+(A-
+(g) A(g) + e; E = EA which is equal in magnitude and opposite in sign to
+EEG) become more positive across a period and less positive down a group.
+1.6.4 Electronegativity
+It is defined as the ability of an atom in a molecule to attract electrons to itself. The greater
+an atom’s electronegativity, the greater its ability to attract electrons.
+The American chemist Linus Pauling (1901–1994) developed the first and most widely
+used electronegativity scale, which is known as the Pauling scale. Generally there is an
+increase in electronegativity from left to right across a period in the periodic table. With
+some exceptions (especially in the transition metals), electronegativity decreases with
+increasing atomic number in a group. Noble gases too have very small but non zero
+electronegativity according to the Pauling scale. In molecules, the difference between
+electronegativities of two atoms forming a bond will determine the ionic or covalent
+nature of the bond.
+
+Figure 1.40 Pauling electronegativity values and the trends in the periodic table
+
+G.C.E. (A/L) CHEMISTRY : Unit 1 Atomic Structure
+
+42
+
+Table 1.6 A summary of equations
+
+Equation
+
+Atomic number (Z) = Number of protons = Number of electrons in a atom
+Mass number (A) = Number of protons (Z) + Number of neutrons
+1 u or Da = 1.66054 x 10-24 g and 1 g = 6.02214 x 1023 u or Da
+Atomic mass = isotope mass) x (fractional isotope abundance)]
+
+Speed of light = c =  x 108 m s
+-1
+Energy of a photon = E = h
+
+constant h is called Planck constant and has a value of 6.626 x 10-34 J s

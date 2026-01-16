@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+    <link rel="icon" href="./Logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+        
+        * {
+            font-family: 'DM Sans', sans-serif;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .animate-slide-up { animation: slideUp 0.6s ease-out; }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
+        <div class="container mx-auto flex h-16 items-center justify-between px-4">
+            <a href="./study.html" class="flex items-center gap-2">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-0">
+                    <img src="./Logo.png" alt="logo">
+                </div>
+                <span class="text-xl font-bold text-gray-900">Study Planner</span>
+            </a>
+
+            <nav class="hidden items-center gap-6 md:flex text-sm">
+                <a href="./study.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Dashboard</a>
+                <a href="./scheduler.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Scheduler</a>
+                <a href="./resource-curator.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Resources</a>
+                <a href="./progress-tracker.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Progress</a>
+                <a href="./analytics.html" class="nav-link font-medium text-gray-900 hover:text-amber-700 transition-colors">Analytics</a>
+                <a href="./quiz-generator.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Quizzes</a>
+                <a href="./study-groups.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Groups</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button id="notification-btn" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 relative">
+                    <span class="text-lg">🔔</span>
+                </button>
+                <button id="profile-btn" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100">
+                    <span class="text-lg">👤</span>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100">
+                    <span class="text-lg">☰</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <nav id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white">
+            <div class="container mx-auto px-4 py-4 space-y-2">
+                <a href="./study.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-900 font-medium">Dashboard</a>
+                <a href="./scheduler.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Scheduler</a>
+                <a href="./resource-curator.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Resources</a>
+                <a href="./progress-tracker.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Progress</a>
+                <a href="./analytics.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-900 font-medium">Analytics</a>
+                <a href="./quiz-generator.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Quizzes</a>
+                <a href="./study-groups.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Study Groups</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-12 md:py-16">
+        <div class="container mx-auto px-4">
+            <!-- Page Header -->
+            <div class="mb-12 animate-slide-up">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+                    <span>📊</span> Analytics Dashboard
+                </h1>
+                <p class="text-gray-600 text-lg">In-depth insights into your study habits and performance</p>
+            </div>
+
+            <!-- Key Metrics -->
+            <div class="grid md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl border border-amber-200 p-6 shadow-lg">
+                    <p class="text-amber-700 text-sm font-medium mb-2">⏱️ Total Study Time</p>
+                    <p class="text-3xl font-bold text-amber-900" id="total-time">0h</p>
+                    <p class="text-xs text-amber-700 mt-2">This month</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border border-orange-200 p-6 shadow-lg">
+                    <p class="text-orange-700 text-sm font-medium mb-2">📚 Subjects Studied</p>
+                    <p class="text-3xl font-bold text-orange-900" id="subjects-count">0</p>
+                    <p class="text-xs text-orange-700 mt-2">Unique subjects</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl border border-green-200 p-6 shadow-lg">
+                    <p class="text-green-700 text-sm font-medium mb-2">🎯 Avg Performance</p>
+                    <p class="text-3xl font-bold text-green-900" id="avg-performance">0%</p>
+                    <p class="text-xs text-green-700 mt-2">Quiz average</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200 p-6 shadow-lg">
+                    <p class="text-blue-700 text-sm font-medium mb-2">📈 Improvement Rate</p>
+                    <p class="text-3xl font-bold text-blue-900" id="improvement-rate">+0%</p>
+                    <p class="text-xs text-blue-700 mt-2">vs last month</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Time Distribution Pie Chart -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">⏱️ Study Time by Subject</h2>
+                    <div class="relative h-80">
+                        <canvas id="timeDistributionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Performance by Subject -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">🏆 Performance by Subject</h2>
+                    <div class="relative h-80">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Comparison -->
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg mt-8 animate-fade-in">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">📅 Weekly Study Hours</h2>
+                <div class="relative h-80">
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Subject Rankings -->
+            <div class="grid md:grid-cols-2 gap-8 mt-8">
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">⭐ Most Studied Subjects</h2>
+                    <div id="top-subjects" class="space-y-3">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Study Insights</h2>
+                    <div id="insights" class="space-y-3 text-gray-700">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Panel Modal -->
+    <div id="notification-panel" class="fixed right-0 top-16 h-screen w-80 bg-white border-l border-gray-200 shadow-2xl transform translate-x-full transition-transform duration-300 z-40 overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+            <h2 class="text-xl font-bold text-gray-900">Notifications</h2>
+        </div>
+        <div id="notification-list" class="divide-y divide-gray-100">
+            <!-- Notifications will be populated here by JavaScript -->
+        </div>
+        <div class="p-4 text-center border-t border-gray-200">
+            <button onclick="clearAllNotifications()" class="text-sm text-amber-700 hover:text-amber-800 font-medium">
+                Clear All
+            </button>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Login/Register) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <div class="text-center mb-8">
+                <h2 id="auth-title" class="text-2xl font-bold text-gray-900 mb-2">Welcome to Study Planner</h2>
+                <p class="text-gray-600 text-sm">Sign in to continue learning</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="login-email" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="login-password" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                >
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Register Form (hidden initially) -->
+            <form id="register-form" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="register-name" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="John Doe"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="register-email" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="register-password" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="register-confirm" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                >
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Toggle Form -->
+            <div class="mt-6 text-center text-sm text-gray-600">
+                <span id="toggle-text">Don't have an account?</span>
+                <button 
+                    type="button"
+                    id="toggle-form-btn"
+                    class="text-amber-700 hover:text-amber-800 font-medium ml-1"
+                >
+                    Sign up
+                </button>
+            </div>
+
+            <!-- Close Button -->
+            <button 
+                onclick="closeAuthModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resource-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <h2 id="modal-resource-title" class="text-2xl font-bold text-gray-900 mb-4">Resource Title</h2>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Type</span>
+                    <span id="modal-resource-type" class="font-semibold text-gray-900">Video</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Subject</span>
+                    <span id="modal-resource-subject" class="font-semibold text-gray-900">Mathematics</span>
+                </div>
+            </div>
+
+            <button 
+                id="modal-download-btn"
+                href="#"
+                class="w-full py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all mb-4"
+            >
+                📥 Download
+            </button>
+
+            <button 
+                onclick="closeResourceModal()"
+                class="w-full py-2 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Group Modal -->
+    <div id="group-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <h2 id="modal-group-name" class="text-2xl font-bold text-gray-900 mb-2">Group Name</h2>
+            <p id="modal-group-subject" class="text-gray-600 mb-6">Subject</p>
+            
+            <div class="space-y-4 mb-6 bg-gray-50 p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Members</span>
+                    <span id="modal-group-members" class="font-semibold text-gray-900">0/0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Next Session</span>
+                    <span id="modal-group-session" class="font-semibold text-gray-900">TBD</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm text-gray-600 mb-3">Members</p>
+                <div id="modal-group-avatars" class="flex gap-2"></div>
+            </div>
+
+            <button 
+                id="modal-join-btn"
+                class="w-full py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all mb-4"
+            >
+                Join Group
+            </button>
+
+            <button 
+                onclick="closeGroupModal()"
+                class="w-full py-2 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid gap-8 md:grid-cols-4 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-0 to-orange-600 hover:shadow-lg transition-shadow">
+                            <img src="./Logo.png" alt="logo">
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Study Planner</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Your intelligent study companion for smarter learning and better results.
+                    </p>
+                    <div class="flex gap-2">
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            𝕏
+                        </a>
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            ⚙️
+                        </a>
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            🔗
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Product</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Features</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Resources</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Company</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">About</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Legal</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Privacy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Terms</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-200">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <p class="text-sm text-gray-600">© 2026 Study Planner. All rights reserved.</p>
+                    <div class="flex gap-6 mt-4 md:mt-0 text-sm text-gray-600">
+                        <a href="#" class="hover:text-amber-700 transition-colors">Sitemap</a>
+                        <a href="#" class="hover:text-amber-700 transition-colors">Security</a>
+                        <a href="#" class="hover:text-amber-700 transition-colors">Status</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./study.js"></script>
+    <script>
+        const progressData = JSON.parse(localStorage.getItem('progress_data')) || [];
+
+        function calculateAnalytics() {
+            let totalHours = 0;
+            let subjectHours = {};
+            let subjectScores = {};
+            let subjectCounts = {};
+
+            progressData.forEach(entry => {
+                totalHours += parseFloat(entry.hours);
+
+                if (!subjectHours[entry.subject]) {
+                    subjectHours[entry.subject] = 0;
+                    subjectScores[entry.subject] = 0;
+                    subjectCounts[entry.subject] = 0;
+                }
+
+                subjectHours[entry.subject] += parseFloat(entry.hours);
+                subjectScores[entry.subject] += parseFloat(entry.score || 0);
+                subjectCounts[entry.subject]++;
+            });
+
+            // Calculate average performance
+            let totalScore = 0;
+            let scoreCount = 0;
+            Object.keys(subjectScores).forEach(subject => {
+                totalScore += subjectScores[subject];
+                scoreCount += subjectCounts[subject];
+            });
+            const avgPerformance = scoreCount > 0 ? Math.round(totalScore / scoreCount) : 0;
+
+            return {
+                totalHours,
+                subjectHours,
+                subjectScores,
+                subjectCounts,
+                avgPerformance,
+                subjects: Object.keys(subjectHours)
+            };
+        }
+
+        function initializeCharts() {
+            const analytics = calculateAnalytics();
+
+            // Time Distribution Pie Chart
+            const ctxPie = document.getElementById('timeDistributionChart').getContext('2d');
+            new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: analytics.subjects,
+                    datasets: [{
+                        data: analytics.subjects.map(s => analytics.subjectHours[s]),
+                        backgroundColor: [
+                            '#b45309', '#ea580c', '#0369a1', '#dc2626',
+                            '#7c3aed', '#059669', '#d97706', '#4f46e5'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    }
+                }
+            });
+
+            // Performance Bar Chart
+            const ctxBar = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: analytics.subjects,
+                    datasets: [{
+                        label: 'Avg Score (%)',
+                        data: analytics.subjects.map(s => 
+                            Math.round(analytics.subjectScores[s] / analytics.subjectCounts[s])
+                        ),
+                        backgroundColor: '#ea580c',
+                        borderColor: '#c2410c',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Weekly Study Hours
+            const ctxWeekly = document.getElementById('weeklyChart').getContext('2d');
+            const weeklyData = getWeeklyData();
+            new Chart(ctxWeekly, {
+                type: 'bar',
+                data: {
+                    labels: weeklyData.labels,
+                    datasets: [{
+                        label: 'Study Hours',
+                        data: weeklyData.hours,
+                        backgroundColor: '#b45309',
+                        borderColor: '#92400e',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Update metrics
+            document.getElementById('total-time').textContent = analytics.totalHours.toFixed(1) + 'h';
+            document.getElementById('subjects-count').textContent = analytics.subjects.length;
+            document.getElementById('avg-performance').textContent = analytics.avgPerformance + '%';
+            
+            // Top subjects
+            const topSubjects = analytics.subjects
+                .sort((a, b) => analytics.subjectHours[b] - analytics.subjectHours[a])
+                .slice(0, 5);
+
+            const topSubjectsHtml = topSubjects.map((s, i) => {
+                const hours = analytics.subjectHours[s];
+                const percentage = Math.round((hours / analytics.totalHours) * 100);
+                return `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-semibold text-gray-900">${i + 1}. ${s}</p>
+                            <p class="text-sm text-gray-600">${hours.toFixed(1)}h (${percentage}%)</p>
+                        </div>
+                        <div class="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-amber-700" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('top-subjects').innerHTML = topSubjectsHtml || '<p class="text-gray-600">No data yet</p>';
+
+            // Insights
+            const insights = generateInsights(analytics);
+            document.getElementById('insights').innerHTML = insights.map(i => 
+                `<div class="flex gap-3"><span class="text-lg">${i.icon}</span><div><p class="font-semibold text-gray-900">${i.title}</p><p class="text-sm text-gray-600">${i.description}</p></div></div>`
+            ).join('');
+        }
+
+        function getWeeklyData() {
+            const today = new Date();
+            const labels = [];
+            const hours = [];
+
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                
+                labels.push(date.toLocaleDateString('en-US', { weekday: 'short' }));
+                
+                const dayData = progressData.filter(d => d.date === dateStr);
+                const dayHours = dayData.reduce((sum, d) => sum + parseFloat(d.hours), 0);
+                hours.push(dayHours);
+            }
+
+            return { labels, hours };
+        }
+
+        function generateInsights(analytics) {
+            const insights = [];
+
+            if (analytics.totalHours > 0) {
+                const avgDaily = (analytics.totalHours / 30).toFixed(1);
+                insights.push({
+                    icon: '📈',
+                    title: 'Daily Average',
+                    description: `${avgDaily}h per day (based on this month)`
+                });
+            }
+
+            if (analytics.subjects.length > 0) {
+                const topSubject = analytics.subjects.reduce((a, b) => 
+                    analytics.subjectHours[a] > analytics.subjectHours[b] ? a : b
+                );
+                insights.push({
+                    icon: '🎯',
+                    title: 'Focus Area',
+                    description: `You spend most time on ${topSubject}`
+                });
+            }
+
+            if (analytics.avgPerformance >= 80) {
+                insights.push({
+                    icon: '⭐',
+                    title: 'Great Performance',
+                    description: `Your average score is ${analytics.avgPerformance}%`
+                });
+            } else if (analytics.avgPerformance > 0) {
+                insights.push({
+                    icon: '🚀',
+                    title: 'Room to Improve',
+                    description: `Current average: ${analytics.avgPerformance}%. Keep practicing!`
+                });
+            }
+
+            if (analytics.subjects.length > 3) {
+                insights.push({
+                    icon: '📚',
+                    title: 'Well-Rounded',
+                    description: `You're studying ${analytics.subjects.length} different subjects`
+                });
+            }
+
+            return insights;
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeCharts);
+    </script>
+</body>
+</html>

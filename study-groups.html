@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Groups</title>
+    <link rel="icon" href="./Logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+        * { font-family: 'DM Sans', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen bg-white" style="background-image: linear-gradient(to bottom, hsl(30 25% 96% / 0.9), hsl(30 25% 96% / 0.95))">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
+        <div class="container mx-auto flex h-16 items-center justify-between px-4">
+            <a href="./study.html" class="flex items-center gap-2">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-0">
+                    <img src="./Logo.png" alt="logo">
+                </div>
+                <span class="text-xl font-bold text-gray-900">Study Planner</span>
+            </a>
+
+            <nav class="hidden items-center gap-6 md:flex text-sm">
+                <a href="./study.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Dashboard</a>
+                <a href="./scheduler.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Scheduler</a>
+                <a href="./resource-curator.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Resources</a>
+                <a href="./progress-tracker.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Progress</a>
+                <a href="./analytics.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Analytics</a>
+                <a href="./quiz-generator.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Quizzes</a>
+                <a href="./study-groups.html" class="nav-link font-medium text-gray-900 hover:text-amber-700 transition-colors">Groups</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button id="notification-btn" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 relative">
+                    <span class="text-lg">🔔</span>
+                </button>
+                <button id="profile-btn" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100">
+                    <span class="text-lg">👤</span>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100">
+                    <span class="text-lg">☰</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <nav id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white">
+            <div class="container mx-auto px-4 py-4 space-y-2">
+                <a href="./study.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-900 font-medium">Dashboard</a>
+                <a href="./scheduler.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Scheduler</a>
+                <a href="./resource-curator.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Resources</a>
+                <a href="./progress-tracker.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Progress</a>
+                <a href="./analytics.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Analytics</a>
+                <a href="./quiz-generator.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600 font-medium">Quizzes</a>
+                <a href="./study-groups.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-900">Study Groups</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <!-- Page Header -->
+        <div class="mb-8 text-center">
+            <h1 class="mb-4 text-4xl font-bold text-gray-900">Study Groups</h1>
+            <p class="text-lg text-gray-600">
+                Collaborate with peers and learn together
+            </p>
+        </div>
+
+        <!-- Search and Create -->
+        <div class="flex flex-col gap-4 mb-8">
+            <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+                <input
+                    id="search-input"
+                    type="text"
+                    placeholder="Search groups..."
+                    class="w-full rounded-lg border border-gray-200 bg-white py-2 pl-10 pr-4 text-sm placeholder-gray-400 focus:border-amber-700 focus:ring-2 focus:ring-amber-700/10 outline-none"
+                />
+            </div>
+            <button class="w-fit rounded-lg bg-amber-700 px-6 py-2 text-sm font-medium text-white hover:bg-amber-800 transition-colors">
+                ➕ Create New Group
+            </button>
+        </div>
+
+        <!-- My Groups -->
+        <section id="my-groups-section" class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">My Groups</h2>
+            <div id="my-groups-container" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <!-- My groups will be rendered here -->
+            </div>
+        </section>
+
+        <!-- Discover Groups -->
+        <section id="discover-groups-section">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Discover Groups</h2>
+            <div id="discover-groups-container" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Discover groups will be rendered here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Group Details Modal -->
+    <div id="group-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+                <h2 id="modal-group-name" class="text-2xl font-bold text-gray-900">Group Name</h2>
+                <button onclick="closeGroupModal()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+            </div>
+            <div class="p-6 space-y-6">
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">Subject</p>
+                    <p id="modal-group-subject" class="text-lg font-semibold text-gray-900">Subject</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">Members</p>
+                    <p id="modal-group-members" class="text-lg font-semibold text-gray-900">8/12</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">Next Session</p>
+                    <p id="modal-group-session" class="text-lg font-semibold text-gray-900">Today, 4:00 PM</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600 mb-3">Group Members</p>
+                    <div id="modal-group-avatars" class="flex gap-2 flex-wrap"></div>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button id="modal-join-btn" class="flex-1 px-4 py-3 rounded-lg bg-amber-700 text-white font-medium hover:bg-amber-800 transition">Join Group</button>
+                    <button class="flex-1 px-4 py-3 rounded-lg border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 transition">Send Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Panel Modal -->
+    <div id="notification-panel" class="fixed right-0 top-16 h-screen w-80 bg-white border-l border-gray-200 shadow-2xl transform translate-x-full transition-transform duration-300 z-40 overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+            <h2 class="text-xl font-bold text-gray-900">Notifications</h2>
+        </div>
+        <div id="notification-list" class="divide-y divide-gray-100">
+            <!-- Notifications will be populated here by JavaScript -->
+        </div>
+        <div class="p-4 text-center border-t border-gray-200">
+            <button onclick="clearAllNotifications()" class="text-sm text-amber-700 hover:text-amber-800 font-medium">
+                Clear All
+            </button>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Login/Register) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <div class="text-center mb-8">
+                <h2 id="auth-title" class="text-2xl font-bold text-gray-900 mb-2">Welcome to Study Planner</h2>
+                <p class="text-gray-600 text-sm">Sign in to continue learning</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="login-email" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="login-password" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                >
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Register Form (hidden initially) -->
+            <form id="register-form" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="register-name" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="John Doe"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="register-email" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="register-password" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="register-confirm" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                >
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Toggle Form -->
+            <div class="mt-6 text-center text-sm text-gray-600">
+                <span id="toggle-text">Don't have an account?</span>
+                <button 
+                    type="button"
+                    id="toggle-form-btn"
+                    class="text-amber-700 hover:text-amber-800 font-medium ml-1"
+                >
+                    Sign up
+                </button>
+            </div>
+
+            <!-- Close Button -->
+            <button 
+                onclick="closeAuthModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resource-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <h2 id="modal-resource-title" class="text-2xl font-bold text-gray-900 mb-4">Resource Title</h2>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Type</span>
+                    <span id="modal-resource-type" class="font-semibold text-gray-900">Video</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Subject</span>
+                    <span id="modal-resource-subject" class="font-semibold text-gray-900">Mathematics</span>
+                </div>
+            </div>
+
+            <button 
+                id="modal-download-btn"
+                href="#"
+                class="w-full py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all mb-4"
+            >
+                📥 Download
+            </button>
+
+            <button 
+                onclick="closeResourceModal()"
+                class="w-full py-2 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Group Modal -->
+    <div id="group-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <h2 id="modal-group-name" class="text-2xl font-bold text-gray-900 mb-2">Group Name</h2>
+            <p id="modal-group-subject" class="text-gray-600 mb-6">Subject</p>
+            
+            <div class="space-y-4 mb-6 bg-gray-50 p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Members</span>
+                    <span id="modal-group-members" class="font-semibold text-gray-900">0/0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Next Session</span>
+                    <span id="modal-group-session" class="font-semibold text-gray-900">TBD</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm text-gray-600 mb-3">Members</p>
+                <div id="modal-group-avatars" class="flex gap-2"></div>
+            </div>
+
+            <button 
+                id="modal-join-btn"
+                class="w-full py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all mb-4"
+            >
+                Join Group
+            </button>
+
+            <button 
+                onclick="closeGroupModal()"
+                class="w-full py-2 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid gap-8 md:grid-cols-4 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-0 to-orange-600 hover:shadow-lg transition-shadow">
+                            <img src="./Logo.png" alt="logo">
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Study Planner</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Your intelligent study companion for smarter learning and better results.
+                    </p>
+                    <div class="flex gap-2">
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            𝕏
+                        </a>
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            ⚙️
+                        </a>
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            🔗
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Product</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Features</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Resources</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Company</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">About</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Legal</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Privacy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Terms</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-200">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <p class="text-sm text-gray-600">© 2026 Study Planner. All rights reserved.</p>
+                    <div class="flex gap-6 mt-4 md:mt-0 text-sm text-gray-600">
+                        <a href="#" class="hover:text-amber-700 transition-colors">Sitemap</a>
+                        <a href="#" class="hover:text-amber-700 transition-colors">Security</a>
+                        <a href="#" class="hover:text-amber-700 transition-colors">Status</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./study.js"></script>
+</body>
+</html>

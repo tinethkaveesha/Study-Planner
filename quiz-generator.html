@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Generator</title>
+    <link rel="icon" href="./Logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+        
+        * {
+            font-family: 'DM Sans', sans-serif;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .animate-slide-up { animation: slideUp 0.6s ease-out; }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+        
+        .question-card {
+            transition: all 0.3s ease;
+        }
+        
+        .question-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .option-btn {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .option-btn.selected {
+            background-color: #b45309;
+            color: white;
+            border-color: #b45309;
+        }
+        
+        .option-btn.correct {
+            background-color: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .option-btn.incorrect {
+            background-color: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+        
+        .drag-over {
+            background-color: #fef3c7 !important;
+            border-color: #b45309 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
+        <div class="container mx-auto flex h-16 items-center justify-between px-4">
+            <a href="./study.html" class="flex items-center gap-2">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-0">
+                    <img src="./Logo.png" alt="logo">
+                </div>
+                <span class="text-xl font-bold text-gray-900">Study Planner</span>
+            </a>
+
+            <nav class="hidden items-center gap-6 md:flex text-sm">
+                <a href="./study.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Dashboard</a>
+                <a href="./scheduler.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Scheduler</a>
+                <a href="./resource-curator.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Resources</a>
+                <a href="./progress-tracker.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Progress</a>
+                <a href="./analytics.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Analytics</a>
+                <a href="./quiz-generator.html" class="nav-link font-medium text-gray-900 hover:text-amber-700 transition-colors">Quizzes</a>
+                <a href="./study-groups.html" class="nav-link font-medium text-gray-600 hover:text-amber-700 transition-colors">Groups</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button id="notification-btn" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 relative">
+                    <span class="text-lg">🔔</span>
+                </button>
+                <button id="profile-btn" class="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100">
+                    <span class="text-lg">👤</span>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100">
+                    <span class="text-lg">☰</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <nav id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white">
+            <div class="container mx-auto px-4 py-4 space-y-2">
+                <a href="./study.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-900 font-medium">Dashboard</a>
+                <a href="./scheduler.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Scheduler</a>
+                <a href="./resource-curator.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Resources</a>
+                <a href="./progress-tracker.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Progress</a>
+                <a href="./analytics.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Analytics</a>
+                <a href="./quiz-generator.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-900 font-medium">Quizzes</a>
+                <a href="./study-groups.html" class="block py-2 px-4 rounded hover:bg-gray-50 text-gray-600">Study Groups</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-12 md:py-16">
+        <div class="container mx-auto px-4">
+            <!-- Page Header -->
+            <div class="mb-12 animate-slide-up">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+                    <span>🎓</span> AI Quiz Generator
+                </h1>
+                <p class="text-gray-600 text-lg">Upload documents and generate intelligent quizzes with AI</p>
+            </div>
+
+            <div id="main-view" class="space-y-8">
+                <!-- Document Upload -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">📤 Upload Document</h2>
+                    
+                    <div class="space-y-4">
+                        <div id="drop-zone" class="border-2 border-dashed border-amber-300 rounded-xl p-12 text-center cursor-pointer transition hover:bg-amber-50">
+                            <div class="text-5xl mb-3">📄</div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Drag & drop your document</h3>
+                            <p class="text-gray-600 text-sm mb-4">or click to browse (TXT, PDF, Images with OCR)</p>
+                            <input type="file" id="file-input" class="hidden" accept=".txt,.pdf,.jpg,.jpeg,.png" />
+                            <button onclick="document.getElementById('file-input').click()" class="px-6 py-2 bg-amber-700 text-white rounded-lg hover:bg-amber-800">
+                                Browse Files
+                            </button>
+                        </div>
+
+                        <div id="file-info" class="hidden">
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
+                                <span class="text-2xl">✅</span>
+                                <div>
+                                    <p class="font-semibold text-green-900" id="file-name"></p>
+                                    <p class="text-sm text-green-700" id="word-count"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mt-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Quiz Title</label>
+                            <input type="text" id="quiz-title" placeholder="e.g., Biology Chapter 3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of Questions</label>
+                            <select id="question-count"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700">
+                                <option value="5">5 questions</option>
+                                <option value="10" selected>10 questions</option>
+                                <option value="15">15 questions</option>
+                                <option value="20">20 questions</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Difficulty Level</label>
+                            <select id="difficulty"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700">
+                                <option value="easy">🟢 Easy</option>
+                                <option value="medium" selected>🟡 Medium</option>
+                                <option value="hard">🔴 Hard</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Question Types</label>
+                            <select id="question-type"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700">
+                                <option value="mixed">🔀 Mixed</option>
+                                <option value="mcq">📋 Multiple Choice</option>
+                                <option value="truefalse">✓ True/False</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button id="generate-btn" onclick="generateQuiz()" disabled class="w-full mt-6 py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        🚀 Generate Quiz with AI
+                    </button>
+                </div>
+
+                <!-- Quiz History -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">📋 Quiz History</h2>
+                    <div id="quiz-history" class="space-y-3">
+                        <!-- Quizzes will be listed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz View (Hidden by default) -->
+            <div id="quiz-view" class="hidden space-y-8">
+                <!-- Quiz Progress -->
+                <div class="bg-gradient-to-r from-amber-700 to-orange-600 rounded-2xl p-6 text-white shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 id="quiz-title-display" class="text-2xl font-bold"></h2>
+                        <span id="quiz-progress" class="text-lg font-semibold">Question 1/10</span>
+                    </div>
+                    <div class="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                        <div id="progress-bar" class="bg-white h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <!-- Quiz Question -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg question-card">
+                    <div class="mb-8">
+                        <p class="text-gray-600 font-medium mb-4">Question <span id="current-question">1</span></p>
+                        <h3 id="question-text" class="text-2xl font-bold text-gray-900 mb-6"></h3>
+                        
+                        <div id="options-container" class="space-y-3">
+                            <!-- Options will be rendered here -->
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button id="prev-btn" onclick="previousQuestion()" class="flex-1 py-3 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition font-medium">
+                            ← Previous
+                        </button>
+                        <button id="next-btn" onclick="nextQuestion()" class="flex-1 py-3 bg-amber-700 text-white rounded-lg hover:bg-amber-800 transition font-medium">
+                            Next →
+                        </button>
+                        <button id="submit-btn" onclick="submitQuiz()" class="flex-1 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium hidden">
+                            ✓ Submit Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results View (Hidden by default) -->
+            <div id="results-view" class="hidden space-y-8">
+                <!-- Score Card -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl border border-green-200 p-12 text-center shadow-lg">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">🎉 Quiz Completed!</h2>
+                    <div class="text-6xl font-bold text-green-600 mb-4" id="final-score">0/0</div>
+                    <p id="score-percentage" class="text-2xl font-semibold text-gray-700 mb-6">Score: 0%</p>
+                    <p id="feedback" class="text-lg text-gray-600 max-w-2xl mx-auto mb-8"></p>
+                    
+                    <div class="flex gap-3 justify-center">
+                        <button onclick="retakeQuiz()" class="px-6 py-3 bg-amber-700 text-white rounded-lg hover:bg-amber-800 font-semibold">
+                            🔄 Retake Quiz
+                        </button>
+                        <button onclick="backToMain()" class="px-6 py-3 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 font-semibold">
+                            📋 Back to Quizzes
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Answer Review -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">📝 Answer Review</h3>
+                    <div id="answer-review" class="space-y-4">
+                        <!-- Answers will be reviewed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Panel Modal -->
+    <div id="notification-panel" class="fixed right-0 top-16 h-screen w-80 bg-white border-l border-gray-200 shadow-2xl transform translate-x-full transition-transform duration-300 z-40 overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+            <h2 class="text-xl font-bold text-gray-900">Notifications</h2>
+        </div>
+        <div id="notification-list" class="divide-y divide-gray-100">
+            <!-- Notifications will be populated here by JavaScript -->
+        </div>
+        <div class="p-4 text-center border-t border-gray-200">
+            <button onclick="clearAllNotifications()" class="text-sm text-amber-700 hover:text-amber-800 font-medium">
+                Clear All
+            </button>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Login/Register) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <div class="text-center mb-8">
+                <h2 id="auth-title" class="text-2xl font-bold text-gray-900 mb-2">Welcome to Study Planner</h2>
+                <p class="text-gray-600 text-sm">Sign in to continue learning</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="login-email" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="login-password" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                >
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Register Form (hidden initially) -->
+            <form id="register-form" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="register-name" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="John Doe"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="register-email" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="you@example.com"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="register-password" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="register-confirm" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                        placeholder="••••••••"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                >
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Toggle Form -->
+            <div class="mt-6 text-center text-sm text-gray-600">
+                <span id="toggle-text">Don't have an account?</span>
+                <button 
+                    type="button"
+                    id="toggle-form-btn"
+                    class="text-amber-700 hover:text-amber-800 font-medium ml-1"
+                >
+                    Sign up
+                </button>
+            </div>
+
+            <!-- Close Button -->
+            <button 
+                onclick="closeAuthModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resource-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <h2 id="modal-resource-title" class="text-2xl font-bold text-gray-900 mb-4">Resource Title</h2>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Type</span>
+                    <span id="modal-resource-type" class="font-semibold text-gray-900">Video</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Subject</span>
+                    <span id="modal-resource-subject" class="font-semibold text-gray-900">Mathematics</span>
+                </div>
+            </div>
+
+            <button 
+                id="modal-download-btn"
+                href="#"
+                class="w-full py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all mb-4"
+            >
+                📥 Download
+            </button>
+
+            <button 
+                onclick="closeResourceModal()"
+                class="w-full py-2 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Group Modal -->
+    <div id="group-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 animate-slide-up">
+            <h2 id="modal-group-name" class="text-2xl font-bold text-gray-900 mb-2">Group Name</h2>
+            <p id="modal-group-subject" class="text-gray-600 mb-6">Subject</p>
+            
+            <div class="space-y-4 mb-6 bg-gray-50 p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Members</span>
+                    <span id="modal-group-members" class="font-semibold text-gray-900">0/0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Next Session</span>
+                    <span id="modal-group-session" class="font-semibold text-gray-900">TBD</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm text-gray-600 mb-3">Members</p>
+                <div id="modal-group-avatars" class="flex gap-2"></div>
+            </div>
+
+            <button 
+                id="modal-join-btn"
+                class="w-full py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all mb-4"
+            >
+                Join Group
+            </button>
+
+            <button 
+                onclick="closeGroupModal()"
+                class="w-full py-2 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid gap-8 md:grid-cols-4 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-0 to-orange-600 hover:shadow-lg transition-shadow">
+                            <img src="./Logo.png" alt="logo">
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Study Planner</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Your intelligent study companion for smarter learning and better results.
+                    </p>
+                    <div class="flex gap-2">
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            𝕏
+                        </a>
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            ⚙️
+                        </a>
+                        <a href="#" class="rounded-lg p-2.5 text-gray-600 hover:bg-amber-100 hover:text-amber-700 transition-all duration-300">
+                            🔗
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Product</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Features</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Resources</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Company</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">About</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 font-bold text-gray-900 text-sm uppercase tracking-wider">Legal</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Privacy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Terms</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-amber-700 transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-200">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <p class="text-sm text-gray-600">© 2026 Study Planner. All rights reserved.</p>
+                    <div class="flex gap-6 mt-4 md:mt-0 text-sm text-gray-600">
+                        <a href="#" class="hover:text-amber-700 transition-colors">Sitemap</a>
+                        <a href="#" class="hover:text-amber-700 transition-colors">Security</a>
+                        <a href="#" class="hover:text-amber-700 transition-colors">Status</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./study.js"></script>
+    <script>
+        let documentText = '';
+        let currentQuiz = null;
+        let userAnswers = [];
+        let quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
+        let currentQuestionIndex = 0;
+
+        // Drag and drop
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        async function handleFiles(files) {
+            if (files.length === 0) return;
+            
+            const file = files[0];
+            document.getElementById('file-name').textContent = file.name;
+
+            if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+                const text = await file.text();
+                documentText = text;
+                updateFileInfo(file.name, text.split(/\s+/).length);
+            } else if (file.name.endsWith('.pdf')) {
+                // Simple PDF text extraction (note: real PDFs would need pdf.js library)
+                alert('PDF support requires additional library. Please use text files for now.');
+                return;
+            } else if (file.type.startsWith('image/')) {
+                // Simple OCR simulation - in production would use OCR.js
+                alert('OCR support requires additional library. Please use text files for now.');
+                return;
+            }
+        }
+
+        function updateFileInfo(name, wordCount) {
+            document.getElementById('file-info').classList.remove('hidden');
+            document.getElementById('file-name').textContent = name;
+            document.getElementById('word-count').textContent = `${wordCount} words detected`;
+            document.getElementById('generate-btn').disabled = false;
+        }
+
+        function generateQuiz() {
+            if (!documentText.trim()) {
+                alert('Please upload a document first');
+                return;
+            }
+
+            const title = document.getElementById('quiz-title').value || 'Untitled Quiz';
+            const questionCount = parseInt(document.getElementById('question-count').value);
+            const difficulty = document.getElementById('difficulty').value;
+            const questionType = document.getElementById('question-type').value;
+
+            // AI-like quiz generation from document
+            currentQuiz = generateQuizFromDocument(title, documentText, questionCount, difficulty, questionType);
+            userAnswers = new Array(currentQuiz.questions.length).fill(null);
+            currentQuestionIndex = 0;
+
+            // Save quiz to history
+            quizzes.push({
+                id: Date.now().toString(),
+                title: currentQuiz.title,
+                date: new Date().toISOString(),
+                questionCount: currentQuiz.questions.length,
+                score: null,
+                completed: false
+            });
+            localStorage.setItem('quizzes', JSON.stringify(quizzes));
+
+            displayQuiz();
+        }
+
+        function generateQuizFromDocument(title, text, count, difficulty, type) {
+            // Extract keywords and sentences
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+            const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
+            const uniqueWords = [...new Set(words)];
+
+            const questions = [];
+
+            for (let i = 0; i < Math.min(count, sentences.length); i++) {
+                const sentence = sentences[i].trim();
+                const questionType_local = type === 'mixed' ? (Math.random() > 0.5 ? 'mcq' : 'truefalse') : type;
+
+                if (questionType_local === 'mcq') {
+                    // Generate MCQ
+                    const keyword = extractKeyword(sentence);
+                    questions.push({
+                        question: `Based on the text, what is ${keyword}?`,
+                        type: 'mcq',
+                        correct: 0,
+                        options: [
+                            sentence.substring(0, 80),
+                            generateDistractor(sentence, 1),
+                            generateDistractor(sentence, 2),
+                            generateDistractor(sentence, 3)
+                        ].sort(() => Math.random() - 0.5),
+                        explanation: sentence
+                    });
+                } else {
+                    // Generate True/False
+                    const isTrue = Math.random() > 0.3;
+                    questions.push({
+                        question: isTrue ? sentence : modifyStatement(sentence),
+                        type: 'truefalse',
+                        correct: isTrue ? 0 : 1,
+                        options: ['True', 'False'],
+                        explanation: `${isTrue ? 'This is true.' : 'This is false.'} ${sentence}`
+                    });
+                }
+            }
+
+            return { title, questions };
+        }
+
+        function extractKeyword(sentence) {
+            const words = sentence.split(/\s+/);
+            return words.find(w => w.length > 4) || 'this concept';
+        }
+
+        function generateDistractor(sentence, index) {
+            const distractors = [
+                'A simplified version of the concept',
+                'The opposite of what the text says',
+                'A related but different concept'
+            ];
+            return distractors[index % distractors.length];
+        }
+
+        function modifyStatement(sentence) {
+            // Simple negation for True/False distractors
+            return sentence.replace(/is/, 'is not').replace(/can/, 'cannot');
+        }
+
+        function displayQuiz() {
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('quiz-view').classList.remove('hidden');
+            document.getElementById('results-view').classList.add('hidden');
+            
+            document.getElementById('quiz-title-display').textContent = currentQuiz.title;
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const q = currentQuiz.questions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex + 1) / currentQuiz.questions.length) * 100;
+
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+            document.getElementById('question-text').textContent = q.question;
+            document.getElementById('quiz-progress').textContent = `Question ${currentQuestionIndex + 1}/${currentQuiz.questions.length}`;
+            document.getElementById('progress-bar').style.width = progress + '%';
+
+            const optionsHtml = q.options.map((opt, i) => `
+                <button class="option-btn w-full text-left px-6 py-4 border-2 border-gray-300 rounded-lg hover:border-amber-700 transition ${userAnswers[currentQuestionIndex] === i ? 'selected' : ''}"
+                    onclick="selectAnswer(${i})">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-full border-2 border-current flex items-center justify-center">${String.fromCharCode(65 + i)}</div>
+                        <span>${opt}</span>
+                    </div>
+                </button>
+            `).join('');
+
+            document.getElementById('options-container').innerHTML = optionsHtml;
+
+            // Update buttons
+            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+            document.getElementById('next-btn').classList.toggle('hidden', currentQuestionIndex === currentQuiz.questions.length - 1);
+            document.getElementById('submit-btn').classList.toggle('hidden', currentQuestionIndex !== currentQuiz.questions.length - 1);
+        }
+
+        function selectAnswer(index) {
+            userAnswers[currentQuestionIndex] = index;
+            displayQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuiz.questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            currentQuiz.questions.forEach((q, i) => {
+                if (userAnswers[i] === q.correct) score++;
+            });
+
+            const percentage = Math.round((score / currentQuiz.questions.length) * 100);
+
+            // Show results
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('results-view').classList.remove('hidden');
+
+            document.getElementById('final-score').textContent = `${score}/${currentQuiz.questions.length}`;
+            document.getElementById('score-percentage').textContent = `Score: ${percentage}%`;
+
+            if (percentage >= 80) {
+                document.getElementById('feedback').textContent = '🌟 Excellent! You mastered this topic!';
+            } else if (percentage >= 60) {
+                document.getElementById('feedback').textContent = '👍 Good job! Keep practicing to improve.';
+            } else {
+                document.getElementById('feedback').textContent = '📚 Keep studying! Review the material and try again.';
+            }
+
+            // Review answers
+            let reviewHtml = '';
+            currentQuiz.questions.forEach((q, i) => {
+                const isCorrect = userAnswers[i] === q.correct;
+                reviewHtml += `
+                    <div class="border border-gray-200 rounded-lg p-4 ${isCorrect ? 'bg-green-50' : 'bg-red-50'}">
+                        <p class="font-semibold text-gray-900 mb-2">Q${i + 1}: ${q.question}</p>
+                        <p class="text-sm ${isCorrect ? 'text-green-700' : 'text-red-700'} mb-2">
+                            ${isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                        </p>
+                        <p class="text-sm text-gray-700">${q.explanation}</p>
+                    </div>
+                `;
+            });
+            document.getElementById('answer-review').innerHTML = reviewHtml;
+        }
+
+        function retakeQuiz() {
+            userAnswers = new Array(currentQuiz.questions.length).fill(null);
+            currentQuestionIndex = 0;
+            displayQuiz();
+        }
+
+        function backToMain() {
+            document.getElementById('main-view').classList.remove('hidden');
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('results-view').classList.add('hidden');
+            renderQuizHistory();
+        }
+
+        function renderQuizHistory() {
+            const container = document.getElementById('quiz-history');
+            if (quizzes.length === 0) {
+                container.innerHTML = '<p class="text-gray-600">No quizzes yet. Upload a document and generate one!</p>';
+                return;
+            }
+
+            container.innerHTML = quizzes.map(q => {
+                const date = new Date(q.date);
+                return `
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div>
+                            <p class="font-semibold text-gray-900">${q.title}</p>
+                            <p class="text-sm text-gray-600">${q.questionCount} questions • ${date.toLocaleDateString()}</p>
+                        </div>
+                        ${q.score !== null ? `<p class="text-xl font-bold text-amber-700">${q.score}%</p>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', renderQuizHistory);
+    </script>
+</body>
+</html>
