@@ -61,7 +61,7 @@ const featuresList = [
 
 const testimonials = [
 	{
-		name: "Yenuli Chethya",
+		name: "Chathuni Kaveesha",
 		role: "College Student",
 		text: "My GPA improved by 0.8 points in just one semester!",
 		avatar: "👩‍🎓",
