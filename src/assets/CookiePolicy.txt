@@ -1,0 +1,71 @@
+🍪 Cookie Policy
+
+Last updated: 2/2/2026
+
+This Cookie Policy explains how Study Planner uses cookies and similar technologies when you visit or use our Study Planner web application.
+
+By continuing to use our website, you agree to the use of cookies as described in this policy.
+
+1. What Are Cookies?
+
+Cookies are small text files stored on your device (computer, tablet, or mobile) when you visit a website.
+They help the website function properly and improve user experience by remembering your preferences.
+
+2. How We Use Cookies
+
+We use cookies to:
+
+Ensure the website works correctly
+
+Remember user preferences (such as theme or language)
+
+Manage login sessions securely
+
+Analyze how users interact with the app to improve features
+
+3. Types of Cookies We Use
+a) Essential Cookies
+
+These cookies are necessary for the website to function and cannot be disabled.
+They are used for:
+
+User authentication
+
+Session management
+
+Security purposes
+
+b) Preference Cookies
+
+These cookies remember your settings and preferences, such as:
+
+Dark / light mode
+
+Study schedule preferences
+
+c) Analytics Cookies
+
+These cookies help us understand how users use the app (pages visited, time spent, etc.).
+The information collected is anonymous and used only to improve performance and usability.
+
+4. Third-Party Cookies
+
+In some cases, we may use trusted third-party services (such as analytics tools).
+These third parties may place cookies on your device according to their own privacy policies.
+
+We do not sell or misuse your personal data.
+
+5. Managing Cookies
+
+You can control or delete cookies through your browser settings at any time.
+Please note that disabling essential cookies may affect the functionality of the Study Planner app.
+
+6. Updates to This Cookie Policy
+
+We may update this Cookie Policy from time to time.
+Any changes will be posted on this page with an updated revision date.
+
+7. Contact Us
+
+If you have any questions about this Cookie Policy, please contact us at:
+📧 teamispekka@gmail.com
