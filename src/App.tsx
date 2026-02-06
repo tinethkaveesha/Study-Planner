@@ -32,8 +32,8 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import NotificationPanel from "./components/NotificationPanel.jsx";
 import AuthModal from "./components/AuthModal.jsx";
-import { AuthProvider } from "./context/AuthContext";
-import useActivityTracking from "./hooks/useActivityTracking";
+import { AuthProvider } from "./context/AuthContext.jsx";
+import useActivityTracking from "./hooks/useActivityTracking.js";
 
 
 const PageLoader = () => (
@@ -53,6 +53,34 @@ const navLinks = [
 	{ name: "Analytics", path: "/analytics" },
 	{ name: "Quizzes", path: "/quizzes" },
 	{ name: "Groups", path: "/groups" },
+];
+
+const productLinks = [
+	{ name: "Features", path: "/features" },
+	{ name: "Pricing", path: "/subscription" },
+	{ name: "Download", path: "/download" },
+	{ name: "Integrations", path: "/integrations" },
+];
+
+const companyLinks = [
+	{ name: "About", path: "https://team-pekka.netlify.app/", external: true },
+	{ name: "Blog", path: "/blog" },
+	{ name: "Careers", path: "/careers" },
+	{ name: "Contact", path: "/contact" },
+];
+
+const legalLinks = [
+	{ name: "Terms", path: "/terms-of-service" },
+	{ name: "Privacy", path: "/privacy" },
+	{ name: "Cookies", path: "/cookies" },
+	{ name: "Security", path: "/security" },
+];
+
+const bottomLinks = [
+	{ name: "Support", path: "/support" },
+	{ name: "Docs", path: "/docs" },
+	{ name: "Status", path: "/status" },
+	{ name: "API", path: "/api" },
 ];
 
 function AppContent() {
@@ -106,7 +134,12 @@ function AppContent() {
 					</Routes>
 				</Suspense>
 
-			<Footer />
+			<Footer 
+				productLinks={productLinks}
+				companyLinks={companyLinks}
+				legalLinks={legalLinks}
+				bottomLinks={bottomLinks}
+			/>
 
 			<NotificationPanel isOpen={showNotificationPanel} onClose={() => setShowNotificationPanel(false)} />
 			<AuthModal isOpen={showAuthModal} onClose={closeAuthModal} />
