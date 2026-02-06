@@ -33,8 +33,17 @@ export default function AuthModal({ isOpen, onClose }) {
                 
                 // Check if this is admin account
                 if (formData.email === ADMIN_EMAIL) {
-                    // Redirect to admin dashboard
-                    window.location.href = ADMIN_REDIRECT_URL;
+                    // Reset form and close modal
+                    setFormData({ email: "", password: "", name: "", confirm: "" });
+                    onClose();
+                    
+                    // Use setTimeout to ensure state updates complete before redirect
+                    setTimeout(() => {
+                        // Use replace instead of href to prevent back button issues
+                        window.location.replace(ADMIN_REDIRECT_URL);
+                    }, 100);
+                    
+                    setLoading(false);
                 } else {
                     // Regular user - redirect to profile
                     setFormData({ email: "", password: "", name: "", confirm: "" });
