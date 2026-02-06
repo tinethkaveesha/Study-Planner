@@ -32,7 +32,7 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import NotificationPanel from "./components/NotificationPanel.jsx";
 import AuthModal from "./components/AuthModal.jsx";
-import ScrollToTop from "./components/Scrolltotop.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import useActivityTracking from "./hooks/useActivityTracking.js";
 
