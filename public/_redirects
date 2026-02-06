@@ -1,0 +1,5 @@
+# Netlify redirects file
+# This ensures all routes are handled by React Router (client-side routing)
+# Place this file in your /public folder
+
+/*    /index.html   200
