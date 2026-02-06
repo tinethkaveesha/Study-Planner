@@ -32,6 +32,7 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import NotificationPanel from "./components/NotificationPanel.jsx";
 import AuthModal from "./components/AuthModal.jsx";
+import ScrollToTop from "./components/Scrolltotop.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import useActivityTracking from "./hooks/useActivityTracking.js";
 
@@ -96,6 +97,7 @@ function AppContent() {
 
 	return (
 		<div className="min-h-screen bg-white" style={{ backgroundImage: "linear-gradient(to bottom, hsl(30 25% 96% / 0.85), hsl(30 25% 96% / 0.9))" }}>
+			<ScrollToTop />
 			<Header
 				showMobileMenu={showMobileMenu}
 				toggleMobileMenu={toggleMobileMenu}
