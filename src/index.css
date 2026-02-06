@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+body {
+  transform: scale(1.25);
+  transform-origin: top left;
+}
