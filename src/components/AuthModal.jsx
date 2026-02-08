@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { initializeUserData } from "../utils/userDataApi";
+import { FcGoogle } from "react-icons/fc";
 
 // Admin credentials
 const ADMIN_EMAIL = "admin2010@gmail.com";
-const ADMIN_REDIRECT_URL = "https://tinethkaveesha.github.io/Admin/";
+const ADMIN_REDIRECT_URL = "https://admin-pekkka.netlify.app/";
 
 export default function AuthModal({ isOpen, onClose }) {
     const [isLogin, setIsLogin] = useState(true);
@@ -19,6 +20,56 @@ export default function AuthModal({ isOpen, onClose }) {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
         setError("");
+    };
+
+    const handleGoogleSignIn = async () => {
+        setLoading(true);
+        setError("");
+
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            // Check if this is admin account
+            if (user.email === ADMIN_EMAIL) {
+                onClose();
+                setTimeout(() => {
+                    window.location.replace(ADMIN_REDIRECT_URL);
+                }, 100);
+                setLoading(false);
+                return;
+            }
+
+            // Check if user document exists in Firestore
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (!userDoc.exists()) {
+                // New user - create profile
+                await setDoc(userDocRef, {
+                    name: user.displayName || "User",
+                    email: user.email,
+                    createdAt: new Date(),
+                    subscriptionPlan: null,
+                    photoURL: user.photoURL || null,
+                });
+
+                // Initialize user progress, analytics, groups, and settings
+                await initializeUserData(user.uid, {
+                    name: user.displayName || "User",
+                    email: user.email,
+                });
+            }
+
+            onClose();
+            navigate("/profile");
+            setLoading(false);
+        } catch (err) {
+            console.error("Google sign-in error:", err);
+            setError(err.message);
+            setLoading(false);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -117,6 +168,26 @@ export default function AuthModal({ isOpen, onClose }) {
 
                     {error && <div className="mb-4 p-2 sm:p-3 bg-red-100 text-red-700 rounded-lg text-xs sm:text-sm">{error}</div>}
 
+                    {/* Google Sign-In Button */}
+                    <button
+                        onClick={handleGoogleSignIn}
+                        disabled={loading}
+                        className="w-full py-2 sm:py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all disabled:opacity-50 text-xs sm:text-sm min-h-10 sm:min-h-11 flex items-center justify-center gap-2 mb-4"
+                    >
+                        <FcGoogle className="text-lg sm:text-xl" />
+                        {isLogin ? "Continue with Google" : "Sign up with Google"}
+                    </button>
+
+                    {/* Divider */}
+                    <div className="relative mb-4">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div className="relative flex justify-center text-xs sm:text-sm">
+                            <span className="px-2 bg-white text-gray-500">Or continue with email</span>
+                        </div>
+                    </div>
+
                     <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                         {!isLogin && (
                             <div>
@@ -175,7 +246,7 @@ export default function AuthModal({ isOpen, onClose }) {
                             disabled={loading}
                             className="w-full py-2 sm:py-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all disabled:opacity-50 text-xs sm:text-sm min-h-10 sm:min-h-11"
                         >
-                            {isLogin ? "Sign In" : "Create Account"}
+                            {loading ? "Please wait..." : (isLogin ? "Sign In" : "Create Account")}
                         </button>
                     </form>
 

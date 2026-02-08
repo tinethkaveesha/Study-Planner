@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
-import { createCheckoutSession, initializeStripe } from "../utils/stripeApi";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { loadStripe } from "@stripe/stripe-js";
+
+// Initialize Stripe
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const plans = [
     {
@@ -16,7 +21,7 @@ const plans = [
         ],
         type: "free",
         buttonText: "Start Free Trial",
-        stripePriceId: null, // No Stripe ID for free trial
+        stripePriceId: null,
     },
     {
         name: "Pro Monthly",
@@ -34,7 +39,7 @@ const plans = [
         type: "pro",
         buttonText: "Subscribe Now",
         highlighted: true,
-        stripePriceId: "price_1QxxxxxProMonthly", // Replace with your actual Stripe price ID
+        stripePriceId: "price_1Syc2M35w6HjLDvcSE3O4hys",
     },
     {
         name: "Premium Yearly",
@@ -50,72 +55,122 @@ const plans = [
         ],
         type: "premium",
         buttonText: "Subscribe Now",
-        stripePriceId: "price_1QxxxxxPremiumYearly", // Replace with your actual Stripe price ID
+        stripePriceId: "price_1Syc3235w6HjLDvciOXWp7Py",
     },
 ];
 
 export default function Subscription() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [loadingPlan, setLoadingPlan] = useState(null);
     const [error, setError] = useState(null);
+    const [user, setUser] = useState(null);
 
-    const handleSubscribe = async (planType) => {
+    useEffect(() => {
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        setUser(currentUser);
+    }, []);
+
+    const handleFreeTrial = async () => {
         try {
-            setLoading(true);
+            setLoadingPlan("free");
             setError(null);
 
-            // Handle free trial
-            if (planType === "free") {
-                // Simulate free trial activation
-                setTimeout(() => {
-                    setLoading(false);
-                    navigate("/");
-                }, 800);
-                return;
-            }
-
-            // Get current user
             const auth = getAuth();
-            const user = auth.currentUser;
+            const currentUser = auth.currentUser;
 
-            if (!user) {
-                setError("Please log in first to subscribe");
-                setLoading(false);
+            if (!currentUser) {
+                setError("Please log in first to start your free trial");
+                setLoadingPlan(null);
                 return;
             }
 
-            // Get user's ID token
-            const idToken = await user.getIdToken();
-
-            // Get the price ID for this plan
-            const selectedPlan = plans.find((p) => p.type === planType);
-            if (!selectedPlan?.stripePriceId) {
-                setError("Subscription not available for this plan");
-                setLoading(false);
-                return;
-            }
-
-            // Create checkout session via backend API
-            const { sessionId } = await createCheckoutSession(idToken, {
-                priceId: selectedPlan.stripePriceId,
-                planType: planType,
-                userId: user.uid,
-                userEmail: user.email,
+            // Update user's subscription in Firestore
+            const userRef = doc(db, "users", currentUser.uid);
+            await updateDoc(userRef, {
+                subscriptionPlan: "free",
+                subscriptionStatus: "active",
+                trialStartDate: new Date(),
+                trialEndDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
             });
 
-            // Initialize Stripe and redirect to checkout
-            const stripe = initializeStripe();
-            const result = await stripe.redirectToCheckout({
+            // Redirect to profile or dashboard
+            setTimeout(() => {
+                setLoadingPlan(null);
+                navigate("/profile");
+            }, 800);
+        } catch (err) {
+            console.error("Free trial error:", err);
+            setError("Failed to activate free trial. Please try again.");
+            setLoadingPlan(null);
+        }
+    };
+
+    const handleSubscribe = async (plan) => {
+        try {
+            setLoadingPlan(plan.type);
+            setError(null);
+
+            // Handle free trial separately
+            if (plan.type === "free") {
+                await handleFreeTrial();
+                return;
+            }
+
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+
+            if (!currentUser) {
+                setError("Please log in first to subscribe");
+                setLoadingPlan(null);
+                return;
+            }
+
+            if (!plan.stripePriceId) {
+                setError("Invalid subscription plan");
+                setLoadingPlan(null);
+                return;
+            }
+
+            // Get user's ID token for backend authentication
+            const idToken = await currentUser.getIdToken();
+
+            // Call your backend to create checkout session
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/create-checkout-session`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${idToken}`,
+                },
+                body: JSON.stringify({
+                    priceId: plan.stripePriceId,
+                    planType: plan.type,
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to create checkout session');
+            }
+
+            const { sessionId } = await response.json();
+
+            // Redirect to Stripe Checkout
+            const stripe = await stripePromise;
+            const { error: stripeError } = await stripe.redirectToCheckout({
                 sessionId: sessionId,
             });
 
-            if (result.error) {
-                throw new Error(result.error.message);
+            if (stripeError) {
+                throw new Error(stripeError.message);
             }
         } catch (err) {
             console.error("Subscription error:", err);
             setError(err.message || "Failed to process subscription. Please try again.");
-            setLoading(false);
+            setLoadingPlan(null);
         }
     };
 
@@ -133,8 +188,29 @@ export default function Subscription() {
 
                 {error && (
                     <div className="mb-8 bg-red-50 border border-red-200 rounded-xl p-4 max-w-2xl mx-auto">
-                        <h3 className="font-semibold text-red-900 mb-1">Error</h3>
-                        <p className="text-sm text-red-800">{error}</p>
+                        <div className="flex items-start gap-3">
+                            <svg className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            </svg>
+                            <div>
+                                <h3 className="font-semibold text-red-900 mb-1">Error</h3>
+                                <p className="text-sm text-red-800">{error}</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {!user && (
+                    <div className="mb-8 bg-amber-50 border border-amber-200 rounded-xl p-4 max-w-2xl mx-auto">
+                        <div className="flex items-start gap-3">
+                            <svg className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                            </svg>
+                            <div>
+                                <h3 className="font-semibold text-amber-900 mb-1">Sign in required</h3>
+                                <p className="text-sm text-amber-800">Please sign in to subscribe to a plan.</p>
+                            </div>
+                        </div>
                     </div>
                 )}
 
@@ -158,19 +234,31 @@ export default function Subscription() {
                                 <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
                                 <div className="mb-6">
                                     <span className="text-4xl font-bold">{plan.price}</span>
-                                    <span className={plan.highlighted ? "text-amber-100" : "text-gray-600"}> {plan.duration}</span>
+                                    <span className={plan.highlighted ? "text-amber-100" : "text-gray-600"}>
+                                        {" "}{plan.duration}
+                                    </span>
                                 </div>
 
                                 <button
-                                    onClick={() => handleSubscribe(plan.type)}
-                                    disabled={loading}
+                                    onClick={() => handleSubscribe(plan)}
+                                    disabled={loadingPlan !== null}
                                     className={`w-full py-3 rounded-lg font-semibold mb-8 transition-all ${
                                         plan.highlighted
                                             ? "bg-white text-amber-700 hover:bg-amber-50 disabled:hover:bg-white"
                                             : "bg-amber-700 text-white hover:bg-amber-800 disabled:hover:bg-amber-700"
                                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                                 >
-                                    {loading ? "Processing..." : plan.buttonText}
+                                    {loadingPlan === plan.type ? (
+                                        <span className="flex items-center justify-center gap-2">
+                                            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                            </svg>
+                                            Processing...
+                                        </span>
+                                    ) : (
+                                        plan.buttonText
+                                    )}
                                 </button>
 
                                 <div className="space-y-4">
@@ -199,9 +287,24 @@ export default function Subscription() {
                 </div>
 
                 <div className="mt-16 bg-blue-50 border border-blue-200 rounded-xl p-6 max-w-2xl mx-auto">
-                    <h3 className="font-semibold text-blue-900 mb-2">ℹ️ Free Trial Information</h3>
-                    <p className="text-sm text-blue-800">
-                        Your 7-day free trial gives you full access to core features. No credit card required. After 7 days, you'll need to upgrade to continue using Study Planner.
+                    <div className="flex items-start gap-3">
+                        <span className="text-2xl">ℹ️</span>
+                        <div>
+                            <h3 className="font-semibold text-blue-900 mb-2">Free Trial Information</h3>
+                            <p className="text-sm text-blue-800">
+                                Your 7-day free trial gives you full access to core features. No credit card required. 
+                                After 7 days, you'll need to upgrade to continue using Study Planner.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-8 text-center">
+                    <p className="text-sm text-gray-600">
+                        All payments are securely processed by{" "}
+                        <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="text-amber-700 hover:text-amber-800 font-medium">
+                            Stripe
+                        </a>
                     </p>
                 </div>
             </div>
