@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
 import { FaDiscord, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 /**
@@ -28,7 +27,7 @@ export default function Footer({ productLinks, companyLinks, legalLinks, bottomL
 					<div className="space-y-3 sm:space-y-4">
 						<div className="flex items-center gap-2">
 							<div className="flex h-6 sm:h-8 w-6 sm:w-8 items-center justify-center rounded flex-shrink-0">
-								<img src={logo} alt="logo" />
+								<img src="/Logo.png" alt="logo" />
 							</div>
 							<span className="text-base sm:text-lg font-bold text-gray-900">Study Planner</span>
 						</div>
