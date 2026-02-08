@@ -39,9 +39,6 @@ export default function BlogDetail() {
                 // Fetch comments
                 const commentsData = await getBlogComments(postId);
                 setComments(commentsData);
-            } catch (err) {
-                setError("Failed to load blog post");
-                console.error(err);
             } finally {
                 setLoading(false);
             }

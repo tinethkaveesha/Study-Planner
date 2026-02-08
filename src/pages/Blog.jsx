@@ -34,10 +34,6 @@ export default function Blog() {
 
                 setPosts(data);
                 setFilteredPosts(data);
-            } catch (err) {
-                const errorMsg = err.message || err.code || "Unknown error";
-                setError(`Failed to load blog posts: ${errorMsg}`);
-                console.error("Blog loading error:", err);
             } finally {
                 setLoading(false);
             }
