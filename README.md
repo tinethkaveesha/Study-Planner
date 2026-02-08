@@ -1,4 +1,4 @@
-# Study Planner 1.0.2
+# Study Planner
 
 A modern web application designed to help students organize, plan, and track their study schedules efficiently.
 
