@@ -3,8 +3,8 @@
 A modern web application designed to help students organize, plan, and track their study schedules efficiently.
 
 **Team Name:** P.E.K.K.A.  
-**Team Leader:** K. B. Tineth Kaveesha Madubhashana 
-**Email:** tinethkaveesha@gmail.com  
+**Team Leader:** K. B. Tineth Kaveesha Madubhashana
+**Contact Email:** tinethkaveesha@gmail.com  
 
 ## Team Members
 
