@@ -27,6 +27,7 @@ const Contact = lazy(() => import("./pages/Contact.jsx"));
 const Integrations = lazy(() => import("./pages/Integrations.jsx"));
 const Features = lazy(() => import("./pages/Features.jsx"));
 const Download = lazy(() => import("./pages/Download.jsx"));
+const Success = lazy(() => import("./pages/Success.jsx"))
 
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -133,6 +134,7 @@ function AppContent() {
 						<Route path="/integrations" element={<Integrations />} />
 						<Route path="/features" element={<Features />} />
 						<Route path="/download" element={<Download />} />
+                        <Route path="/success" element={<Success />} />
 					</Routes>
 				</Suspense>
 
