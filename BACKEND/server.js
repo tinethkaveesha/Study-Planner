@@ -3,6 +3,8 @@ const cors = require('cors');
 const admin = require('firebase-admin');
 require('dotenv').config();
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 const app = express();
 
 // Validate critical environment variables
@@ -108,8 +110,165 @@ app.use((req, res, next) => {
 });
 
 // Stripe webhook route (MUST be before express.json())
-const stripeWebhookHandler = require('./routes/stripe-routes');
-app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }), stripeWebhookHandler);
+// webhook handler needs raw body for signature verification
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
+
+    try {
+        event = stripe.webhooks.constructEvent(
+            req.body,
+            sig,
+            process.env.STRIPE_WEBHOOK_SECRET
+        );
+    } catch (err) {
+        console.error('Webhook signature verification failed:', err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    try {
+        switch (event.type) {
+            case 'checkout.session.completed':
+                await handleCheckoutSessionCompleted(event.data.object);
+                break;
+
+            case 'customer.subscription.created':
+            case 'customer.subscription.updated':
+                await handleSubscriptionUpdate(event.data.object);
+                break;
+
+            case 'customer.subscription.deleted':
+                await handleSubscriptionDeleted(event.data.object);
+                break;
+
+            case 'invoice.paid':
+                await handleInvoicePaid(event.data.object);
+                break;
+
+            case 'invoice.payment_failed':
+                await handleInvoicePaymentFailed(event.data.object);
+                break;
+
+            default:
+                console.log(`Unhandled event type: ${event.type}`);
+        }
+
+        res.json({ received: true });
+    } catch (error) {
+        console.error('Error processing webhook:', error);
+        res.status(500).json({ 
+            error: 'Webhook processing failed',
+            message: error.message
+        });
+    }
+});
+
+// Webhook helper functions
+async function handleCheckoutSessionCompleted(session) {
+    const firebaseUID = session.metadata?.firebaseUID;
+    if (!firebaseUID) {
+        console.error('No firebaseUID in session metadata');
+        return;
+    }
+
+    await admin.firestore()
+        .collection('users')
+        .doc(firebaseUID)
+        .set({
+            stripeCustomerId: session.customer,
+            subscriptionStatus: 'active',
+            lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+    console.log(`Checkout completed for user ${firebaseUID}`);
+}
+
+async function handleSubscriptionUpdate(subscription) {
+    const firebaseUID = subscription.metadata?.firebaseUID;
+    if (!firebaseUID) {
+        console.error('No firebaseUID in subscription metadata');
+        return;
+    }
+
+    await admin.firestore()
+        .collection('users')
+        .doc(firebaseUID)
+        .set({
+            subscriptionStatus: subscription.status,
+            subscriptionId: subscription.id,
+            currentPeriodEnd: subscription.current_period_end,
+            cancelAtPeriodEnd: subscription.cancel_at_period_end,
+            lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+    console.log(`Subscription updated for user ${firebaseUID}: ${subscription.status}`);
+}
+
+async function handleSubscriptionDeleted(subscription) {
+    const firebaseUID = subscription.metadata?.firebaseUID;
+    if (!firebaseUID) {
+        console.error('No firebaseUID in subscription metadata');
+        return;
+    }
+
+    await admin.firestore()
+        .collection('users')
+        .doc(firebaseUID)
+        .set({
+            subscriptionStatus: 'canceled',
+            lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+    console.log(`Subscription deleted for user ${firebaseUID}`);
+}
+
+async function handleInvoicePaid(invoice) {
+    const customerId = invoice.customer;
+    
+    const usersSnapshot = await admin.firestore()
+        .collection('users')
+        .where('stripeCustomerId', '==', customerId)
+        .limit(1)
+        .get();
+
+    if (usersSnapshot.empty) {
+        console.error('No user found for customer:', customerId);
+        return;
+    }
+
+    const userDoc = usersSnapshot.docs[0];
+    await userDoc.ref.set({
+        lastPaymentDate: invoice.created,
+        lastPaymentAmount: invoice.amount_paid,
+        lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    console.log(`Invoice paid for customer ${customerId}`);
+}
+
+async function handleInvoicePaymentFailed(invoice) {
+    const customerId = invoice.customer;
+    
+    const usersSnapshot = await admin.firestore()
+        .collection('users')
+        .where('stripeCustomerId', '==', customerId)
+        .limit(1)
+        .get();
+
+    if (usersSnapshot.empty) {
+        console.error('No user found for customer:', customerId);
+        return;
+    }
+
+    const userDoc = usersSnapshot.docs[0];
+    await userDoc.ref.set({
+        paymentFailed: true,
+        lastPaymentFailureDate: invoice.created,
+        lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    console.log(`Invoice payment failed for customer ${customerId}`);
+}
 
 // JSON middleware for other routes
 app.use(express.json());

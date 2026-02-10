@@ -1,11 +1,26 @@
 {
-  "private": true,
-  "name": "study-planner-root",
-  "version": "0.0.0",
+  "name": "study-planner-backend",
+  "version": "1.0.0",
+  "description": "Study Planner Backend API Server",
+  "main": "server.js",
+  "type": "commonjs",
   "scripts": {
-    "install": "npm --prefix \"Study-Planner-20260201T030413Z-3-001/Study-Planner\" install",
-    "dev": "npm --prefix \"Study-Planner-20260201T030413Z-3-001/Study-Planner\" run dev",
-    "build": "npm --prefix \"Study-Planner-20260201T030413Z-3-001/Study-Planner\" run build",
-    "start": "npm --prefix \"Study-Planner-20260201T030413Z-3-001/Study-Planner\" run start"
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["study", "planner", "backend", "api"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "firebase-admin": "^12.0.0",
+    "stripe": "^14.21.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   }
 }

@@ -72,7 +72,7 @@ const featuresList = [
 
 const testimonials = [
 	{
-		name: "Chathuni Kaveesha",
+		name: "Yenuli Chethya",
 		role: "College Student",
 		text: "My GPA improved by 0.8 points in just one semester!",
 		avatar: "👩‍🎓",
@@ -84,7 +84,7 @@ const testimonials = [
 		avatar: "👨‍🎓",
 	},
 	{
-		name: "Senula Sasen",
+		name: "Chaniru Senuwara",
 		role: "Medical Student",
 		text: "Makes med school manageable and even enjoyable.",
 		avatar: "👨‍⚕️",
