@@ -12,11 +12,19 @@ import {
     getUserAssessments,
     getUserProfile
 } from "../utils/userDataApi";
+import { 
+    FaUser, FaStar, FaBolt, FaCalendar, FaChartBar, FaTrophy, 
+    FaFire, FaClock, FaArrowUp, FaArrowDown, FaBook, FaGraduationCap,
+    FaCog, FaSignOutAlt, FaCheckCircle, FaEdit, FaFileAlt
+} from "react-icons/fa";
+import { MdDashboard, MdSettings } from "react-icons/md";
+import { IoStatsChart, IoRocket } from "react-icons/io5";
+import { BiTrendingUp } from "react-icons/bi";
 
 export default function ProfilePage() {
     const { user, userData, loading, isOnline, logout } = useAuth();
     const navigate = useNavigate();
-    const [examType, setExamType] = useState("ordinary"); // Add exam type state
+    const [examType, setExamType] = useState("ordinary");
     const [profileData, setProfileData] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
     const [imageLoadError, setImageLoadError] = useState(false);
@@ -54,17 +62,13 @@ export default function ProfilePage() {
 
         const loadProfileData = async () => {
             try {
-                // Try multiple ways to get profile image
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
                 
                 if (userDocSnap.exists()) {
                     const data = userDocSnap.data();
-                    console.log("📸 User Data from Firestore:", data);
-                    
                     setProfileData(data);
                     
-                    // Check multiple possible field names for profile image
                     const imageUrl = data?.photoURL || 
                                     data?.profilePicture || 
                                     data?.profileImage || 
@@ -73,18 +77,15 @@ export default function ProfilePage() {
                                     user?.photoURL;
                     
                     if (imageUrl) {
-                        console.log("🖼️ Profile Image found:", imageUrl);
                         setImageLoadError(false);
                     } else {
-                        console.log("⚠️ No profile image URL found in Firestore");
                         setImageLoadError(true);
                     }
                 } else {
-                    console.log("⚠️ User document not found");
                     setImageLoadError(true);
                 }
             } catch (err) {
-                console.error("❌ Error loading profile:", err);
+                console.error("Error loading profile:", err);
                 setImageLoadError(true);
             }
         };
@@ -116,7 +117,6 @@ export default function ProfilePage() {
 
         try {
             setRefreshing(true);
-            console.log("📊 Loading analytics data for user:", user.uid);
             
             const statsData = await getUserRealTimeStats(user.uid);
             const progress = await getUserProgress(user.uid);
@@ -124,11 +124,6 @@ export default function ProfilePage() {
             const academic = await getAcademicProgress(user.uid, examType);
             const subjectMarks = await getSubjectMarkAnalysis(user.uid, examType);
             const assessmentScores = await getUserAssessments(user.uid);
-
-            console.log("📈 Real-time Stats:", statsData);
-            console.log("📊 Progress Data:", progress);
-            console.log("⏱️ Sessions Count:", sessions?.length);
-            console.log("🎓 Academic:", academic);
 
             // Calculate weekly data from sessions (last 7 days)
             const today = new Date();
@@ -153,44 +148,48 @@ export default function ProfilePage() {
                 });
             }
 
-            console.log("📅 Weekly Data:", weeklyData);
-
             const achievements = [
                 {
-                    title: "🔥 7-Day Streak",
+                    title: "7-Day Streak",
                     description: "Study for 7 consecutive days",
                     completed: (statsData?.currentStreak || 0) >= 7,
                     progress: `${Math.min(statsData?.currentStreak || 0, 7)}/7 days`,
+                    icon: <FaFire />,
                 },
                 {
-                    title: "⏱️ 100 Hours",
+                    title: "100 Hours",
                     description: "Complete 100 hours of study",
                     completed: (statsData?.totalStudyHours || 0) >= 100,
                     progress: `${Math.round(statsData?.totalStudyHours || 0)}/100 hours`,
+                    icon: <FaClock />,
                 },
                 {
-                    title: "📅 Perfect Week",
+                    title: "Perfect Week",
                     description: "Complete all daily goals in a week",
                     completed: (statsData?.totalStudyHours || 0) >= 14 && (statsData?.currentStreak || 0) >= 7,
                     progress: weeklyData.reduce((a, b) => a + b, 0).toFixed(1) + "/14 hours",
+                    icon: <FaCalendar />,
                 },
                 {
-                    title: "📚 Course Explorer",
+                    title: "Course Explorer",
                     description: "Access 5 different courses",
                     completed: (statsData?.activeCourses || 0) >= 5,
                     progress: `${statsData?.activeCourses || 0}/5 courses`,
+                    icon: <FaBook />,
                 },
                 {
-                    title: "⭐ Excellent Scholar",
+                    title: "Excellent Scholar",
                     description: "Achieve 80%+ average across all subjects",
                     completed: (academic?.overallAverage || 0) >= 80,
                     progress: `${Math.round(academic?.overallAverage || 0)}%`,
+                    icon: <FaStar />,
                 },
                 {
-                    title: "🏆 All-Rounder",
+                    title: "All-Rounder",
                     description: "Maintain consistent performance (all subjects ≥ 70%)",
                     completed: academic?.subjectScores?.every?.((s) => s.score >= 70),
                     progress: `${academic?.subjectScores?.filter?.((s) => s.score >= 70)?.length || 0}/${academic?.subjectScores?.length || 0} subjects`,
+                    icon: <FaTrophy />,
                 },
             ];
 
@@ -209,10 +208,8 @@ export default function ProfilePage() {
             setAcademicProgress(academic);
             setSubjectAnalysis(subjectMarks || {});
             setAssessments(assessmentScores || []);
-
-            console.log("✅ All analytics data loaded successfully!");
         } catch (error) {
-            console.error("❌ Error loading progress:", error);
+            console.error("Error loading progress:", error);
             setProgressData((prev) => ({
                 ...prev,
                 loading: false,
@@ -265,12 +262,11 @@ export default function ProfilePage() {
         const [showImage, setShowImage] = useState(!imageLoadError && !!profileImage);
 
         const handleImageLoad = () => {
-            console.log("✅ Profile image loaded successfully");
             setShowImage(true);
         };
 
         const handleImageError = (e) => {
-            console.error("❌ Failed to load profile image:", e);
+            console.error("Failed to load profile image:", e);
             setImageLoadError(true);
             setShowImage(false);
         };
@@ -294,8 +290,8 @@ export default function ProfilePage() {
                             <span className="text-7xl font-black text-white drop-shadow-lg select-none">
                                 {getUserInitial()}
                             </span>
-                            <div className="absolute bottom-2 right-2 bg-white bg-opacity-90 rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold text-gray-700 shadow-md" title={user?.uid}>
-                                ✓
+                            <div className="absolute bottom-2 right-2 bg-white bg-opacity-90 rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold text-gray-700 shadow-md">
+                                <FaCheckCircle className="text-green-600" />
                             </div>
                         </div>
                         <div className={`absolute -bottom-2 -right-2 w-6 h-6 rounded-full border-3 border-white transition-colors ${isOnline ? "bg-green-500" : "bg-gray-400"}`}></div>
@@ -348,7 +344,6 @@ export default function ProfilePage() {
                     {/* Profile Section */}
                     <div className="px-6 sm:px-8 pb-8">
                         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6 -mt-20 mb-8">
-                            {/* Avatar Component with Enhanced Error Handling */}
                             <AvatarComponent />
 
                             {/* User Basic Info */}
@@ -356,26 +351,26 @@ export default function ProfilePage() {
                                 <h1 className="text-4xl font-bold text-gray-900">{profileData?.name || userData?.name}</h1>
                                 <p className="text-lg text-amber-700 font-medium mt-1">{profileData?.email || userData?.email}</p>
                                 
-                                {/* Image Debug Info */}
-                                {imageLoadError && profileImage && (
-                                    <p className="text-xs text-red-500 mt-2">🖼️ Image: {profileImage.substring(0, 40)}...</p>
-                                )}
-                                
                                 <div className="flex gap-4 mt-4 flex-wrap">
-                                    <span className={`inline-block px-4 py-1 rounded-full text-sm font-semibold ${isOnline ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
-                                        {isOnline ? "✓ Online" : "Offline"}
+                                    <span className={`inline-flex items-center gap-2 px-4 py-1 rounded-full text-sm font-semibold ${isOnline ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
+                                        <FaCheckCircle />
+                                        {isOnline ? "Online" : "Offline"}
                                     </span>
-                                    <span className="inline-block px-4 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold">
+                                    <span className="inline-flex items-center gap-2 px-4 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold">
+                                        <FaStar />
                                         {profileData?.subscriptionPlan || userData?.subscriptionPlan || "Free Plan"}
                                     </span>
                                 </div>
-                                <p className="text-sm text-gray-500 mt-4">
-                                    📅 Member since {new Date(userData.createdAt?.toDate?.() || userData.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                <p className="text-sm text-gray-500 mt-4 flex items-center gap-2">
+                                    <FaCalendar />
+                                    Member since {new Date(userData.createdAt?.toDate?.() || userData.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                                 </p>
 
                                 {/* Exam Type Selector */}
                                 <div className="mt-6">
-                                    <p className="text-sm font-semibold text-gray-700 mb-2">📚 Exam Type:</p>
+                                    <p className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                        <FaBook /> Exam Type:
+                                    </p>
                                     <div className="flex gap-2 flex-wrap">
                                         {["ordinary", "scholarship", "advanced"].map((type) => (
                                             <button
@@ -406,7 +401,9 @@ export default function ProfilePage() {
                                 <p className="text-sm text-gray-600 mt-1">Total Study Hours</p>
                             </div>
                             <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-4 text-center hover:shadow-lg transition-all">
-                                <p className="text-3xl font-bold text-orange-700">{progressData.currentStreak}🔥</p>
+                                <p className="text-3xl font-bold text-orange-700 flex items-center justify-center gap-1">
+                                    {progressData.currentStreak}<FaFire className="text-red-500" />
+                                </p>
                                 <p className="text-sm text-gray-600 mt-1">Day Streak</p>
                             </div>
                             <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-xl p-4 text-center hover:shadow-lg transition-all">
@@ -426,7 +423,7 @@ export default function ProfilePage() {
                             <div className="flex items-center justify-between gap-3 mb-6">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-                                        <span className="text-xl">👤</span>
+                                        <FaUser className="text-amber-700" />
                                     </div>
                                     <h2 className="text-2xl font-bold text-gray-900">Personal Information</h2>
                                 </div>
@@ -445,7 +442,9 @@ export default function ProfilePage() {
 
                                 <div className="flex justify-between items-center pb-4 border-b border-gray-100 hover:bg-gray-50 px-2 py-2 rounded transition-all">
                                     <span className="text-gray-600 font-medium">Account Status</span>
-                                    <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">Active</span>
+                                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                                        <FaCheckCircle /> Active
+                                    </span>
                                 </div>
 
                                 <div className="flex justify-between items-center hover:bg-gray-50 px-2 py-2 rounded transition-all">
@@ -457,24 +456,26 @@ export default function ProfilePage() {
                             </div>
                         </div>
 
-                        {/* ...rest of the existing code... */}
-                        {/* Weekly Progress Chart from Firestore */}
+                        {/* Weekly Progress Chart */}
                         <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-shadow mb-8">
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-2xl font-bold text-gray-900">📊 Weekly Progress Analytics</h2>
+                                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                                    <FaChartBar className="text-amber-700" /> Weekly Progress Analytics
+                                </h2>
                                 <button
                                     onClick={loadProgressData}
                                     disabled={refreshing}
-                                    className="px-3 py-1 text-sm bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition-all disabled:opacity-50"
-                                    title="Refresh data from Firestore"
+                                    className="px-3 py-1 text-sm bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition-all disabled:opacity-50 flex items-center gap-1"
                                 >
-                                    {refreshing ? "⟳ Refreshing..." : "🔄 Refresh"}
+                                    <IoStatsChart />
+                                    {refreshing ? "Refreshing..." : "Refresh"}
                                 </button>
                             </div>
                             
                             {progressData.weeklyData.reduce((a, b) => a + b, 0) === 0 ? (
-                                <div className="text-center py-8 text-gray-500">
-                                    <p>📭 No session data yet. Start a study session to see your progress!</p>
+                                <div className="text-center py-8 text-gray-500 flex flex-col items-center gap-2">
+                                    <FaFileAlt className="text-4xl text-gray-300" />
+                                    <p>No session data yet. Start a study session to see your progress!</p>
                                 </div>
                             ) : (
                                 <div className="space-y-4">
@@ -524,9 +525,11 @@ export default function ProfilePage() {
                             )}
                         </div>
 
-                        {/* Achievements - continuing from existing code */}
+                        {/* Achievements */}
                         <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-shadow mb-8">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">🏆 Achievements & Goals</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                <FaTrophy className="text-amber-700" /> Achievements & Goals
+                            </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {progressData.achievements.map((achievement, idx) => (
                                     <div
@@ -539,7 +542,7 @@ export default function ProfilePage() {
                                     >
                                         <div className="flex items-start gap-3 mb-2">
                                             <div className="text-3xl">
-                                                {achievement.completed ? "🏆" : "🎯"}
+                                                {achievement.completed ? <FaTrophy className="text-amber-600" /> : achievement.icon}
                                             </div>
                                             <div className="flex-1">
                                                 <h3 className="font-bold text-gray-900 text-sm leading-tight">
@@ -556,7 +559,9 @@ export default function ProfilePage() {
                                                     {achievement.progress}
                                                 </span>
                                                 {achievement.completed && (
-                                                    <span className="text-amber-600 text-xs font-bold">✓ Unlocked</span>
+                                                    <span className="text-amber-600 text-xs font-bold flex items-center gap-1">
+                                                        <FaCheckCircle /> Unlocked
+                                                    </span>
                                                 )}
                                             </div>
                                         </div>
@@ -568,7 +573,9 @@ export default function ProfilePage() {
                         {/* Academic Performance */}
                         {academicProgress && academicProgress.subjectScores && (
                             <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-shadow mb-8 border-t-4 border-amber-700">
-                                <h2 className="text-2xl font-bold text-gray-900 mb-6">📈 Academic Performance</h2>
+                                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                    <BiTrendingUp className="text-amber-700" /> Academic Performance
+                                </h2>
                                 
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
                                     <div className="rounded-lg border-2 border-amber-200 bg-amber-50 p-4 text-center hover:shadow-md transition">
@@ -583,40 +590,44 @@ export default function ProfilePage() {
                                         </div>
                                         <p className="text-xs text-blue-900 mt-1 font-semibold">Subjects</p>
                                     </div>
-                                    <div className="rounded-lg border-2 border-green-200 bg-green-50 p-4 text-center hover:shadow-md transition">
-                                        <div className="text-3xl font-bold text-green-700">
+                                    <div className="rounded-lg border-2 border-green-200 bg-green-50 p-4 text-center hover:shadow-md transition flex flex-col items-center">
+                                        <div className="text-3xl font-bold text-green-700 flex items-center gap-1">
                                             {academicProgress.improvingSubjects || 0}
+                                            <FaArrowUp className="text-xl" />
                                         </div>
-                                        <p className="text-xs text-green-900 mt-1 font-semibold">Improving ↑</p>
+                                        <p className="text-xs text-green-900 mt-1 font-semibold">Improving</p>
                                     </div>
-                                    <div className="rounded-lg border-2 border-red-200 bg-red-50 p-4 text-center hover:shadow-md transition">
-                                        <div className="text-3xl font-bold text-red-700">
+                                    <div className="rounded-lg border-2 border-red-200 bg-red-50 p-4 text-center hover:shadow-md transition flex flex-col items-center">
+                                        <div className="text-3xl font-bold text-red-700 flex items-center gap-1">
                                             {academicProgress.decreasingSubjects || 0}
+                                            <FaArrowDown className="text-xl" />
                                         </div>
-                                        <p className="text-xs text-red-900 mt-1 font-semibold">Declining ↓</p>
+                                        <p className="text-xs text-red-900 mt-1 font-semibold">Declining</p>
                                     </div>
                                 </div>
 
                                 <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg p-6 border-2 border-gray-200">
-                                    <h3 className="font-bold text-gray-900 mb-4">📚 Subject Performance</h3>
+                                    <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        <FaBook /> Subject Performance
+                                    </h3>
                                     <div className="space-y-3">
                                         {academicProgress.subjectScores.map((subject) => (
                                             <div key={subject.name} className="bg-white rounded-lg p-4 border-2 border-gray-100 hover:border-amber-200 hover:shadow-md transition">
                                                 <div className="flex items-center justify-between mb-3">
                                                     <div>
                                                         <h4 className="font-bold text-gray-900">{subject.name}</h4>
-                                                        <p className="text-xs text-gray-500 mt-1">
-                                                            📊 High: {subject.highest}% | Low: {subject.lowest}% | Tests: {subject.testsCount || 0}
+                                                        <p className="text-xs text-gray-500 mt-1 flex items-center gap-2">
+                                                            <FaChartBar /> High: {subject.highest}% | Low: {subject.lowest}% | Tests: {subject.testsCount || 0}
                                                         </p>
                                                     </div>
                                                     <div className="text-right">
                                                         <div className="text-2xl font-bold text-amber-700">{Math.round(subject.score)}%</div>
-                                                        <div className={`text-sm font-bold ${
+                                                        <div className={`text-sm font-bold flex items-center gap-1 ${
                                                             subject.trend === "↑" ? "text-green-600" : 
                                                             subject.trend === "↓" ? "text-red-600" : 
                                                             "text-gray-600"
                                                         }`}>
-                                                            {subject.trend || "→"}
+                                                            {subject.trend === "↑" ? <FaArrowUp /> : subject.trend === "↓" ? <FaArrowDown /> : "→"}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -640,7 +651,9 @@ export default function ProfilePage() {
                         {/* Assessment Scores */}
                         {assessments && assessments.length > 0 && (
                             <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-shadow mb-8">
-                                <h3 className="text-xl font-bold text-gray-900 mb-4">📝 Recent Assessment Scores</h3>
+                                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <FaEdit /> Recent Assessment Scores
+                                </h3>
                                 <div className="space-y-2">
                                     {assessments.slice(0, 8).map((assessment, idx) => (
                                         <div key={idx} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200 hover:border-amber-200 hover:shadow-md transition">
@@ -665,7 +678,7 @@ export default function ProfilePage() {
                         <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-shadow">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                                    <span className="text-xl">⭐</span>
+                                    <FaStar className="text-orange-700" />
                                 </div>
                                 <h2 className="text-2xl font-bold text-gray-900">Subscription</h2>
                             </div>
@@ -675,9 +688,9 @@ export default function ProfilePage() {
                                 <p className="text-3xl font-bold text-amber-700 mb-4">{profileData?.subscriptionPlan || userData?.subscriptionPlan || "Free"}</p>
                                 <button
                                     onClick={() => navigate("/subscription")}
-                                    className="px-6 py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all"
+                                    className="px-6 py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all flex items-center gap-2"
                                 >
-                                    Upgrade Plan
+                                    <IoRocket /> Upgrade Plan
                                 </button>
                             </div>
                         </div>
@@ -688,7 +701,7 @@ export default function ProfilePage() {
                         <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-shadow sticky top-24">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                                    <span className="text-xl">⚡</span>
+                                    <FaBolt className="text-red-700" />
                                 </div>
                                 <h2 className="text-2xl font-bold text-gray-900">Quick Actions</h2>
                             </div>
@@ -698,35 +711,35 @@ export default function ProfilePage() {
                                     onClick={() => navigate("/scheduler")}
                                     className="w-full py-3 px-4 bg-gradient-to-r from-amber-700 to-orange-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2"
                                 >
-                                    <span>📅</span> Scheduler
+                                    <FaCalendar /> Scheduler
                                 </button>
 
                                 <button
                                     onClick={() => navigate("/progress")}
                                     className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2"
                                 >
-                                    <span>📊</span> View Progress
+                                    <FaChartBar /> View Progress
                                 </button>
 
                                 <button
                                     onClick={() => navigate("/analytics")}
                                     className="w-full py-3 px-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2"
                                 >
-                                    <span>📈</span> Analytics
+                                    <BiTrendingUp /> Analytics
                                 </button>
 
                                 <button
                                     onClick={() => navigate("/subscription")}
                                     className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2"
                                 >
-                                    <span>✨</span> Upgrade
+                                    <FaStar /> Upgrade
                                 </button>
 
                                 <button
                                     onClick={() => navigate("/settings")}
                                     className="w-full py-3 px-4 bg-gradient-to-r from-teal-600 to-teal-700 text-white font-semibold rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2"
                                 >
-                                    <span>⚙️</span> Settings
+                                    <FaCog /> Settings
                                 </button>
 
                                 <hr className="my-4" />
@@ -735,7 +748,7 @@ export default function ProfilePage() {
                                     onClick={handleSignOut}
                                     className="w-full py-3 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all flex items-center justify-center gap-2"
                                 >
-                                    <span>🚪</span> Sign Out
+                                    <FaSignOutAlt /> Sign Out
                                 </button>
                             </div>
 
@@ -743,7 +756,9 @@ export default function ProfilePage() {
                                 <p className="text-xs text-gray-600 mb-2">Session Info:</p>
                                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                                     <p className="text-xs font-mono text-gray-700 break-all">{user.uid.substring(0, 20)}...</p>
-                                    <p className="text-xs text-gray-500 mt-1">✓ Verified Account</p>
+                                    <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                        <FaCheckCircle className="text-green-600" /> Verified Account
+                                    </p>
                                 </div>
                             </div>
                         </div>

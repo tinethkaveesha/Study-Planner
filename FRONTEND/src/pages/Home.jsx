@@ -5,12 +5,23 @@ import { getUserRealTimeStats, getUserActiveCourses } from "../utils/userDataApi
 import FeatureCard from "../components/FeatureCard.jsx";
 import StatCard from "../components/StatCard.jsx";
 import ChartBar from "../components/ChartBar.jsx";
-import HeroImage from "../components/HeroImage.jsx";
 import bgImage from "../assets/hero-study.png";
+import { 
+	FiCalendar, 
+	FiBook, 
+	FiTarget, 
+	FiUsers, 
+	FiBarChart2, 
+	FiClock, 
+	FiTrendingUp,
+	FiZap,
+	FiAward
+} from "react-icons/fi";
+import { MdAutoAwesome } from "react-icons/md";
 
 const featuresList = [
 	{
-		icon: "📅",
+		iconComponent: FiCalendar,
 		title: "Smart Scheduler",
 		desc: "AI-powered scheduling that learns your patterns and optimizes your study time.",
 		path: "/scheduler",
@@ -18,7 +29,7 @@ const featuresList = [
 		hoverBg: "group-hover:bg-amber-700",
 	},
 	{
-		icon: "📚",
+		iconComponent: FiBook,
 		title: "Resource Curator",
 		desc: "Curated learning materials personalized to your learning goals.",
 		path: "/resources",
@@ -26,7 +37,7 @@ const featuresList = [
 		hoverBg: "group-hover:bg-orange-600",
 	},
 	{
-		icon: "🎯",
+		iconComponent: FiTarget,
 		title: "Progress Tracker",
 		desc: "Beautiful dashboards with real-time insights into your learning journey.",
 		path: "/progress",
@@ -34,7 +45,7 @@ const featuresList = [
 		hoverBg: "group-hover:bg-red-600",
 	},
 	{
-		icon: "🧠",
+		iconComponent: FiZap,
 		title: "Quiz Generator",
 		desc: "Adaptive assessment engine that adjusts difficulty based on your performance.",
 		path: "/quizzes",
@@ -42,7 +53,7 @@ const featuresList = [
 		hoverBg: "group-hover:bg-yellow-600",
 	},
 	{
-		icon: "👥",
+		iconComponent: FiUsers,
 		title: "Study Groups",
 		desc: "Connect with peers, collaborate, and grow together in community.",
 		path: "/groups",
@@ -50,7 +61,7 @@ const featuresList = [
 		hoverBg: "group-hover:bg-purple-600",
 	},
 	{
-		icon: "📊",
+		iconComponent: FiBarChart2,
 		title: "Advanced Analytics",
 		desc: "Data-driven insights showing patterns and personalized recommendations.",
 		path: "/analytics",
@@ -81,10 +92,10 @@ const testimonials = [
 ];
 
 const stats = [
-	{ label: "Active Students", value: "50K+", icon: "👥", color: "bg-blue-100" },
-	{ label: "Study Hours", value: "2.5M+", icon: "⏱️", color: "bg-purple-100" },
-	{ label: "Avg GPA", value: "0.6+", icon: "📈", color: "bg-green-100" },
-	{ label: "Success Rate", value: "94%", icon: "✨", color: "bg-amber-100" },
+	{ label: "Active Students", value: "50K+", iconComponent: FiUsers, color: "bg-blue-100" },
+	{ label: "Study Hours", value: "2.5M+", iconComponent: FiClock, color: "bg-purple-100" },
+	{ label: "Avg GPA", value: "0.6+", iconComponent: FiTrendingUp, color: "bg-green-100" },
+	{ label: "Success Rate", value: "94%", iconComponent: FiAward, color: "bg-amber-100" },
 ];
 
 const chartData = {
@@ -136,25 +147,25 @@ export default function Home() {
 						{ 
 							label: "Study Hours (This Month)", 
 							value: `${Math.round(stats.totalStudyHours)}h`, 
-							icon: "⏱️", 
+							iconComponent: FiClock,
 							color: "bg-purple-100" 
 						},
 						{ 
 							label: "Active Courses", 
 							value: activeCourses || "0", 
-							icon: "📚", 
+							iconComponent: FiBook,
 							color: "bg-blue-100" 
 						},
 						{ 
 							label: "Current Streak", 
 							value: `${stats.currentStreak} days`, 
-							icon: "🔥", 
+							iconComponent: FiTrendingUp,
 							color: "bg-orange-100" 
 						},
 						{ 
 							label: "Avg Score", 
 							value: `${Math.round(stats.averageScore)}%`, 
-							icon: "⭐", 
+							iconComponent: FiAward,
 							color: "bg-amber-100" 
 						},
 					]);
@@ -185,7 +196,7 @@ export default function Home() {
 					<div className="grid items-center gap-6 sm:gap-8 md:gap-12 lg:grid-cols-2">
 						<div className="space-y-4 sm:space-y-6 md:space-y-8 animate-slide-in-left">
 							<div className="inline-flex items-center gap-2 sm:gap-3 rounded-full border border-amber-200 bg-white px-3 sm:px-5 py-1.5 sm:py-2 shadow-sm text-xs sm:text-sm">
-								<span className="text-lg sm:text-xl">✨</span>
+							<MdAutoAwesome className="text-lg sm:text-xl text-amber-700" />
 								<span className="font-semibold text-amber-700">Future of Learning</span>
 								<span className="ml-2 h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
 							</div>

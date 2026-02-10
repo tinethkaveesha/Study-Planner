@@ -1,4 +1,6 @@
 export default function FeatureCard({ feature, index }) {
+	const IconComponent = feature.iconComponent;
+	
 	return (
 		<div
 			className="group rounded-lg sm:rounded-2xl border border-gray-200 bg-white p-4 sm:p-8 hover:shadow-2xl hover:border-amber-200 transition-all duration-300 cursor-pointer transform hover:-translate-y-1 sm:hover:-translate-y-2 animate-scale-in"
@@ -7,7 +9,7 @@ export default function FeatureCard({ feature, index }) {
 			<div
 				className={`mb-4 sm:mb-6 h-12 sm:h-16 w-12 sm:w-16 rounded-lg sm:rounded-xl ${feature.bgColor} flex items-center justify-center text-2xl sm:text-4xl ${feature.hoverBg} group-hover:text-white transition-all duration-300 group-hover:shadow-lg flex-shrink-0`}
 			>
-				{feature.icon}
+				<IconComponent className="w-6 sm:w-8 h-6 sm:h-8" />
 			</div>
 			<h3 className="mb-2 sm:mb-3 text-base sm:text-xl font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">
 				{feature.title}

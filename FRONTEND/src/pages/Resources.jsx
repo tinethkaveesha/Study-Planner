@@ -1,3 +1,7 @@
+import { FiBook, FiBarChart2 } from 'react-icons/fi';
+import { FaDownload } from 'react-icons/fa6';
+import { LuAlarmClock } from 'react-icons/lu';
+
 export default function Resources() {
   const resources = [
     {
@@ -571,7 +575,7 @@ export default function Resources() {
         <div className="container mx-auto px-4">
           <div className="mx-auto mb-16 max-w-3xl">
             <h1 className="text-5xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span>📖</span>Resource Curator
+              <FiBook className="text-amber-600" /> Resource Curator
             </h1>
             <p className="text-lg text-gray-600">
               Discover AI-powered learning resources tailored to your needs.
@@ -620,10 +624,10 @@ export default function Resources() {
 
                 <div className="space-y-2 mb-4">
                   <p className="text-gray-600 text-sm">
-                    ⏱️ Duration: {resource.duration}
+                    <LuAlarmClock className="inline mr-1 text-amber-600" /> Duration: {resource.duration}
                   </p>
                   <p className="text-gray-600 text-sm">
-                    📊 Level: {resource.difficulty}
+                    <FiBarChart2 className="inline mr-1 text-amber-600" /> Level: {resource.difficulty}
                   </p>
                 </div>
 
@@ -634,11 +638,11 @@ export default function Resources() {
                     rel="noopener noreferrer"
                     className="block w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all text-center"
                   >
-                    📥 Download Resource
+                    <FaDownload className="inline mr-1" /> Download Resource
                   </a>
                 ) : (
                   <button className="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all">
-                    📥 Download Resource
+                    <FaDownload className="inline mr-1" /> Download Resource
                   </button>
                 )}
               </div>

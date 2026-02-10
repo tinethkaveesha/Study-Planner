@@ -9,6 +9,8 @@ import {
 	getUserAssessments
 } from "../utils/userDataApi";
 import { getCachedData } from "../utils/cacheUtils";
+import { FiBarChart2, FiTarget, FiBook } from "react-icons/fi";
+import { GiTrophyCup } from "react-icons/gi";
 
 export default function Progress() {
 	const { user } = useAuth();
@@ -261,7 +263,7 @@ export default function Progress() {
 				<div className="container mx-auto px-4">
 					<div className="mx-auto mb-16 max-w-3xl">
 						<h1 className="text-5xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-							<span>🎯</span>Progress Tracker
+							<FiTarget className="text-amber-600" /> Progress Tracker
 						</h1>
 						<p className="text-lg text-gray-600">
 							Monitor your learning journey and celebrate your achievements.
@@ -271,7 +273,7 @@ export default function Progress() {
 					{/* Exam Type Selector */}
 					<div className="mx-auto mb-12 max-w-3xl">
 						<label className="block text-sm font-semibold text-gray-700 mb-3">
-							📚 Select Exam Type:
+							<FiBook className="inline mr-1 text-amber-700" /> Select Exam Type:
 						</label>
 						<div className="flex gap-3 flex-wrap">
 							{["ordinary", "scholarship", "advanced"].map((type) => (
@@ -383,7 +385,7 @@ export default function Progress() {
 								>
 									<div className="flex items-start gap-4">
 										<div className="text-3xl">
-											{achievement.completed ? "🏆" : "🎯"}
+											{achievement.completed ? <GiTrophyCup className="text-amber-600" /> : <FiTarget className="text-amber-600" />}
 										</div>
 										<div>
 											<h3 className="font-semibold text-gray-900">
@@ -407,7 +409,7 @@ export default function Progress() {
 					{/* Academic Performance Section */}
 					{academicProgress && Object.keys(subjectAnalysis).length > 0 && (
 						<div className="mt-16 pt-16 border-t border-gray-200">
-							<h2 className="text-3xl font-bold text-gray-900 mb-8">📊 Academic Performance</h2>
+							<h2 className="text-3xl font-bold text-gray-900 mb-8"><FiBarChart2 className="inline mr-2 text-amber-600" /> Academic Performance</h2>
 							
 							{/* Overview Cards */}
 							<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">

@@ -42,6 +42,20 @@ A modern web application designed to help students organize, plan, and track the
 - Real-time data with Firebase
 - Analytics and insights
 
+## 🚀 Quick Deployment Links
+
+Get your payment gateway live in 30 minutes!
+
+- **[Production Quick Start](./PRODUCTION_QUICK_START.md)** - 5-step deployment guide
+- **[Full Deployment Guide](./DEPLOYMENT.md)** - Detailed Vercel + Railway setup
+- **[Stripe Production Setup](./STRIPE_PRODUCTION_SETUP.md)** - Payment configuration
+- **[Backend Setup](./BACKEND/SETUP.md)** - Local development setup
+
+**Deployment Architecture:**
+```
+Frontend (Vercel) → Backend (Railway/Render) → Firebase → Stripe
+```
+
 ## Setup Instructions
 
 ### Prerequisites

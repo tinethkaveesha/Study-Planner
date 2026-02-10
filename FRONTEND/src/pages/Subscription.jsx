@@ -137,7 +137,12 @@ export default function Subscription() {
             const idToken = await currentUser.getIdToken();
 
             // Call your backend to create checkout session
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/create-checkout-session`, {
+            const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+            const apiUrl = `${apiBaseUrl}/api/stripeAPI/create-checkout-session`;
+            console.log("📡 Making API request to:", apiUrl);
+            console.log("🔑 User ID:", currentUser.uid);
+            
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -151,12 +156,38 @@ export default function Subscription() {
                 }),
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to create checkout session');
+            console.log("📨 API Response Status:", response.status, response.statusText);
+
+            let data;
+            try {
+                const responseText = await response.text();
+                data = responseText ? JSON.parse(responseText) : {};
+            } catch (parseError) {
+                console.error("❌ Failed to parse response:", parseError);
+                throw new Error(`Invalid response from server: ${response.status} ${response.statusText}`);
             }
 
-            const { sessionId } = await response.json();
+            if (!response.ok) {
+                console.error("❌ API Error Response:", data);
+                let errorMsg = data.error || data.message || `HTTP ${response.status}`;
+                
+                if (response.status === 404) {
+                    errorMsg += '\n\n⚠️ Backend server may not be running. Make sure to start it with:\ncd BACKEND && npm start';
+                } else if (response.status === 401) {
+                    errorMsg += '\n\n⚠️ Authentication failed. Please try logging in again.';
+                } else if (response.status === 400) {
+                    errorMsg += `\n\n⚠️ Invalid request: ${JSON.stringify(data)}`;
+                }
+                
+                throw new Error(errorMsg);
+            }
+
+            const sessionId = data.sessionId;
+            if (!sessionId) {
+                throw new Error('No session ID received from server');
+            }
+
+            console.log("✅ Successfully created Stripe session:", sessionId);
 
             // Redirect to Stripe Checkout
             const stripe = await stripePromise;

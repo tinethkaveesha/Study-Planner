@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getJoinedGroups, createStudyGroup, joinStudyGroup, leaveStudyGroup, deleteStudyGroup } from "../utils/userDataApi";
 import { getCachedData, setCachedData } from "../utils/cacheUtils";
+import { HiUserGroup } from "react-icons/hi";
+import { GiAbacus } from "react-icons/gi";
+import { FiZap, FiBookOpen, FiCalendar } from "react-icons/fi";
+import { SlChemistry } from "react-icons/sl";
 
 export default function Groups() {
 	const { user } = useAuth();
@@ -12,7 +16,7 @@ export default function Groups() {
 			subject: "Mathematics",
 			members: 12,
 			nextSession: "2026-02-05 3:00 PM",
-			icon: "🧮",
+			icon: <GiAbacus />, // Changed from iconComponent to icon
 			description: "A dedicated group for mastering advanced mathematics concepts and solving complex problems together.",
 			createdBy: "John Doe",
 			memberList: ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry", "Iris", "Jack", "Kate", "Leo"],
@@ -23,7 +27,7 @@ export default function Groups() {
 			subject: "Physics",
 			members: 8,
 			nextSession: "2026-02-06 4:00 PM",
-			icon: "⚡",
+			icon: <FiZap />, // Changed from iconComponent to icon
 			description: "Explore the fundamental principles of physics through experiments, discussions, and collaborative learning.",
 			createdBy: "Sarah Smith",
 			memberList: ["Mike", "Nancy", "Oscar", "Paula", "Quinn", "Robert", "Susan", "Tom"],
@@ -34,7 +38,7 @@ export default function Groups() {
 			subject: "Chemistry",
 			members: 15,
 			nextSession: "2026-02-07 5:00 PM",
-			icon: "⚗️",
+			icon: <SlChemistry />, // Changed from iconComponent to icon
 			description: "Virtual chemistry lab where students conduct experiments, share findings, and discuss chemical reactions.",
 			createdBy: "Emily Johnson",
 			memberList: ["Alex", "Bella", "Chris", "Daisy", "Ethan", "Fiona", "George", "Hannah", "Isaac", "Julia", "Kevin", "Lisa", "Mark", "Nina", "Oliver"],
@@ -45,7 +49,7 @@ export default function Groups() {
 			subject: "English",
 			members: 10,
 			nextSession: "2026-02-08 2:00 PM",
-			icon: "📚",
+			icon: <FiBookOpen />, // Changed from iconComponent to icon
 			description: "Discuss classic and contemporary literature, share book reviews, and explore different writing styles.",
 			createdBy: "Michael Brown",
 			memberList: ["Patricia", "Quincy", "Rachel", "Samuel", "Tina", "Victor", "Wendy", "Xavier", "Yara", "Zoe"],
@@ -56,6 +60,17 @@ export default function Groups() {
 	const [joinedGroups, setJoinedGroups] = useState([]);
 	const [showCreateForm, setShowCreateForm] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+
+	// Helper function to get icon based on subject
+	const getSubjectIcon = (subject) => {
+		const icons = {
+			Mathematics: <GiAbacus />,
+			Physics: <FiZap />,
+			Chemistry: <SlChemistry />,
+			English: <FiBookOpen />,
+		};
+		return icons[subject] || <FiBookOpen />;
+	};
 
 	// Load joined groups from Firestore + cache on mount
 	useEffect(() => {
@@ -82,14 +97,18 @@ export default function Groups() {
 					5 * 60 * 1000 // 5 minute cache TTL
 				);
 				// normalize ids to strings
-				const groupIds = (cachedGroups?.map(g => String(g.id ?? g.groupId)) ) || [];
+				const groupIds = (cachedGroups?.map(g => String(g.id ?? g.groupId))) || [];
 				setJoinedGroups(groupIds);
-				
-				// Also merge with existing groups
+
+				// Also merge with existing groups and add icons
 				if (cachedGroups && cachedGroups.length > 0) {
+					const groupsWithIcons = cachedGroups.map(g => ({
+						...g,
+						icon: getSubjectIcon(g.subject),
+					}));
 					setGroups(prev => [
 						...prev,
-						...cachedGroups.filter(g => !prev.find(pg => String(pg.id) === String(g.id ?? g.groupId) || String(pg.groupId) === String(g.id ?? g.groupId)))
+						...groupsWithIcons.filter(g => !prev.find(pg => String(pg.id) === String(g.id ?? g.groupId) || String(pg.groupId) === String(g.id ?? g.groupId)))
 					]);
 				}
 			} catch (error) {
@@ -110,7 +129,7 @@ export default function Groups() {
 
 	const handleCreateGroup = async (e) => {
 		e.preventDefault();
-		
+
 		if (!user) {
 			alert("Please sign in to create a group");
 			return;
@@ -136,7 +155,7 @@ export default function Groups() {
 				name: newGroup.name,
 				subject: newGroup.subject,
 				description: newGroup.description,
-				icon: ["🧮", "⚡", "⚗️", "📚"][["Mathematics", "Physics", "Chemistry", "English"].indexOf(newGroup.subject)] || "📚",
+				icon: getSubjectIcon(newGroup.subject), // Use helper function
 				members: 1,
 				nextSession: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleString(),
 				createdBy: user?.displayName || "Unknown",
@@ -172,7 +191,7 @@ export default function Groups() {
 					name: newGroup.name,
 					subject: newGroup.subject,
 					description: newGroup.description,
-					icon: ["🧮", "⚡", "⚗️", "📚"][["Mathematics", "Physics", "Chemistry", "English"].indexOf(newGroup.subject)] || "📚",
+					icon: getSubjectIcon(newGroup.subject), // Use helper function
 					members: 1,
 					nextSession: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleString(),
 					createdBy: user?.displayName || "Unknown",
@@ -293,7 +312,7 @@ export default function Groups() {
 				<div className="container mx-auto px-4">
 					<div className="mx-auto mb-16 max-w-3xl">
 						<h1 className="text-5xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-							<span>👥</span>Study Groups
+							<HiUserGroup className="text-amber-700" /> Study Groups
 						</h1>
 						<p className="text-lg text-gray-600">
 							Connect with fellow students, share notes, and study together.
@@ -392,7 +411,7 @@ export default function Groups() {
 							>
 								<div className="flex items-start justify-between mb-4">
 									<div className="flex items-center gap-3">
-										<span className="text-4xl">{group.icon}</span>
+										<span className="text-4xl text-amber-700">{group.icon}</span>
 										<div>
 											<h3 className="text-lg font-semibold text-gray-900">
 												{group.name}
@@ -415,9 +434,9 @@ export default function Groups() {
 
 								<div className="space-y-2 mb-4 pb-4 border-b border-gray-200">
 									<p className="text-gray-600 text-sm line-clamp-2">{group.description}</p>
-									<p className="text-gray-600 text-sm">👥 {group.members} members</p>
+									<p className="text-gray-600 text-sm"><HiUserGroup className="inline" /> {group.members} members</p>
 									<p className="text-gray-600 text-sm">
-										📅 {new Date(group.nextSession).toLocaleDateString()}
+										<FiCalendar className="inline mr-1" /> {new Date(group.nextSession).toLocaleDateString()}
 									</p>
 								</div>
 
@@ -456,7 +475,7 @@ export default function Groups() {
 					<div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
 						<div className="bg-gradient-to-r from-amber-700 to-orange-600 p-6 flex justify-between items-start">
 							<div className="flex items-center gap-4">
-								<span className="text-5xl">{selectedGroup.icon}</span>
+								<span className="text-5xl text-white">{selectedGroup.icon}</span>
 								<div>
 									<h2 className="text-3xl font-bold text-white">{selectedGroup.name}</h2>
 									<p className="text-amber-100">{selectedGroup.subject}</p>

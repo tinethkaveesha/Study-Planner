@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getScheduledSessions, saveScheduledSession, deleteScheduledSession } from '../utils/userDataApi';
 import { getCachedData, setCachedData } from '../utils/cacheUtils';
+import { FiCalendar, FiClock } from 'react-icons/fi';
+import { FaTrashAlt } from 'react-icons/fa';
+import { TiPlus} from 'react-icons/ti';
+import { LuAlarmClock, LuNotepadText } from 'react-icons/lu';
 
 export default function Scheduler() {
 	const { user } = useAuth();
@@ -291,7 +295,7 @@ export default function Scheduler() {
 					{/* Page Header */}
 					<div className="mx-auto mb-16 max-w-3xl">
 						<h1 className="text-5xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-							<span>📅</span> Smart Scheduler
+							<FiCalendar className="text-amber-600" /> Smart Scheduler
 						</h1>
 						<p className="text-lg text-gray-600">
 							Plan your study sessions intelligently with AI-powered scheduling
@@ -303,7 +307,7 @@ export default function Scheduler() {
 						<div className="lg:col-span-1 space-y-6">
 							<div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-lg hover:shadow-xl transition-shadow">
 								<h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-									<span>📆</span> Calendar
+									<FiCalendar className="text-amber-600" /> Calendar
 								</h2>
 
 								{/* Month Navigation */}
@@ -344,7 +348,7 @@ export default function Scheduler() {
 							{/* Add Session Form */}
 							<div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-xl transition-shadow">
 								<h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-									<span>➕</span> Schedule Study Session
+									<TiPlus className="text-amber-600" /> Schedule Study Session
 								</h2>
 
 								<form onSubmit={handleAddSession} className="space-y-4">
@@ -448,7 +452,7 @@ export default function Scheduler() {
 							{/* Today's Schedule */}
 							<div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-xl transition-shadow">
 								<h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-									<span>🕐</span> Today's Sessions
+									<FiClock className="text-amber-600" /> Today's Sessions
 								</h2>
 								<div className="space-y-3">
 									{todaySchedule.length === 0 ? (
@@ -465,7 +469,7 @@ export default function Scheduler() {
 													<div className="flex-1">
 														<h4 className="font-semibold text-gray-900">{session.subject}</h4>
 														<p className="text-sm text-gray-600">
-															🕐 {session.startTime} - {endTime} • ⏱️ {session.duration}h
+															<FiClock className="inline mr-1 text-amber-600" /> {session.startTime} - {endTime} • <LuAlarmClock classname="inline mr-1 text-amber-600" /> {session.duration}h
 														</p>
 														{session.notes && (
 															<p className="text-sm text-gray-600 mt-2">{session.notes}</p>
@@ -492,7 +496,7 @@ export default function Scheduler() {
 							{/* Upcoming Schedule */}
 							<div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-lg hover:shadow-xl transition-shadow">
 								<h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-									<span>📋</span> Upcoming Sessions
+									<LuNotepadText className="text-amber-600" /> Upcoming Sessions
 								</h2>
 								<div className="space-y-3">
 									{upcomingSchedule.length === 0 ? (
@@ -516,7 +520,7 @@ export default function Scheduler() {
 													<div className="flex-1">
 														<h4 className="font-semibold text-gray-900">{session.subject}</h4>
 														<p className="text-sm text-gray-600">
-															📅 {dateStr} at {session.startTime}
+															<FiCalendar className="inline mr-1 text-amber-600" /> {dateStr} at {session.startTime}
 														</p>
 													</div>
 													<span className={`px-3 py-1 rounded-lg font-semibold text-sm ${config.bgColor} ${config.textColor}`}>
@@ -604,7 +608,7 @@ export default function Scheduler() {
 													<div>
 														<h3 className="text-lg font-bold text-gray-900">{session.subject}</h3>
 														<p className="text-sm text-gray-700 mt-1">
-															🕐 {session.startTime} - {endTime} ({session.duration}h)
+															<FiClock className="inline mr-1 text-amber-600" /> {session.startTime} - {endTime} ({session.duration}h)
 														</p>
 													</div>
 													<span className={`px-3 py-1 rounded-full font-semibold text-sm ${config.textColor}`}>
@@ -625,7 +629,7 @@ export default function Scheduler() {
 													}}
 													className="mt-3 text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1 rounded text-sm font-medium transition-all"
 												>
-													🗑️ Delete
+													<FaTrashAlt className="inline mr-1" /> Delete
 												</button>
 											</div>
 										);

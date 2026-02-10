@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { FaGraduationCap } from "react-icons/fa";
+import { FiTarget } from "react-icons/fi";
+import { GiTrophyCup } from "react-icons/gi";
+import { LuAlarmClock } from "react-icons/lu";
 
 export default function Quizzes() {
 	const [generatingQuiz, setGeneratingQuiz] = useState(false);
@@ -113,12 +117,18 @@ Return ONLY the JSON array, nothing else.`
 				}
 			);
 
-			if (!response.ok) {
-				const errorData = await response.json();
-				throw new Error(errorData.error?.message || "API request failed");
+			let data;
+			try {
+				const responseText = await response.text();
+				data = responseText ? JSON.parse(responseText) : {};
+			} catch (parseError) {
+				throw new Error(`Invalid JSON response from API: ${parseError.message}`);
 			}
 
-			const data = await response.json();
+			if (!response.ok) {
+				throw new Error(data.error?.message || `API request failed with status ${response.status}`);
+			}
+
 			console.log("OpenRouter API Response:", data);
 			
 			// Extract text from OpenRouter response
@@ -200,7 +210,7 @@ Return ONLY the JSON array, nothing else.`
 				<div className="container mx-auto px-4">
 					<div className="mx-auto mb-16 max-w-3xl">
 						<h1 className="text-5xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-							<span>🎓</span>Quiz Generator
+							<FaGraduationCap className="text-amber-700" /> Quiz Generator
 						</h1>
 						<p className="text-lg text-gray-600">
 							Test your knowledge with adaptive quizzes tailored to your learning level.
@@ -262,7 +272,7 @@ Return ONLY the JSON array, nothing else.`
 									disabled={generatingQuiz}
 									className="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
 								>
-									{generatingQuiz ? "Generating..." : "Generate Quiz"}
+									{generatingQuiz ? "Generating..." : "Generate"}
 								</button>
 							</div>
 						</form>
@@ -297,11 +307,11 @@ Return ONLY the JSON array, nothing else.`
 
 								<div className="space-y-2 mb-4 pb-4 border-b border-gray-200">
 									<p className="text-gray-600 text-sm">
-										🎯 {quiz.questions} questions
+										<FiTarget className="inline mr-1 text-amber-600" /> {quiz.questions} questions
 									</p>
-									<p className="text-gray-600 text-sm">⏱️ {quiz.duration}</p>
+									<p className="text-gray-600 text-sm"><LuAlarmClock className="inline mr-1 text-amber-600" /> {quiz.duration}</p>
 									<p className="text-gray-600 text-sm">
-										🏆 Best Score: {quiz.bestScore}%
+										<GiTrophyCup className="inline mr-1 text-amber-600" /> Best Score: {quiz.bestScore}%
 									</p>
 								</div>
 

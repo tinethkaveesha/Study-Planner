@@ -3,16 +3,16 @@
  * Handle all Stripe-related API calls
  */
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 /**
  * Create a checkout session for subscription
  * @param {string} idToken - Firebase ID token
  * @param {Object} params - Subscription parameters
- * @returns {Promise<string>} Session ID
+ * @returns {Promise<Object>} Response with sessionId
  */
 export async function createCheckoutSession(idToken, params) {
-  const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+  const response = await fetch(`${API_URL}/api/stripeAPI/create-checkout-session`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +22,12 @@ export async function createCheckoutSession(idToken, params) {
   });
 
   if (!response.ok) {
-    const error = await response.json();
+    let error;
+    try {
+      error = await response.json();
+    } catch {
+      throw new Error(`HTTP ${response.status}: Failed to create checkout session`);
+    }
     throw new Error(error.error || "Failed to create checkout session");
   }
 
@@ -31,52 +36,36 @@ export async function createCheckoutSession(idToken, params) {
 
 /**
  * Get user's subscription status
- * @param {string} userId - Firebase user ID
  * @param {string} idToken - Firebase ID token
  * @returns {Promise<Object>} Subscription status
  */
-export async function getSubscriptionStatus(userId, idToken) {
-  const response = await fetch(`${API_URL}/api/subscription-status/${userId}`, {
+export async function getSubscriptionStatus(idToken) {
+  const response = await fetch(`${API_URL}/api/stripeAPI/subscription`, {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch subscription status");
+    let error;
+    try {
+      error = await response.json();
+    } catch {
+      throw new Error(`HTTP ${response.status}: Failed to fetch subscription`);
+    }
+    throw new Error(error.error || "Failed to fetch subscription");
   }
 
   return response.json();
 }
 
 /**
- * Get user's invoices
- * @param {string} userId - Firebase user ID
+ * Create a customer portal session for managing subscriptions
  * @param {string} idToken - Firebase ID token
- * @returns {Promise<Array>} Array of invoices
+ * @returns {Promise<Object>} Portal session URL
  */
-export async function getUserInvoices(userId, idToken) {
-  const response = await fetch(`${API_URL}/api/invoices/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${idToken}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch invoices");
-  }
-
-  return response.json();
-}
-
-/**
- * Cancel user's subscription
- * @param {string} userId - Firebase user ID
- * @param {string} idToken - Firebase ID token
- * @returns {Promise<Object>} Cancellation response
- */
-export async function cancelSubscription(userId, idToken) {
-  const response = await fetch(`${API_URL}/api/cancel-subscription/${userId}`, {
+export async function createPortalSession(idToken) {
+  const response = await fetch(`${API_URL}/api/stripeAPI/create-portal-session`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -85,7 +74,41 @@ export async function cancelSubscription(userId, idToken) {
   });
 
   if (!response.ok) {
-    const error = await response.json();
+    let error;
+    try {
+      error = await response.json();
+    } catch {
+      throw new Error(`HTTP ${response.status}: Failed to create portal session`);
+    }
+    throw new Error(error.error || "Failed to create portal session");
+  }
+
+  return response.json();
+}
+
+/**
+ * Cancel user's subscription
+ * @param {string} subscriptionId - Stripe subscription ID
+ * @param {string} idToken - Firebase ID token
+ * @returns {Promise<Object>} Cancellation response
+ */
+export async function cancelSubscription(subscriptionId, idToken) {
+  const response = await fetch(`${API_URL}/api/stripeAPI/cancel-subscription`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: JSON.stringify({ subscriptionId }),
+  });
+
+  if (!response.ok) {
+    let error;
+    try {
+      error = await response.json();
+    } catch {
+      throw new Error(`HTTP ${response.status}: Failed to cancel subscription`);
+    }
     throw new Error(error.error || "Failed to cancel subscription");
   }
 

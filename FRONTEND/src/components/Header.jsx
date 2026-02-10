@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/Logo.png";
 import { useState } from "react";
+import { FiBell } from "react-icons/fi";
 
 /**
  * @typedef {Object} NavLink
@@ -124,7 +125,7 @@ export default function Header({
 						onClick={toggleNotificationPanel}
 						className="hidden md:flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 relative transition-colors"
 					>
-						<span className="text-lg">🔔</span>
+						<FiBell className="text-gray-600 text-lg" />
 					</button>
 					{user && userData ? (
 						<div className="flex items-center gap-2 sm:gap-3">

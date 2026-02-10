@@ -18,7 +18,7 @@ export const initializeStripe = () => {
  */
 export const createCheckoutSession = async (idToken, data) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/create-checkout-session`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripeAPI/create-checkout-session`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -27,12 +27,18 @@ export const createCheckoutSession = async (idToken, data) => {
             body: JSON.stringify(data),
         });
 
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Failed to create checkout session');
+        let jsonData;
+        try {
+            jsonData = await response.json();
+        } catch {
+            throw new Error(`Invalid response: ${response.statusText}`);
         }
 
-        return await response.json();
+        if (!response.ok) {
+            throw new Error(jsonData.error || 'Failed to create checkout session');
+        }
+
+        return jsonData;
     } catch (error) {
         console.error('Error creating checkout session:', error);
         throw error;
@@ -46,18 +52,25 @@ export const createCheckoutSession = async (idToken, data) => {
  */
 export const getSubscription = async (idToken) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/subscription`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripeAPI/subscription`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${idToken}`,
             },
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch subscription');
+        let jsonData;
+        try {
+            jsonData = await response.json();
+        } catch {
+            throw new Error(`Invalid response: ${response.statusText}`);
         }
 
-        return await response.json();
+        if (!response.ok) {
+            throw new Error(jsonData.error || 'Failed to fetch subscription');
+        }
+
+        return jsonData;
     } catch (error) {
         console.error('Error fetching subscription:', error);
         throw error;
@@ -72,7 +85,7 @@ export const getSubscription = async (idToken) => {
  */
 export const cancelSubscription = async (idToken, subscriptionId) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/cancel-subscription`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripeAPI/cancel-subscription`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,12 +94,18 @@ export const cancelSubscription = async (idToken, subscriptionId) => {
             body: JSON.stringify({ subscriptionId }),
         });
 
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Failed to cancel subscription');
+        let jsonData;
+        try {
+            jsonData = await response.json();
+        } catch {
+            throw new Error(`Invalid response: ${response.statusText}`);
         }
 
-        return await response.json();
+        if (!response.ok) {
+            throw new Error(jsonData.error || 'Failed to cancel subscription');
+        }
+
+        return jsonData;
     } catch (error) {
         console.error('Error canceling subscription:', error);
         throw error;
@@ -100,7 +119,7 @@ export const cancelSubscription = async (idToken, subscriptionId) => {
  */
 export const createPortalSession = async (idToken) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/create-portal-session`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stripeAPI/create-portal-session`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -108,12 +127,18 @@ export const createPortalSession = async (idToken) => {
             },
         });
 
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Failed to create portal session');
+        let jsonData;
+        try {
+            jsonData = await response.json();
+        } catch {
+            throw new Error(`Invalid response: ${response.statusText}`);
         }
 
-        return await response.json();
+        if (!response.ok) {
+            throw new Error(jsonData.error || 'Failed to create portal session');
+        }
+
+        return jsonData;
     } catch (error) {
         console.error('Error creating portal session:', error);
         throw error;

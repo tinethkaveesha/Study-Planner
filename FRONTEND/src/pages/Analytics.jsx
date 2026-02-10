@@ -14,6 +14,9 @@ import {
 	BarChart,
 	Bar,
 } from "recharts";
+import { FaSave, FaBook } from "react-icons/fa";
+import { FiDownload, FiBarChart2 } from "react-icons/fi";
+import { FaChartLine, FaRegLightbulb } from "react-icons/fa6";
 
 export default function Analytics() {
 	const [examType, setExamType] = useState("ordinary");
@@ -107,9 +110,9 @@ export default function Analytics() {
 		const loadMarksFromCache = async () => {
 			try {
 				const loadedData = { ...allMarksDataByType };
-				let hasData = false;
+				let ordinaryTimestamps = {};
 
-				// Try loading each exam type from localStorage first (faster)
+				// Try loading each exam type from localStorage first (faster and most accurate)
 				["ordinary", "scholarship", "advanced"].forEach((type) => {
 					const key = getExamTypeKey(type);
 					const stored = localStorage.getItem(key);
@@ -120,16 +123,25 @@ export default function Analytics() {
 								marksData: parsed.marksData || {},
 								customSubjects: parsed.customSubjects || [],
 							};
-							hasData = true;
+							// Try to get the saved timestamp for this type
+							const tsKey = `${key}_ts`;
+							const ts = localStorage.getItem(tsKey);
+							if (ts && type === "ordinary") {
+								ordinaryTimestamps = { all: ts };
+							}
 						} catch (e) {
-							console.warn(`Error parsing ${type} marks:`, e);
+							console.warn(`Error parsing ${type} marks from localStorage:`, e);
 						}
 					}
 				});
 
-				// Load real-time marks from Firestore for all exam types
-				let ordinaryTimestamps = {};
-				if (user) {
+				// Only load from Firestore if localStorage is empty (no local marks saved yet)
+				// This prevents overwriting user's entered marks with reconstructed data
+				const hasLocalStorageMarks = Object.values(loadedData).some(
+					(typeData) => Object.keys(typeData.marksData || {}).length > 0
+				);
+
+				if (!hasLocalStorageMarks && user) {
 					try {
 						for (const type of ["ordinary", "scholarship", "advanced"]) {
 							const { marks: firestoreMarks, timestamps } = await loadMarksFromFirestore(user.uid, type);
@@ -138,10 +150,9 @@ export default function Analytics() {
 									marksData: firestoreMarks,
 									customSubjects: loadedData[type].customSubjects,
 								};
-							}
-							// Store timestamps for ordinary level (current display)
-							if (type === "ordinary") {
-								ordinaryTimestamps = timestamps;
+								if (type === "ordinary") {
+									ordinaryTimestamps = timestamps;
+								}
 							}
 						}
 					} catch (error) {
@@ -157,7 +168,7 @@ export default function Analytics() {
 				setCustomsubjects(ordinaryData.customSubjects || []);
 				setLastSaved(ordinaryTimestamps);
 				
-				console.log("✅ All marks data loaded:", loadedData);
+				console.log("✅ All marks data loaded from localStorage:", loadedData);
 			} catch (error) {
 				console.error("Error loading marks data:", error);
 			}
@@ -165,7 +176,7 @@ export default function Analytics() {
 		};
 
 		loadMarksFromCache();
-	}, [user]);
+	}, [user, getExamTypeKey]);
 
 	// Load academic progress from Firestore - FILTER BY EXAM TYPE
 	useEffect(() => {
@@ -515,7 +526,7 @@ export default function Analytics() {
 				<div className="container mx-auto px-4">
 					<div className="mx-auto mb-16 max-w-3xl">
 						<h1 className="text-5xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-							<span>📊</span>Analytics
+							<FiBarChart2 className="text-amber-600" /> Analytics
 						</h1>
 						<p className="text-lg text-gray-600">
 							Understand your learning patterns and optimize your study sessions.
@@ -526,7 +537,7 @@ export default function Analytics() {
 					{user && academicProgress && (
 						<div className="rounded-2xl border border-amber-200 bg-amber-50 p-8 shadow-lg mb-12">
 							<h2 className="text-2xl font-bold text-amber-900 mb-8">
-								📈 Your Academic Performance
+								<FaChartLine className="inline mr-1" /> Your Academic Performance
 							</h2>
 							
 							{/* Overview Cards */}
@@ -812,7 +823,7 @@ export default function Analytics() {
 										onClick={saveMarksToFirestore}
 										className="px-8 py-3 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-all font-semibold"
 									>
-										💾 Save Marks to Firestore
+										<FaSave className="inline mr-2" /> Save Marks to Firestore
 									</button>
 									<button
 										onClick={generateStudyPlan}
@@ -905,13 +916,13 @@ export default function Analytics() {
 						<div className="rounded-2xl border border-green-200 bg-green-50 p-8 shadow-lg mb-12">
 							<div className="flex items-center justify-between mb-6">
 								<h2 className="text-2xl font-bold text-green-900">
-									📚 Recommended Study Plan for Next Term
+									<FaBook className="inline mr-2 text-green-700" /> Recommended Study Plan for Next Term
 								</h2>
 								<button
 									onClick={downloadStudyPlan}
 									className="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-all font-semibold flex items-center gap-2"
 								>
-									📥 Download Plan
+									<FiDownload className="text-white" /> Download Plan
 								</button>
 							</div>
 							<div className="mb-6 p-4 bg-green-100 rounded-lg">
@@ -951,11 +962,11 @@ export default function Analytics() {
 											</span>
 										</p>
 										<p className="text-sm text-gray-700 mb-2">
-											📖 Recommended Hours/Week:{" "}
+											<FaBook className="inline" /> Recommended Hours/Week:{" "}
 											<span className="font-bold">{plan.hoursPerWeek}h</span>
 										</p>
 										<p className="text-sm text-green-800 italic">
-											💡 {plan.recommendation}
+											<FaRegLightbulb className="inline mr-1 text-green-700" /> {plan.recommendation}
 										</p>
 									</div>
 								))}
@@ -967,7 +978,7 @@ export default function Analytics() {
 					<div className="grid gap-6 md:grid-cols-2">
 						<div className="rounded-2xl border border-amber-200 bg-amber-50 p-8">
 							<h3 className="text-lg font-bold text-amber-900 mb-3">
-								💡 Your Insights
+								<FaRegLightbulb className="inline mr-1 text-amber-700" /> Your Insights
 							</h3>
 							<ul className="space-y-2 text-amber-900 text-sm">
 								<li>
@@ -981,7 +992,7 @@ export default function Analytics() {
 
 						<div className="rounded-2xl border border-blue-200 bg-blue-50 p-8">
 							<h3 className="text-lg font-bold text-blue-900 mb-3">
-								📊 Tips for Success
+								<FiBarChart2 className="inline mr-1" /> Tips for Success
 							</h3>
 							<ul className="space-y-2 text-blue-900 text-sm">
 								<li>• Allocate more hours to subjects with lower scores</li>
