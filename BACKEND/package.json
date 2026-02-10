@@ -1,30 +1,11 @@
 {
-  "name": "study-planner-backend",
-  "version": "1.0.0",
-  "description": "Study Planner backend with Stripe integration",
-  "main": "server.js",
-  "type": "commonjs",
+  "private": true,
+  "name": "study-planner-root",
+  "version": "0.0.0",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "keywords": [
-    "stripe",
-    "payments",
-    "firebase",
-    "express"
-  ],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@stripe/stripe-js": "^8.7.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "firebase-admin": "^12.0.0",
-    "stripe": "^14.8.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
+    "install": "npm --prefix \"Study-Planner-20260201T030413Z-3-001/Study-Planner\" install",
+    "dev": "npm --prefix \"Study-Planner-20260201T030413Z-3-001/Study-Planner\" run dev",
+    "build": "npm --prefix \"Study-Planner-20260201T030413Z-3-001/Study-Planner\" run build",
+    "start": "npm --prefix \"Study-Planner-20260201T030413Z-3-001/Study-Planner\" run start"
   }
 }

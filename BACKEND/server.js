@@ -5,6 +5,19 @@ require('dotenv').config();
 
 const app = express();
 
+// Validate critical environment variables
+const validateEnvironment = () => {
+    const required = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET'];
+    const missing = required.filter(key => !process.env[key]);
+    
+    if (missing.length > 0) {
+        console.error('Missing required environment variables:', missing.join(', '));
+        console.warn('Some features may not work properly');
+    }
+};
+
+validateEnvironment();
+
 // Initialize Firebase Admin SDK
 let firebaseInitialized = false;
 try {
@@ -14,17 +27,19 @@ try {
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
         });
+        console.log('Firebase Admin SDK initialized with service account');
     } else {
         // Use application default credentials (for local development with gcloud CLI)
         admin.initializeApp({
             credential: admin.credential.applicationDefault(),
         });
+        console.log('Firebase Admin SDK initialized with application default credentials');
     }
-    console.log('✓ Firebase Admin SDK initialized successfully');
     firebaseInitialized = true;
 } catch (error) {
-    console.error('✗ Failed to initialize Firebase Admin SDK:', error.message);
-    console.warn('⚠ Some features may not work without Firebase Admin initialization');
+    console.error('Failed to initialize Firebase Admin SDK:', error.message);
+    console.warn('Some features may not work without Firebase Admin initialization');
+    console.warn('Please check your Firebase configuration in .env file');
 }
 
 // CORS Configuration - allow frontend to make requests
@@ -43,12 +58,17 @@ const getAllowedOrigins = () => {
         origins.push(...process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()));
     }
 
+    // Add CLIENT_URL if provided
+    if (process.env.CLIENT_URL && !origins.includes(process.env.CLIENT_URL)) {
+        origins.push(process.env.CLIENT_URL);
+    }
+
     // Vercel/Netlify preview deployments
     if (process.env.VERCEL_URL) {
         origins.push(`https://${process.env.VERCEL_URL}`);
     }
     
-    if (process.env.NETLIFY_SITE_ID) {
+    if (process.env.NETLIFY_URL) {
         origins.push(`https://${process.env.NETLIFY_URL}`);
     }
 
@@ -67,7 +87,7 @@ const corsOptions = {
         if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
             callback(null, true);
         } else {
-            console.warn(`❌ CORS blocked origin: ${origin}`);
+            console.warn(`CORS blocked origin: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
@@ -82,12 +102,14 @@ app.use(cors(corsOptions));
 
 // Request logging middleware
 app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+    const timestamp = new Date().toISOString();
+    console.log(`[${timestamp}] ${req.method} ${req.path}`);
     next();
 });
 
 // Stripe webhook route (MUST be before express.json())
-app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }));
+const stripeWebhookHandler = require('./routes/stripe-routes');
+app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }), stripeWebhookHandler);
 
 // JSON middleware for other routes
 app.use(express.json());
@@ -101,55 +123,123 @@ app.get('/health', (req, res) => {
     res.json({ 
         status: 'Server is running',
         firebaseInitialized,
+        nodeVersion: process.version,
+        environment: process.env.NODE_ENV || 'development',
         timestamp: new Date().toISOString()
+    });
+});
+
+// Root route
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Study Planner Backend API',
+        version: '1.0.0',
+        status: 'running',
+        endpoints: {
+            health: 'GET /health',
+            stripe: {
+                createCheckout: 'POST /api/stripeAPI/create-checkout-session',
+                getSubscription: 'GET /api/stripeAPI/subscription',
+                cancelSubscription: 'POST /api/stripeAPI/cancel-subscription',
+                createPortal: 'POST /api/stripeAPI/create-portal-session',
+                webhook: 'POST /api/stripe/webhook'
+            }
+        }
     });
 });
 
 // 404 handler
 app.use((req, res) => {
-    console.warn(`✗ 404 - Route not found: ${req.method} ${req.path}`);
+    console.warn(`404 - Route not found: ${req.method} ${req.path}`);
     res.status(404).json({ 
         error: 'Route not found',
         path: req.path,
         method: req.method,
         availableRoutes: [
+            'GET /',
             'GET /health',
             'POST /api/stripeAPI/create-checkout-session',
             'GET /api/stripeAPI/subscription',
             'POST /api/stripeAPI/cancel-subscription',
-            'POST /api/stripeAPI/create-portal-session'
+            'POST /api/stripeAPI/create-portal-session',
+            'POST /api/stripe/webhook'
         ]
     });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error('✗ Server error:', err);
-    res.status(err.status || 500).json({
-        error: err.message || 'Internal server error',
-        ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-    });
+    console.error('Server error:', err);
+    
+    // Don't leak error details in production
+    const errorResponse = {
+        error: process.env.NODE_ENV === 'production' 
+            ? 'Internal server error' 
+            : err.message || 'Internal server error'
+    };
+    
+    if (process.env.NODE_ENV === 'development') {
+        errorResponse.stack = err.stack;
+    }
+    
+    res.status(err.status || 500).json(errorResponse);
 });
+
+// Graceful shutdown handler
+const gracefulShutdown = (signal) => {
+    console.log(`\nReceived ${signal}. Starting graceful shutdown...`);
+    
+    server.close(() => {
+        console.log('Server closed. Exiting process.');
+        process.exit(0);
+    });
+    
+    // Force shutdown after 10 seconds
+    setTimeout(() => {
+        console.error('Forced shutdown after timeout');
+        process.exit(1);
+    }, 10000);
+};
 
 // Start server
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     const allowedOrigins = getAllowedOrigins();
     
-    console.log(`\n✓ Study Planner Backend Server`);
-    console.log(`  Port: ${PORT}`);
-    console.log(`  Environment: ${NODE_ENV}`);
-    console.log(`  Firebase: ${firebaseInitialized ? '✓ Ready' : '✗ Not initialized'}`);
-    console.log(`  CORS Origins Allowed:`);
-    allowedOrigins.forEach(origin => console.log(`    • ${origin}`));
+    console.log('\n========================================');
+    console.log('Study Planner Backend Server');
+    console.log('========================================');
+    console.log(`Port: ${PORT}`);
+    console.log(`Environment: ${NODE_ENV}`);
+    console.log(`Node Version: ${process.version}`);
+    console.log(`Firebase: ${firebaseInitialized ? 'Ready' : 'Not initialized'}`);
+    console.log('\nCORS Origins Allowed:');
+    allowedOrigins.forEach(origin => console.log(`  - ${origin}`));
     
     if (!firebaseInitialized) {
-        console.warn(`\n⚠️  Firebase not initialized. Some features may not work.`);
-        console.warn(`    Setup Firebase in your .env file as described in SETUP.md`);
+        console.warn('\n[WARNING] Firebase not initialized. Some features may not work.');
+        console.warn('Setup Firebase in your .env file as described in README');
     }
     
-    console.log(`\n  Health Check: http://localhost:${PORT}/health`);
-    console.log(`  Ready to accept connections!\n`);
+    console.log(`\nHealth Check: http://localhost:${PORT}/health`);
+    console.log('Ready to accept connections!');
+    console.log('========================================\n');
 });
+
+// Handle process termination
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Handle uncaught errors
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+    process.exit(1);
+});
+
+module.exports = app;
