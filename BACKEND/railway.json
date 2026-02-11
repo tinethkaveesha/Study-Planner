@@ -5,8 +5,8 @@
   },
   "deploy": {
     "numReplicas": 1,
-    "restartPolicyType": "unless-stopped",
-    "restartPolicyMaxRetries": -1,
+    "restartPolicyType": "on-failure",
+    "restartPolicyMaxRetries": 3,
     "startCommand": "npm start",
     "healthchecks": {
       "liveness": {
