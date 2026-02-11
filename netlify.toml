@@ -1,6 +1,6 @@
 [build]
-  command = "cd BACKEND && npm install && node server.js"
-  functions = "BACKEND"
+  command = "npm run build"
+  functions = "../BACKEND"
 
 [[redirects]]
   from = "/api/*"
