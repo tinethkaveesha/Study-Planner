@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const ADMIN_REDIRECT_URL = "https://tinethkaveesha.github.io/Admin/";
+const ADMIN_REDIRECT_URL = "https://admin-one-ashen-52.vercel.app/";
 
 /**
  * AdminRedirect Component

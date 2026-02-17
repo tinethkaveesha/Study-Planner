@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 
 // Admin credentials
 const ADMIN_EMAIL = "admin2010@gmail.com";
-const ADMIN_REDIRECT_URL = "https://admin-pekkka.netlify.app/";
+const ADMIN_REDIRECT_URL = "https://admin-one-ashen-52.vercel.app/";
 
 export default function AuthModal({ isOpen, onClose }) {
     const [isLogin, setIsLogin] = useState(true);
