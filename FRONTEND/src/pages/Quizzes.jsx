@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaGraduationCap } from "react-icons/fa";
 import { FiTarget } from "react-icons/fi";
 import { GiTrophyCup } from "react-icons/gi";
 import { LuAlarmClock } from "react-icons/lu";
+import { useAuth } from "../context/AuthContext";
+import { db } from "../firebase";
+import { addDoc, collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 export default function Quizzes() {
+	const { user } = useAuth();
 	const [generatingQuiz, setGeneratingQuiz] = useState(false);
 	const [generatedQuiz, setGeneratedQuiz] = useState(null);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [selectedAnswers, setSelectedAnswers] = useState({});
 	const [showResults, setShowResults] = useState(false);
+	const [savedQuizzes, setSavedQuizzes] = useState([]);
+	const [loadingQuizzes, setLoadingQuizzes] = useState(false);
 	const [formData, setFormData] = useState({
 		subject: "Mathematics",
 		topic: "",
@@ -59,6 +65,63 @@ export default function Quizzes() {
 		},
 	];
 
+	// Fetch saved quizzes from Firebase
+	useEffect(() => {
+		if (user) {
+			fetchSavedQuizzes();
+		}
+	}, [user]);
+
+	const fetchSavedQuizzes = async () => {
+		if (!user) return;
+		try {
+			setLoadingQuizzes(true);
+			const q = query(collection(db, "quizzes"), where("userId", "==", user.uid));
+			const querySnapshot = await getDocs(q);
+			const quizzes = [];
+			querySnapshot.forEach((doc) => {
+				quizzes.push({ id: doc.id, ...doc.data() });
+			});
+			setSavedQuizzes(quizzes);
+		} catch (error) {
+			console.error("Error fetching saved quizzes:", error);
+		} finally {
+			setLoadingQuizzes(false);
+		}
+	};
+
+	const saveQuizToFirebase = async (quizData) => {
+		if (!user) {
+			alert("Please log in to save quizzes!");
+			return;
+		}
+		try {
+			await addDoc(collection(db, "quizzes"), {
+				userId: user.uid,
+				title: `${formData.topic} - ${formData.subject}`,
+				subject: formData.subject,
+				topic: formData.topic,
+				questions: quizData,
+				questionCount: quizData.length,
+				createdAt: new Date(),
+				savedQuiz: true,
+			});
+			// Refresh the saved quizzes list
+			await fetchSavedQuizzes();
+		} catch (error) {
+			console.error("Error saving quiz to Firebase:", error);
+		}
+	};
+
+	const deleteQuizFromFirebase = async (quizId) => {
+		try {
+			await deleteDoc(doc(db, "quizzes", quizId));
+			await fetchSavedQuizzes();
+		} catch (error) {
+			console.error("Error deleting quiz:", error);
+		}
+	};
+
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({
@@ -78,21 +141,7 @@ export default function Quizzes() {
 		setGeneratingQuiz(true);
 
 		try {
-			const response = await fetch(
-				"https://openrouter.ai/api/v1/chat/completions",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"HTTP-Referer": window.location.href,
-						"X-Title": "Quiz Generator"
-					},
-					body: JSON.stringify({
-						model: "tngtech/deepseek-r1t2-chimera:free",
-						messages: [
-							{
-								role: "user",
-								content: `Generate a quiz with ${formData.questions} multiple choice questions about ${formData.topic} in ${formData.subject}. 
+			const quizPrompt = `Generate a quiz with ${formData.questions} multiple choice questions about ${formData.topic} in ${formData.subject}. 
 
 For each question, provide:
 1. The question text
@@ -110,9 +159,31 @@ Format your response as a JSON array with NO markdown formatting, NO backticks, 
   }
 ]
 
-Return ONLY the JSON array, nothing else.`
+Return ONLY the JSON array, nothing else.`;
+
+			const apiKey = "AIzaSyD_KGZBtiGXm8Wu_3brVGQLIeHyLrJ2HgE";
+			
+			const response = await fetch(
+				`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						contents: [
+							{
+								role: "user",
+								parts: [
+									{
+										text: quizPrompt
+									}
+								]
 							}
-						]
+						],
+						generationConfig: {
+							temperature: 0.7,
+						}
 					}),
 				}
 			);
@@ -126,19 +197,12 @@ Return ONLY the JSON array, nothing else.`
 			}
 
 			if (!response.ok) {
-				throw new Error(data.error?.message || `API request failed with status ${response.status}`);
+				throw new Error(data.error?.message || `Google AI API request failed with status ${response.status}`);
 			}
 
-			console.log("OpenRouter API Response:", data);
-			
-			// Extract text from OpenRouter response
-			let quizContent = data.choices[0]?.message?.content || "";
-			
-			console.log("Quiz Content:", quizContent);
-			
-			// Clean up the response - remove markdown code blocks if present
+			console.log("Google Generative AI Response:", data);
+			let quizContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 			quizContent = quizContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-			
 			const quizData = JSON.parse(quizContent);
 			
 			if (!Array.isArray(quizData) || quizData.length === 0) {
@@ -162,6 +226,8 @@ Return ONLY the JSON array, nothing else.`
 		setCurrentQuestion(0);
 		setSelectedAnswers({});
 		setShowResults(false);
+		// Save the quiz to Firebase
+		saveQuizToFirebase(quizData);
 	};
 
 	const handleAnswerSelect = (questionIndex, answer) => {
@@ -219,61 +285,63 @@ Return ONLY the JSON array, nothing else.`
 
 					<div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-lg mb-12">
 						<h2 className="text-2xl font-bold text-gray-900 mb-6">Create Custom Quiz</h2>
-						<form className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" onSubmit={handleGenerateQuiz}>
-							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-2">
-									Subject
-								</label>
-								<select
-									name="subject"
-									value={formData.subject}
-									onChange={handleInputChange}
-									className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-700"
-								>
-									<option>Mathematics</option>
-									<option>Physics</option>
-									<option>Chemistry</option>
-									<option>English</option>
-								</select>
-							</div>
-							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-2">
-									Topic
-								</label>
-								<input
-									type="text"
-									name="topic"
-									value={formData.topic}
-									onChange={handleInputChange}
-									placeholder="e.g., Algebra"
-									required
-									className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-700"
-								/>
-							</div>
-							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-2">
-									Questions
-								</label>
-								<input
-									type="number"
-									name="questions"
-									value={formData.questions}
-									onChange={handleInputChange}
-									placeholder="10"
-									min="5"
-									max="20"
-									required
-									className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-700"
-								/>
-							</div>
-							<div className="flex items-end">
-								<button
-									type="submit"
-									disabled={generatingQuiz}
-									className="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
-								>
-									{generatingQuiz ? "Generating..." : "Generate"}
-								</button>
+						<form className="space-y-4" onSubmit={handleGenerateQuiz}>
+							<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+								<div>
+									<label className="block text-sm font-medium text-gray-700 mb-2">
+										Subject
+									</label>
+									<select
+										name="subject"
+										value={formData.subject}
+										onChange={handleInputChange}
+										className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-700"
+									>
+										<option>Mathematics</option>
+										<option>Physics</option>
+										<option>Chemistry</option>
+										<option>English</option>
+									</select>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-700 mb-2">
+										Topic
+									</label>
+									<input
+										type="text"
+										name="topic"
+										value={formData.topic}
+										onChange={handleInputChange}
+										placeholder="e.g., Algebra"
+										required
+										className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-700"
+									/>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-700 mb-2">
+										Questions
+									</label>
+									<input
+										type="number"
+										name="questions"
+										value={formData.questions}
+										onChange={handleInputChange}
+										placeholder="10"
+										min="5"
+										max="20"
+										required
+										className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-700"
+									/>
+								</div>
+								<div className="flex items-end">
+									<button
+										type="submit"
+										disabled={generatingQuiz}
+										className="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
+									>
+										{generatingQuiz ? "Generating..." : "Generate"}
+									</button>
+								</div>
 							</div>
 						</form>
 					</div>
@@ -332,12 +400,78 @@ Return ONLY the JSON array, nothing else.`
 							</div>
 						))}
 					</div>
+
+					{/* Saved Quizzes Section */}
+					{savedQuizzes.length > 0 && (
+						<>
+							<h2 className="text-2xl font-bold text-gray-900 mb-6 mt-12">My Saved Quizzes</h2>
+							<div className="grid gap-6 md:grid-cols-2">
+								{savedQuizzes.map((quiz) => (
+									<div
+										key={quiz.id}
+										className="rounded-2xl border border-blue-200 bg-blue-50 p-6 shadow-lg hover:shadow-xl transition-all"
+									>
+										<div className="mb-4">
+											<div className="flex items-start justify-between mb-2">
+												<h3 className="text-xl font-semibold text-gray-900">
+													{quiz.title}
+												</h3>
+												<span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+													Saved
+												</span>
+											</div>
+											<p className="text-amber-700 text-sm">{quiz.subject}</p>
+										</div>
+
+										<div className="space-y-2 mb-4 pb-4 border-b border-blue-200">
+											<p className="text-gray-600 text-sm">
+												<FiTarget className="inline mr-1 text-amber-600" /> {quiz.questionCount} questions
+											</p>
+											<p className="text-gray-600 text-sm">
+												<LuAlarmClock className="inline mr-1 text-amber-600" /> Saved on{" "}
+											{quiz.createdAt instanceof Date 
+												? quiz.createdAt.toLocaleDateString()
+												: new Date(quiz.createdAt?.seconds * 1000).toLocaleDateString()}
+											</p>
+										</div>
+
+										<div className="flex gap-3">
+											<button
+												onClick={() => {
+													setGeneratedQuiz({
+														title: quiz.title,
+														questions: quiz.questions,
+													});
+													setCurrentQuestion(0);
+													setSelectedAnswers({});
+													setShowResults(false);
+												}}
+												className="flex-1 py-2 bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all"
+											>
+												Start Quiz
+											</button>
+											<button
+												onClick={() => {
+													if (confirm("Are you sure you want to delete this quiz?")) {
+														deleteQuizFromFirebase(quiz.id);
+													}
+												}}
+												className="px-4 py-2 bg-red-100 text-red-700 font-semibold rounded-lg hover:bg-red-200 transition-all"
+											>
+												Delete
+											</button>
+										</div>
+									</div>
+								))}
+							</div>
+						</>
+					)}
 				</div>
 			</section>
 
 			{/* Generated Quiz Modal */}
 			{generatedQuiz && (
-				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+		<div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 					<div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
 						<div className="sticky top-0 bg-white border-b border-gray-200 p-6 rounded-t-2xl">
 							<div className="flex justify-between items-start mb-2">
