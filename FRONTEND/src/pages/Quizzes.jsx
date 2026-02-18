@@ -141,69 +141,28 @@ export default function Quizzes() {
 		setGeneratingQuiz(true);
 
 		try {
-			const quizPrompt = `Generate a quiz with ${formData.questions} multiple choice questions about ${formData.topic} in ${formData.subject}. 
-
-For each question, provide:
-1. The question text
-2. Four answer options (A, B, C, D)
-3. The correct answer (just the letter)
-4. A brief explanation
-
-Format your response as a JSON array with NO markdown formatting, NO backticks, NO preamble. Just the raw JSON array of objects with this structure:
-[
-  {
-    "question": "question text",
-    "options": ["A) option 1", "B) option 2", "C) option 3", "D) option 4"],
-    "correct": "A",
-    "explanation": "explanation text"
-  }
-]
-
-Return ONLY the JSON array, nothing else.`;
-
-			const apiKey = "AIzaSyD_KGZBtiGXm8Wu_3brVGQLIeHyLrJ2HgE";
-			
 			const response = await fetch(
-				`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+				`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/generate-quiz`,
 				{
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({
-						contents: [
-							{
-								role: "user",
-								parts: [
-									{
-										text: quizPrompt
-									}
-								]
-							}
-						],
-						generationConfig: {
-							temperature: 0.7,
-						}
+						subject: formData.subject,
+						topic: formData.topic,
+						questions: formData.questions
 					}),
 				}
 			);
 
-			let data;
-			try {
-				const responseText = await response.text();
-				data = responseText ? JSON.parse(responseText) : {};
-			} catch (parseError) {
-				throw new Error(`Invalid JSON response from API: ${parseError.message}`);
-			}
-
 			if (!response.ok) {
-				throw new Error(data.error?.message || `Google AI API request failed with status ${response.status}`);
+				const errorData = await response.json().catch(() => ({}));
+				throw new Error(errorData.message || `Failed to generate quiz (${response.status})`);
 			}
 
-			console.log("Google Generative AI Response:", data);
-			let quizContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-			quizContent = quizContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-			const quizData = JSON.parse(quizContent);
+			const data = await response.json();
+			const quizData = data.quizData;
 			
 			if (!Array.isArray(quizData) || quizData.length === 0) {
 				throw new Error("Invalid quiz format received");

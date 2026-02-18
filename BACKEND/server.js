@@ -273,6 +273,99 @@ async function handleInvoicePaymentFailed(invoice) {
 // JSON middleware for other routes
 app.use(express.json());
 
+// Quiz Generation endpoint
+app.post('/api/generate-quiz', async (req, res) => {
+    try {
+        if (!process.env.GOOGLE_API_KEY) {
+            return res.status(500).json({ 
+                error: 'Quiz generation unavailable',
+                message: 'Google API key not configured on server' 
+            });
+        }
+
+        const { subject, topic, questions } = req.body;
+
+        if (!topic || !subject) {
+            return res.status(400).json({ 
+                error: 'Missing required fields',
+                message: 'topic and subject are required' 
+            });
+        }
+
+        const questionCount = Math.min(Math.max(parseInt(questions) || 10, 5), 20);
+
+        const quizPrompt = `Generate a quiz with ${questionCount} multiple choice questions about ${topic} in ${subject}. 
+
+For each question, provide:
+1. The question text
+2. Four answer options (A, B, C, D)
+3. The correct answer (just the letter)
+4. A brief explanation
+
+Format your response as a JSON array with NO markdown formatting, NO backticks, NO preamble. Just the raw JSON array of objects with this structure:
+[
+  {
+    "question": "question text",
+    "options": ["A) option 1", "B) option 2", "C) option 3", "D) option 4"],
+    "correct": "A",
+    "explanation": "explanation text"
+  }
+]
+
+Return ONLY the JSON array, nothing else.`;
+
+        const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_API_KEY}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [
+                        {
+                            role: 'user',
+                            parts: [
+                                {
+                                    text: quizPrompt
+                                }
+                            ]
+                        }
+                    ],
+                    generationConfig: {
+                        temperature: 0.7,
+                    }
+                }),
+            }
+        );
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error?.message || `Google AI API request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        let quizContent = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        
+        // Clean up the response
+        quizContent = quizContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        
+        const quizData = JSON.parse(quizContent);
+
+        if (!Array.isArray(quizData) || quizData.length === 0) {
+            throw new Error('Invalid quiz format received from AI');
+        }
+
+        res.json({ quizData });
+    } catch (error) {
+        console.error('Error generating quiz:', error);
+        res.status(500).json({ 
+            error: 'Failed to generate quiz',
+            message: error.message 
+        });
+    }
+});
+
 // Routes
 const stripeRoutes = require('./routes/stripe-routes');
 app.use('/api/stripeAPI', stripeRoutes);
@@ -296,6 +389,9 @@ app.get('/', (req, res) => {
         status: 'running',
         endpoints: {
             health: 'GET /health',
+            quiz: {
+                generateQuiz: 'POST /api/generate-quiz'
+            },
             stripe: {
                 createCheckout: 'POST /api/stripeAPI/create-checkout-session',
                 getSubscription: 'GET /api/stripeAPI/subscription',
@@ -317,6 +413,7 @@ app.use((req, res) => {
         availableRoutes: [
             'GET /',
             'GET /health',
+            'POST /api/generate-quiz',
             'POST /api/stripeAPI/create-checkout-session',
             'GET /api/stripeAPI/subscription',
             'POST /api/stripeAPI/cancel-subscription',
