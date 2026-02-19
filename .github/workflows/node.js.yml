@@ -26,6 +26,18 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        cache-dependency-path: |
+          BACKEND/package-lock.json
+          FRONTEND/package-lock.json
+    - name: Install Backend Dependencies
+      run: npm ci --prefix BACKEND
+    - name: Install Frontend Dependencies
+      run: npm ci --prefix FRONTEND
+    - name: Build Backend
+      run: npm run build --if-present --prefix BACKEND
+    - name: Build Frontend
+      run: npm run build --if-present --prefix FRONTEND
+    - name: Test Backend
+      run: npm test --if-present --prefix BACKEND
+    - name: Test Frontend
+      run: npm test --if-present --prefix FRONTEND
