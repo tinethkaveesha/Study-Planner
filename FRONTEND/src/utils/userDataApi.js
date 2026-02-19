@@ -1,8 +1,3 @@
-/**
- * User Data API - Manages user progress, analytics, and group data
- * Creates and retrieves user-specific documents in Firestore
- */
-
 import {
     collection,
     doc,

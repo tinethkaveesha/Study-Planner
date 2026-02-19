@@ -7,7 +7,6 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// Validate critical environment variables
 const validateEnvironment = () => {
     const required = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET'];
     const missing = required.filter(key => !process.env[key]);
@@ -20,10 +19,8 @@ const validateEnvironment = () => {
 
 validateEnvironment();
 
-// Initialize Firebase Admin SDK
 let firebaseInitialized = false;
 try {
-    // Try to use the service account from environment variable first (for production/cloud)
     if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
         const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
         admin.initializeApp({
@@ -31,7 +28,6 @@ try {
         });
         console.log('Firebase Admin SDK initialized with service account');
     } else {
-        // Use application default credentials (for local development with gcloud CLI)
         admin.initializeApp({
             credential: admin.credential.applicationDefault(),
         });
@@ -44,28 +40,24 @@ try {
     console.warn('Please check your Firebase configuration in .env file');
 }
 
-// CORS Configuration - allow frontend to make requests
 const getAllowedOrigins = () => {
     const origins = [
-        'http://localhost:5173',      // Local development
-        'http://localhost:5174',      // Alt local (Vite), if 5173 is busy
-        'http://localhost:3000',       // Alternative local
+        'http://localhost:5173',
+        'http://localhost:5174',
+        'http://localhost:3000',
         'http://127.0.0.1:5173',
         'http://127.0.0.1:5174',
         'http://127.0.0.1:3000'
     ];
 
-    // Add production origins from environment variable
     if (process.env.ALLOWED_ORIGINS) {
         origins.push(...process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()));
     }
 
-    // Add CLIENT_URL if provided
     if (process.env.CLIENT_URL && !origins.includes(process.env.CLIENT_URL)) {
         origins.push(process.env.CLIENT_URL);
     }
 
-    // Vercel/Netlify preview deployments
     if (process.env.VERCEL_URL) {
         origins.push(`https://${process.env.VERCEL_URL}`);
     }
@@ -80,8 +72,7 @@ const getAllowedOrigins = () => {
 const corsOptions = {
     origin: (origin, callback) => {
         const allowedOrigins = getAllowedOrigins();
-        
-        // Allow requests with no origin (mobile apps, curl requests, etc)
+
         if (!origin) {
             return callback(null, true);
         }
@@ -96,21 +87,17 @@ const corsOptions = {
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    maxAge: 86400 // 24 hours
+    maxAge: 86400
 };
 
-// Middleware
 app.use(cors(corsOptions));
 
-// Request logging middleware
 app.use((req, res, next) => {
     const timestamp = new Date().toISOString();
     console.log(`[${timestamp}] ${req.method} ${req.path}`);
     next();
 });
 
-// Stripe webhook route (MUST be before express.json())
-// webhook handler needs raw body for signature verification
 app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'];
     let event;
@@ -163,7 +150,6 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
     }
 });
 
-// Webhook helper functions
 async function handleCheckoutSessionCompleted(session) {
     const firebaseUID = session.metadata?.firebaseUID;
     if (!firebaseUID) {
@@ -270,10 +256,8 @@ async function handleInvoicePaymentFailed(invoice) {
     console.log(`Invoice payment failed for customer ${customerId}`);
 }
 
-// JSON middleware for other routes
 app.use(express.json());
 
-// Quiz Generation endpoint
 app.post('/api/generate-quiz', async (req, res) => {
     try {
         if (!process.env.GOOGLE_API_KEY) {
@@ -366,11 +350,9 @@ Return ONLY the JSON array, nothing else.`;
     }
 });
 
-// Routes
 const stripeRoutes = require('./routes/stripe-routes');
 app.use('/api/stripeAPI', stripeRoutes);
 
-// Health check route
 app.get('/health', (req, res) => {
     res.json({ 
         status: 'Server is running',
@@ -381,7 +363,6 @@ app.get('/health', (req, res) => {
     });
 });
 
-// Root route
 app.get('/', (req, res) => {
     res.json({
         message: 'Study Planner Backend API',
@@ -403,7 +384,6 @@ app.get('/', (req, res) => {
     });
 });
 
-// 404 handler
 app.use((req, res) => {
     console.warn(`404 - Route not found: ${req.method} ${req.path}`);
     res.status(404).json({ 
@@ -423,11 +403,9 @@ app.use((req, res) => {
     });
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Server error:', err);
     
-    // Don't leak error details in production
     const errorResponse = {
         error: process.env.NODE_ENV === 'production' 
             ? 'Internal server error' 
@@ -441,7 +419,6 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).json(errorResponse);
 });
 
-// Graceful shutdown handler
 const gracefulShutdown = (signal) => {
     console.log(`\nReceived ${signal}. Starting graceful shutdown...`);
     
@@ -450,14 +427,12 @@ const gracefulShutdown = (signal) => {
         process.exit(0);
     });
     
-    // Force shutdown after 10 seconds
     setTimeout(() => {
         console.error('Forced shutdown after timeout');
         process.exit(1);
     }, 10000);
 };
 
-// Start server
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -484,11 +459,9 @@ const server = app.listen(PORT, () => {
     console.log('========================================\n');
 });
 
-// Handle process termination
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
-// Handle uncaught errors
 process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });

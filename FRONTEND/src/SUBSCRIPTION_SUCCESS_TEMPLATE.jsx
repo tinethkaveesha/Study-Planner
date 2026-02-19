@@ -1,11 +1,3 @@
-/**
- * SubscriptionSuccess.jsx
- * 
- * This page is shown after successful Stripe checkout.
- * Add this to your src/pages/ folder and route it as:
- * <Route path="/subscription-success" element={<SubscriptionSuccess />} />
- */
-
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
@@ -30,23 +22,13 @@ export default function SubscriptionSuccess() {
           return;
         }
 
-        // TODO: Verify subscription with backend
-        // const idToken = await user.getIdToken();
-        // const response = await fetch(
-        //   `${import.meta.env.VITE_API_URL}/api/verify-subscription/${sessionId}`,
-        //   {
-        //     headers: { Authorization: `Bearer ${idToken}` },
-        //   }
-        // );
-
-        // For now, assume success and redirect after delay
         setPlanInfo({
           planName: "Premium Plan",
           email: user.email,
         });
 
         const timer = setTimeout(() => {
-          navigate("/dashboard"); // Change to your dashboard route
+          navigate("/dashboard");
         }, 4000);
 
         setLoading(false);
@@ -126,7 +108,6 @@ export default function SubscriptionSuccess() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-50">
       <div className="text-center max-w-md">
-        {/* Success Icon */}
         <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
           <svg
             className="w-10 h-10 text-green-600"
@@ -141,12 +122,10 @@ export default function SubscriptionSuccess() {
           </svg>
         </div>
 
-        {/* Status Title */}
         <h1 className="text-4xl font-bold text-green-900 mb-4">
           Subscription Confirmed!
         </h1>
 
-        {/* Details */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6 text-left">
           <h2 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
             <span className="text-green-600">✓</span>
@@ -175,13 +154,11 @@ export default function SubscriptionSuccess() {
           </ul>
         </div>
 
-        {/* Description */}
         <p className="text-gray-600 mb-8">
           Thank you for subscribing to Study Planner! You now have access to all
           premium features. Enjoy your learning journey!
         </p>
 
-        {/* Action Buttons */}
         <div className="space-y-3">
           <button
             onClick={() => navigate("/dashboard")}
@@ -197,14 +174,13 @@ export default function SubscriptionSuccess() {
           </button>
         </div>
 
-        {/* Support */}
         <div className="mt-8 text-sm text-gray-600 border-t pt-6">
           <p className="mb-2">Need help? Contact our support team:</p>
           <a
             href="mailto:support@studyplanner.example.com"
             className="text-green-600 hover:text-green-700 font-semibold"
           >
-            support@studyplanner.example.com
+            teamispekka@gmail.com
           </a>
         </div>
       </div>

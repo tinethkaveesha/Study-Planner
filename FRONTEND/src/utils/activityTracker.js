@@ -1,8 +1,3 @@
-/**
- * Activity Tracker - Monitors user engagement and study time
- * Tracks: study sessions, time spent, resources clicked, courses accessed
- */
-
 import {
     doc,
     updateDoc,

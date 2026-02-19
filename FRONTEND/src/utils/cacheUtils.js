@@ -1,9 +1,4 @@
 /**
- * Cache Utilities - Smart caching with Firestore as primary storage
- * Uses localStorage for performance/offline support while keeping Firestore as source of truth
- */
-
-/**
  * Get data from cache (localStorage) or fetch from Firestore if stale/missing
  * @param {string} cacheKey - localStorage key
  * @param {Function} firebaseGetter - Async function to fetch from Firestore

@@ -1,8 +1,3 @@
-/**
- * Blog API utilities for Firebase Firestore
- * Handles all blog-related database operations
- */
-
 import {
     collection,
     addDoc,

@@ -1,12 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-/**
- * Route Diagnostic Component
- * Helps identify routing issues in production
- * Add this temporarily to debug routing problems
- * Remove after debugging
- */
 export default function RouteDiagnostic() {
 	const location = useLocation();
 	const navigate = useNavigate();
