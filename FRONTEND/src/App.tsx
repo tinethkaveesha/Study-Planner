@@ -65,7 +65,7 @@ const productLinks = [
 ];
 
 const companyLinks = [
-	{ name: "About", path: "https://team-pekka.netlify.app/", external: true },
+	{ name: "About", path: "https://team-p-e-k-k-a.vercel.app/", external: true },
 	{ name: "Blog", path: "/blog" },
 	{ name: "Careers", path: "/careers" },
 	{ name: "Contact", path: "/contact" },
