@@ -15,7 +15,7 @@ A modern web application designed to help students organize, plan, and track the
 ## Technology Stack
 
 ### Frontend
-- React 19 with TypeScript
+- React 19 with JavaScript
 - Vite (fast build tool)
 - Tailwind CSS (utility-first CSS)
 - React Router v7 (routing)
