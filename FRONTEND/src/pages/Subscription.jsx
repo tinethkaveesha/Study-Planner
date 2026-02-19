@@ -139,6 +139,12 @@ export default function Subscription() {
             // Call your backend to create checkout session
             const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
             const apiUrl = `${apiBaseUrl}/api/stripeAPI/create-checkout-session`;
+            
+            // Get current origin for redirect URLs
+            const origin = window.location.origin;
+            const successUrl = `${origin}/success`;
+            const cancelUrl = `${origin}/subscription`;
+            
             console.log("📡 Making API request to:", apiUrl);
             console.log("🔑 User ID:", currentUser.uid);
             
@@ -150,9 +156,8 @@ export default function Subscription() {
                 },
                 body: JSON.stringify({
                     priceId: plan.stripePriceId,
-                    planType: plan.type,
-                    userId: currentUser.uid,
-                    userEmail: currentUser.email,
+                    successUrl: successUrl,
+                    cancelUrl: cancelUrl,
                 }),
             });
 
