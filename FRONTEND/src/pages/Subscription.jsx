@@ -39,7 +39,7 @@ const plans = [
         type: "pro",
         buttonText: "Subscribe Now",
         highlighted: true,
-        stripePriceId: "prod_U0VNzDnfES1Ro7",
+        stripePriceId: "price_1T2UN835w6HjLDvcBUvNDtWy",
     },
     {
         name: "Premium Yearly",
@@ -55,7 +55,7 @@ const plans = [
         ],
         type: "premium",
         buttonText: "Subscribe Now",
-        stripePriceId: "prod_U0VNzDnfES1Ro7",
+        stripePriceId: "price_1T2UNf35w6HjLDvcnbKZtMsa",
     },
 ];
 
