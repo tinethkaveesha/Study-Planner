@@ -111,7 +111,11 @@ export default function Analytics() {
 
 		const loadMarksFromCache = async () => {
 			try {
-				const loadedData = { ...allMarksDataByType };
+				const loadedData = {
+					ordinary: { marksData: {}, customSubjects: [] },
+					scholarship: { marksData: {}, customSubjects: [] },
+					advanced: { marksData: {}, customSubjects: [] },
+				};
 				let ordinaryTimestamps = {};
 
 				// Try loading each exam type from localStorage first (faster and most accurate)
@@ -178,7 +182,7 @@ export default function Analytics() {
 		};
 
 		loadMarksFromCache();
-	}, [user, getExamTypeKey, allMarksDataByType]);
+	}, [user, getExamTypeKey]);
 
 	// Load academic progress from Firestore - FILTER BY EXAM TYPE
 	useEffect(() => {
@@ -212,11 +216,11 @@ export default function Analytics() {
 			}));
 
 			// Save to localStorage with exam-type-specific key
-			const key = getExamTypeKey(examType);
-			localStorage.setItem(key, JSON.stringify({ marksData, customSubjects }));
-			localStorage.setItem(`${key}_ts`, new Date().toISOString());
+			const storageKey = `${STORAGE_KEY}_${examType}_${user?.uid}`;
+			localStorage.setItem(storageKey, JSON.stringify({ marksData, customSubjects }));
+			localStorage.setItem(`${storageKey}_ts`, new Date().toISOString());
 		}
-	}, [marksData, customSubjects, examType, isLoaded, user, getExamTypeKey]);
+	}, [marksData, customSubjects, examType, isLoaded, user]);
 
 	const handleExamTypeChange = (type) => {
 		// Save current exam type marks before switching

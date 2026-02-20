@@ -66,13 +66,6 @@ export default function Quizzes() {
 		},
 	];
 
-	// Fetch saved quizzes from Firebase
-	useEffect(() => {
-		if (user) {
-			fetchSavedQuizzes();
-		}
-	}, [user, fetchSavedQuizzes]);
-
 	const fetchSavedQuizzes = useCallback(async () => {
 		if (!user) return;
 		try {
@@ -90,6 +83,13 @@ export default function Quizzes() {
 			setLoadingQuizzes(false);
 		}
 	}, [user]);
+
+	// Fetch saved quizzes from Firebase
+	useEffect(() => {
+		if (user) {
+			fetchSavedQuizzes();
+		}
+	}, [user, fetchSavedQuizzes]);
 
 	const saveQuizToFirebase = async (quizData) => {
 		if (!user) {
