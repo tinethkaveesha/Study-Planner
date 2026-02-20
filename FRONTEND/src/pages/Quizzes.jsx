@@ -260,6 +260,11 @@ export default function Quizzes() {
 										<option>Mathematics</option>
 										<option>Physics</option>
 										<option>Chemistry</option>
+										<option>Biology</option>
+										<option>Technology</option>
+										<option>Commerce</option>
+										<option>Law</option>
+										<option>Arts</option>
 										<option>English</option>
 									</select>
 								</div>
