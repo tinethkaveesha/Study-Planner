@@ -5,7 +5,7 @@ export default function Privacy() {
 				<div className="container mx-auto px-3 sm:px-4 max-w-3xl">
 					<div className="mb-12 space-y-2 sm:space-y-4">
 						<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-							<span className="text-amber-700 font-semibold">📋 PRIVACY</span>
+							<span className="text-amber-700 font-semibold">PRIVACY</span>
 						</div>
 						<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">Privacy Policy</h1>
 						<p className="text-base sm:text-lg text-gray-600">Last updated: January 2024</p>

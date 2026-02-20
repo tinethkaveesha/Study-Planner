@@ -49,7 +49,7 @@ export default function NotificationPanel({ isOpen, onClose }) {
 					<div className="fixed inset-0 bg-black/20 z-30 md:bg-transparent" onClick={onClose}></div>
 					<div className="fixed bottom-0 left-0 right-0 md:right-0 md:top-16 md:bottom-auto md:left-auto md:h-screen w-full md:w-96 bg-white border-t md:border-t-0 md:border-l border-gray-200 shadow-2xl transform z-40 overflow-y-auto rounded-t-2xl md:rounded-none max-h-[90vh] md:max-h-none">
 						<div className="p-4 sm:p-6 border-b border-gray-200 sticky top-0 bg-white rounded-t-2xl md:rounded-none">
-							<h2 className="text-lg sm:text-xl font-bold text-gray-900">📰 Latest Blog Posts</h2>
+							<h2 className="text-lg sm:text-xl font-bold text-gray-900">Latest Blog Posts</h2>
 							<p className="text-xs sm:text-sm text-gray-600 mt-1">Stay updated with study tips and insights</p>
 						</div>
 						
@@ -64,7 +64,7 @@ export default function NotificationPanel({ isOpen, onClose }) {
 							</div>
 						) : blogPosts.length === 0 ? (
 							<div className="p-6 text-center text-gray-500">
-								<div className="text-4xl mb-2">📝</div>
+								<div className="text-4xl mb-2">�</div>
 								<p className="text-xs sm:text-sm">No blog posts yet</p>
 								<p className="text-xs text-gray-400 mt-2">Check back soon for interesting study tips!</p>
 							</div>
@@ -74,11 +74,11 @@ export default function NotificationPanel({ isOpen, onClose }) {
 									<div key={post.id} className="p-3 sm:p-4 hover:bg-amber-50 transition-colors cursor-pointer group">
 										<div className="flex gap-2 sm:gap-3">
 											<div className="flex-shrink-0 mt-0 sm:mt-1">
-												<span className="text-xl sm:text-2xl">
+												<span className="text-xl sm:text-2xl font-semibold">
 													{post.category === "Tips" ? "💡" :
-													post.category === "Motivation" ? "🚀" :
+													post.category === "Motivation" ? "✨" :
 													post.category === "Study" ? "📚" :
-													post.category === "News" ? "📰" : "✨"}
+													post.category === "News" ? "📰" : "♾️"}
 												</span>
 											</div>
 											<div className="flex-1 min-w-0">
@@ -99,7 +99,7 @@ export default function NotificationPanel({ isOpen, onClose }) {
 													</span>
 													{post.views > 0 && (
 														<span className="text-gray-400 text-xs">
-															👁 {post.views}
+															Views: {post.views}
 														</span>
 													)}
 												</div>

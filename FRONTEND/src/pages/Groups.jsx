@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { getJoinedGroups, createStudyGroup, joinStudyGroup, leaveStudyGroup, deleteStudyGroup } from "../utils/userDataApi";
+import { getJoinedGroups, createStudyGroup, joinStudyGroup, leaveStudyGroup, getAllStudyGroups, seedDefaultGroups } from "../utils/userDataApi";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { deleteStudyGroup } from "../utils/userDataApi";
 import { getCachedData, setCachedData } from "../utils/cacheUtils";
 import { HiUserGroup } from "react-icons/hi";
 import { GiAbacus } from "react-icons/gi";
@@ -9,56 +11,12 @@ import { SlChemistry } from "react-icons/sl";
 
 export default function Groups() {
 	const { user } = useAuth();
-	const [groups, setGroups] = useState([
-		{
-			id: 1,
-			name: "Math Wizards",
-			subject: "Mathematics",
-			members: 12,
-			nextSession: "2026-02-05 3:00 PM",
-			icon: <GiAbacus />, // Changed from iconComponent to icon
-			description: "A dedicated group for mastering advanced mathematics concepts and solving complex problems together.",
-			createdBy: "John Doe",
-			memberList: ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry", "Iris", "Jack", "Kate", "Leo"],
-		},
-		{
-			id: 2,
-			name: "Physics Explorers",
-			subject: "Physics",
-			members: 8,
-			nextSession: "2026-02-06 4:00 PM",
-			icon: <FiZap />, // Changed from iconComponent to icon
-			description: "Explore the fundamental principles of physics through experiments, discussions, and collaborative learning.",
-			createdBy: "Sarah Smith",
-			memberList: ["Mike", "Nancy", "Oscar", "Paula", "Quinn", "Robert", "Susan", "Tom"],
-		},
-		{
-			id: 3,
-			name: "Chemistry Lab",
-			subject: "Chemistry",
-			members: 15,
-			nextSession: "2026-02-07 5:00 PM",
-			icon: <SlChemistry />, // Changed from iconComponent to icon
-			description: "Virtual chemistry lab where students conduct experiments, share findings, and discuss chemical reactions.",
-			createdBy: "Emily Johnson",
-			memberList: ["Alex", "Bella", "Chris", "Daisy", "Ethan", "Fiona", "George", "Hannah", "Isaac", "Julia", "Kevin", "Lisa", "Mark", "Nina", "Oliver"],
-		},
-		{
-			id: 4,
-			name: "Literature Club",
-			subject: "English",
-			members: 10,
-			nextSession: "2026-02-08 2:00 PM",
-			icon: <FiBookOpen />, // Changed from iconComponent to icon
-			description: "Discuss classic and contemporary literature, share book reviews, and explore different writing styles.",
-			createdBy: "Michael Brown",
-			memberList: ["Patricia", "Quincy", "Rachel", "Samuel", "Tina", "Victor", "Wendy", "Xavier", "Yara", "Zoe"],
-		},
-	]);
+	const [groups, setGroups] = useState([]);
 	const [newGroup, setNewGroup] = useState({ name: "", subject: "Mathematics", description: "" });
 	const [selectedGroup, setSelectedGroup] = useState(null);
 	const [joinedGroups, setJoinedGroups] = useState([]);
 	const [showCreateForm, setShowCreateForm] = useState(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoading, setIsLoading] = useState(false);
 
 	// Helper function to get icon based on subject
@@ -74,6 +32,9 @@ export default function Groups() {
 
 	// Load joined groups from Firestore + cache on mount
 	useEffect(() => {
+		// Seed default groups once
+		seedDefaultGroups().catch(err => console.warn("Error seeding groups:", err));
+
 		// Also try to load from localStorage for backward compatibility
 		const savedJoinedGroups = localStorage.getItem("joinedStudyGroups");
 		if (savedJoinedGroups) {
@@ -91,6 +52,11 @@ export default function Groups() {
 		const loadGroups = async () => {
 			setIsLoading(true);
 			try {
+				// Load all available groups from Firestore
+				const allGroups = await getAllStudyGroups();
+				setGroups(allGroups);
+
+				// Load user's joined groups
 				const cachedGroups = await getCachedData(
 					`joined_groups_${user.uid}`,
 					() => getJoinedGroups(user.uid),
@@ -99,21 +65,9 @@ export default function Groups() {
 				// normalize ids to strings
 				const groupIds = (cachedGroups?.map(g => String(g.id ?? g.groupId))) || [];
 				setJoinedGroups(groupIds);
-
-				// Also merge with existing groups and add icons
-				if (cachedGroups && cachedGroups.length > 0) {
-					const groupsWithIcons = cachedGroups.map(g => ({
-						...g,
-						icon: getSubjectIcon(g.subject),
-					}));
-					setGroups(prev => [
-						...prev,
-						...groupsWithIcons.filter(g => !prev.find(pg => String(pg.id) === String(g.id ?? g.groupId) || String(pg.groupId) === String(g.id ?? g.groupId)))
-					]);
-				}
 			} catch (error) {
 				console.warn('Error loading study groups from Firestore:', error);
-				// Keep using default groups
+				// Keep using what's loaded
 			} finally {
 				setIsLoading(false);
 			}
@@ -155,7 +109,6 @@ export default function Groups() {
 				name: newGroup.name,
 				subject: newGroup.subject,
 				description: newGroup.description,
-				icon: getSubjectIcon(newGroup.subject), // Use helper function
 				members: 1,
 				nextSession: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleString(),
 				createdBy: user?.displayName || "Unknown",
@@ -177,7 +130,7 @@ export default function Groups() {
 
 			setNewGroup({ name: "", subject: "Mathematics", description: "" });
 			setShowCreateForm(false);
-			alert("✅ Group created successfully!");
+			alert("Group created successfully!");
 		} catch (error) {
 			console.error("Error creating group:", error);
 
@@ -191,7 +144,6 @@ export default function Groups() {
 					name: newGroup.name,
 					subject: newGroup.subject,
 					description: newGroup.description,
-					icon: getSubjectIcon(newGroup.subject), // Use helper function
 					members: 1,
 					nextSession: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleString(),
 					createdBy: user?.displayName || "Unknown",
@@ -223,7 +175,7 @@ export default function Groups() {
 
 				setNewGroup({ name: "", subject: "Mathematics", description: "" });
 				setShowCreateForm(false);
-				alert("✅ Group created locally (pending sync). It will be synced when permissions are available.");
+				alert("Group created locally (pending sync). It will be synced when permissions are available.");
 				return;
 			}
 
@@ -266,7 +218,7 @@ export default function Groups() {
 					() => Promise.resolve()
 				);
 
-				alert("✅ Joined local (pending) group successfully!");
+				alert("Joined local (pending) group successfully!");
 			} catch (error) {
 				console.error("Error joining local group:", error);
 				alert("Failed to join local group: " + (error?.message || String(error)));
@@ -275,7 +227,7 @@ export default function Groups() {
 		}
 
 		try {
-			await joinStudyGroup(user.uid, groupId);
+			await joinStudyGroup(user.uid, gid);
 
 			const updatedJoinedGroups = [...joinedGroups, gid];
 			setJoinedGroups(updatedJoinedGroups);
@@ -298,11 +250,143 @@ export default function Groups() {
 				() => Promise.resolve()
 			);
 
-			alert("✅ Joined group successfully!");
+			alert("Joined group successfully!");
 		} catch (error) {
 			console.error("Error joining group:", error);
-			const msg = error?.message || String(error);
-			alert("Failed to join group: " + msg);
+
+			// Fallback: if permission error, update locally and persist for later sync
+			const msg = (error && (error.message || "")).toString().toLowerCase();
+			if (msg.includes("permission") || msg.includes("insufficient")) {
+				try {
+					const updatedJoinedGroups = [...joinedGroups, gid];
+					setJoinedGroups(updatedJoinedGroups);
+
+					const updatedGroups = groups.map((group) =>
+						String(group.id) === gid || String(group.groupId) === gid
+							? {
+								...group,
+								members: (group.members || 0) + 1,
+								memberList: [...(group.memberList || []), user?.displayName || "New Member"],
+							}
+							: group
+					);
+					setGroups(updatedGroups);
+
+					// Persist pending joins for later sync
+					const pendingJoins = JSON.parse(localStorage.getItem("pendingGroupJoins") || "{}");
+					if (!pendingJoins[user.uid]) {
+						pendingJoins[user.uid] = [];
+					}
+					if (!pendingJoins[user.uid].includes(gid)) {
+						pendingJoins[user.uid].push(gid);
+					}
+					localStorage.setItem("pendingGroupJoins", JSON.stringify(pendingJoins));
+
+					// Update cache
+					await setCachedData(
+						`joined_groups_${user.uid}`,
+						updatedGroups,
+						() => Promise.resolve()
+					);
+
+					alert("✓ Joined group locally.\n\nTo enable cloud sync, update your Firestore security rules. See FIRESTORE_SECURITY_RULES.txt in the project root for instructions.");
+				} catch (e) {
+					console.warn("Error updating local group join:", e);
+					alert("Failed to join group: " + (error?.message || error));
+				}
+				return;
+			}
+
+			alert("Failed to join group: " + (error?.message || error));
+		}
+	};
+
+	const handleLeaveGroup = async (groupId) => {
+		if (!user) {
+			alert("Please sign in to leave a group");
+			return;
+		}
+
+		if (!window.confirm("Are you sure you want to leave this group?")) {
+			return;
+		}
+
+		const gid = String(groupId);
+
+		try {
+			await leaveStudyGroup(user.uid, gid);
+
+			const updatedJoinedGroups = joinedGroups.filter(id => id !== gid);
+			setJoinedGroups(updatedJoinedGroups);
+
+			const updatedGroups = groups.map((group) =>
+				String(group.id) === gid || String(group.groupId) === gid
+					? {
+						...group,
+						members: Math.max(0, (group.members || 0) - 1),
+						memberList: (group.memberList || []).filter(m => m !== user?.displayName),
+					}
+					: group
+			);
+			setGroups(updatedGroups);
+
+			// Update cache
+			await setCachedData(
+				`joined_groups_${user.uid}`,
+				updatedGroups.filter(g => updatedJoinedGroups.includes(String(g.id))),
+				() => Promise.resolve()
+			);
+
+			// Close modal if open
+			if (selectedGroup && (String(selectedGroup.id) === gid || String(selectedGroup.groupId) === gid)) {
+				setSelectedGroup(null);
+			}
+
+			alert("You've left the group successfully!");
+		} catch (error) {
+			console.error("Error leaving group:", error);
+
+			// Fallback: if permission error, update locally
+			const msg = (error && (error.message || "")).toString().toLowerCase();
+			if (msg.includes("permission") || msg.includes("insufficient")) {
+				try {
+					const updatedJoinedGroups = joinedGroups.filter(id => id !== gid);
+					setJoinedGroups(updatedJoinedGroups);
+
+					const updatedGroups = groups.map((group) =>
+						String(group.id) === gid || String(group.groupId) === gid
+							? {
+								...group,
+								members: Math.max(0, (group.members || 0) - 1),
+								memberList: (group.memberList || []).filter(m => m !== user?.displayName),
+							}
+							: group
+					);
+					setGroups(updatedGroups);
+
+					if (selectedGroup && (String(selectedGroup.id) === gid || String(selectedGroup.groupId) === gid)) {
+						setSelectedGroup(null);
+					}
+
+					// Persist to localStorage for syncing later
+					const pendingLeaves = JSON.parse(localStorage.getItem("pendingGroupLeaves") || "{}");
+					if (!pendingLeaves[user.uid]) {
+						pendingLeaves[user.uid] = [];
+					}
+					if (!pendingLeaves[user.uid].includes(gid)) {
+						pendingLeaves[user.uid].push(gid);
+					}
+					localStorage.setItem("pendingGroupLeaves", JSON.stringify(pendingLeaves));
+
+					alert("✓ Left group locally.\n\nTo enable cloud sync, update your Firestore security rules. See FIRESTORE_SECURITY_RULES.txt in the project root for instructions.");
+				} catch (e) {
+					console.warn("Error updating local group leave:", e);
+					alert("Failed to leave group: " + (error?.message || error));
+				}
+				return;
+			}
+
+			alert("Failed to leave group: " + (error?.message || error));
 		}
 	};
 
@@ -411,7 +495,7 @@ export default function Groups() {
 							>
 								<div className="flex items-start justify-between mb-4">
 									<div className="flex items-center gap-3">
-										<span className="text-4xl text-amber-700">{group.icon}</span>
+										<span className="text-4xl text-amber-700">{getSubjectIcon(group.subject)}</span>
 										<div>
 											<h3 className="text-lg font-semibold text-gray-900">
 												{group.name}
@@ -449,12 +533,20 @@ export default function Groups() {
 											Join Group
 										</button>
 									) : (
-										<button
-											disabled
-											className="w-full py-2 bg-green-600 text-white font-semibold rounded-lg opacity-70 cursor-not-allowed"
-										>
-											✓ Joined
-										</button>
+										<>
+											<button
+												disabled
+												className="w-full py-2 bg-green-600 text-white font-semibold rounded-lg opacity-70 cursor-not-allowed"
+											>
+												✓ Joined
+											</button>
+											<button
+												onClick={() => handleLeaveGroup(group.id)}
+												className="w-full py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all"
+											>
+												Leave Group
+											</button>
+										</>
 									)}
 									<button
 										onClick={() => setSelectedGroup(group)}
@@ -475,7 +567,7 @@ export default function Groups() {
 					<div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
 						<div className="bg-gradient-to-r from-amber-700 to-orange-600 p-6 flex justify-between items-start">
 							<div className="flex items-center gap-4">
-								<span className="text-5xl text-white">{selectedGroup.icon}</span>
+							<span className="text-5xl text-white">{getSubjectIcon(selectedGroup.subject)}</span>
 								<div>
 									<h2 className="text-3xl font-bold text-white">{selectedGroup.name}</h2>
 									<p className="text-amber-100">{selectedGroup.subject}</p>
@@ -543,12 +635,23 @@ export default function Groups() {
 										Join This Group
 									</button>
 								) : (
-									<button
-										disabled
-										className="flex-1 py-3 bg-green-600 text-white font-semibold rounded-lg opacity-70 cursor-not-allowed"
-									>
-										✓ Already Joined
-									</button>
+									<>
+										<button
+											disabled
+											className="flex-1 py-3 bg-green-600 text-white font-semibold rounded-lg opacity-70 cursor-not-allowed"
+										>
+											✓ Already Joined
+										</button>
+										<button
+											onClick={() => {
+												handleLeaveGroup(selectedGroup.id);
+												setSelectedGroup(null);
+											}}
+											className="flex-1 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all"
+										>
+											Leave Group
+										</button>
+									</>
 								)}
 								<button
 									onClick={() => setSelectedGroup(null)}

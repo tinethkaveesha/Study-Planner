@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getBlogPosts, getBlogPostsByCategory, deleteBlogPost, searchBlogPosts } from "../utils/blogApi";
+import { getBlogPosts, getBlogPostsByCategory, deleteBlogPost } from "../utils/blogApi";
 import BlogCard from "../components/BlogCard";
 import CreateBlogModal from "../components/CreateBlogModal";
 
@@ -62,7 +62,10 @@ export default function Blog() {
         try {
             await deleteBlogPost(postId);
             setPosts(posts.filter((p) => p.id !== postId));
-        } catch (err) {
+        } catch (
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            err
+        ) {
             setError("Failed to delete post");
         }
     };

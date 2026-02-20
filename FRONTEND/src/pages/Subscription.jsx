@@ -61,6 +61,7 @@ const plans = [
 
 export default function Subscription() {
     const navigate = useNavigate();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [loading, setLoading] = useState(false);
     const [loadingPlan, setLoadingPlan] = useState(null);
     const [error, setError] = useState(null);
@@ -145,8 +146,8 @@ export default function Subscription() {
             const successUrl = `${origin}/success`;
             const cancelUrl = `${origin}/subscription`;
             
-            console.log("📡 Making API request to:", apiUrl);
-            console.log("🔑 User ID:", currentUser.uid);
+            console.log("Making API request to:", apiUrl);
+            console.log("User ID:", currentUser.uid);
             
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -161,27 +162,27 @@ export default function Subscription() {
                 }),
             });
 
-            console.log("📨 API Response Status:", response.status, response.statusText);
+            console.log("API Response Status:", response.status, response.statusText);
 
             let data;
             try {
                 const responseText = await response.text();
                 data = responseText ? JSON.parse(responseText) : {};
             } catch (parseError) {
-                console.error("❌ Failed to parse response:", parseError);
+                console.error("Failed to parse response:", parseError);
                 throw new Error(`Invalid response from server: ${response.status} ${response.statusText}`);
             }
 
             if (!response.ok) {
-                console.error("❌ API Error Response:", data);
+                console.error("API Error Response:", data);
                 let errorMsg = data.error || data.message || `HTTP ${response.status}`;
                 
                 if (response.status === 404) {
-                    errorMsg += '\n\n⚠️ Backend server may not be running. Make sure to start it with:\ncd BACKEND && npm start';
+                    errorMsg += '\n\nBackend server may not be running. Make sure to start it with:\ncd BACKEND && npm start';
                 } else if (response.status === 401) {
-                    errorMsg += '\n\n⚠️ Authentication failed. Please try logging in again.';
+                    errorMsg += '\n\nAuthentication failed. Please try logging in again.';
                 } else if (response.status === 400) {
-                    errorMsg += `\n\n⚠️ Invalid request: ${JSON.stringify(data)}`;
+                    errorMsg += `\n\nInvalid request: ${JSON.stringify(data)}`;
                 }
                 
                 throw new Error(errorMsg);
@@ -192,7 +193,7 @@ export default function Subscription() {
                 throw new Error('No session ID received from server');
             }
 
-            console.log("✅ Successfully created Stripe session:", sessionId);
+            console.log("Successfully created Stripe session:", sessionId);
 
             // Redirect to Stripe Checkout
             const stripe = await stripePromise;

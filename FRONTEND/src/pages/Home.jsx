@@ -18,6 +18,7 @@ import {
 	FiAward
 } from "react-icons/fi";
 import { MdAutoAwesome } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
 
 const featuresList = [
 	{
@@ -87,7 +88,7 @@ const testimonials = [
 		name: "Chaniru Senuwara",
 		role: "Medical Student",
 		text: "Makes med school manageable and even enjoyable.",
-		avatar: "👨‍⚕️",
+		avatar: "🧑‍⚕️",
 	},
 ];
 
@@ -131,6 +132,7 @@ export default function Home() {
 	const [activeTab, setActiveTab] = useState("week");
 	const navigate = useNavigate();
 	const { user } = useAuth();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [userStats, setUserStats] = useState(null);
 	const [displayStats, setDisplayStats] = useState(stats);
 
@@ -250,7 +252,7 @@ export default function Home() {
 				<div className="container mx-auto px-3 sm:px-4">
 					<div className="mx-auto mb-8 sm:mb-12 md:mb-20 max-w-3xl text-center space-y-3 sm:space-y-4 md:space-y-6">
 						<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-							<span className="text-amber-700 font-semibold">✨ FEATURES</span>
+							<span className="text-amber-700 font-semibold">FEATURES</span>
 						</div>
 						<h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900">
 							Everything You Need to Excel
@@ -378,7 +380,7 @@ export default function Home() {
 								<p className="text-gray-600 text-sm sm:text-base">"{testimonial.text}"</p>
 								<div className="mt-4 flex gap-1">
 									{[1, 2, 3, 4, 5].map((s) => (
-										<span key={s} className="text-lg sm:text-2xl">⭐</span>
+									<FaStar key={s} className="text-amber-400 text-lg sm:text-2xl" />
 									))}
 								</div>
 							</div>

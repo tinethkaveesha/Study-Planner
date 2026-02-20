@@ -54,7 +54,7 @@ export default function Docs() {
 					<div className="max-w-6xl mx-auto">
 						<div className="mb-12 sm:mb-16 md:mb-20 space-y-2 sm:space-y-4">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">📚 DOCS</span>
+								<span className="text-amber-700 font-semibold">DOCS</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">
 								Documentation

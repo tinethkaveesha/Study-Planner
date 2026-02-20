@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FaGraduationCap } from "react-icons/fa";
 import { FiTarget } from "react-icons/fi";
 import { GiTrophyCup } from "react-icons/gi";
@@ -15,6 +15,7 @@ export default function Quizzes() {
 	const [selectedAnswers, setSelectedAnswers] = useState({});
 	const [showResults, setShowResults] = useState(false);
 	const [savedQuizzes, setSavedQuizzes] = useState([]);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [loadingQuizzes, setLoadingQuizzes] = useState(false);
 	const [formData, setFormData] = useState({
 		subject: "Mathematics",
@@ -70,9 +71,9 @@ export default function Quizzes() {
 		if (user) {
 			fetchSavedQuizzes();
 		}
-	}, [user]);
+	}, [user, fetchSavedQuizzes]);
 
-	const fetchSavedQuizzes = async () => {
+	const fetchSavedQuizzes = useCallback(async () => {
 		if (!user) return;
 		try {
 			setLoadingQuizzes(true);
@@ -88,7 +89,7 @@ export default function Quizzes() {
 		} finally {
 			setLoadingQuizzes(false);
 		}
-	};
+	}, [user]);
 
 	const saveQuizToFirebase = async (quizData) => {
 		if (!user) {

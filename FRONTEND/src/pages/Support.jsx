@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaComments, FaEnvelope, FaMobileAlt, FaRocket, FaHandshake } from 'react-icons/fa';
 
 export default function Support() {
 	const [expandedFaq, setExpandedFaq] = useState(null);
@@ -32,25 +33,25 @@ export default function Support() {
 
 	const supportChannels = [
 		{
-			icon: "💬",
+			icon: <FaComments className="text-4xl sm:text-5xl" />,
 			title: "Chat Support",
 			desc: "Available 24/7 for quick questions",
 			contact: "Chat with us",
 		},
 		{
-			icon: "📧",
+			icon: <FaEnvelope className="text-4xl sm:text-5xl" />,
 			title: "Email Support",
 			desc: "Detailed responses within 24 hours",
 			contact: "teamispekka@gmail.com",
 		},
 		{
-			icon: "📱",
+			icon: <FaMobileAlt className="text-4xl sm:text-5xl" />,
 			title: "Phone Support",
 			desc: "Weekdays 9AM - 6PM EST",
 			contact: "+94 (767) 524-003",
 		},
 		{
-			icon: "🚀",
+			icon: <FaRocket className="text-4xl sm:text-5xl" />,
 			title: "Knowledge Base",
 			desc: "Articles and guides for self-service",
 			contact: "Browse Articles",
@@ -64,7 +65,7 @@ export default function Support() {
 					<div className="max-w-4xl mx-auto">
 						<div className="mb-12 sm:mb-16 md:mb-20 space-y-2 sm:space-y-4">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">🤝 SUPPORT</span>
+								<span className="text-amber-700 font-semibold"><FaHandshake className="inline mr-2" /> SUPPORT</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">
 								Support & Help
@@ -80,7 +81,7 @@ export default function Support() {
 									key={channel.title}
 									className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 hover:shadow-lg hover:border-amber-200 transition-all"
 								>
-									<div className="text-4xl sm:text-5xl mb-4">{channel.icon}</div>
+										<div className="text-amber-700 mb-4">{channel.icon}</div>
 									<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">{channel.title}</h3>
 									<p className="text-sm sm:text-base text-gray-600 mb-4">{channel.desc}</p>
 									<a

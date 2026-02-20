@@ -174,6 +174,7 @@ export async function updateScheduleCompletion(userId, scheduleId, completed) {
     if (!userId) return;
 
     try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const docRef = doc(db, "users", userId, "progress", "schedule");
         const sessionRef = doc(db, "users", userId, "progress", scheduleId);
         

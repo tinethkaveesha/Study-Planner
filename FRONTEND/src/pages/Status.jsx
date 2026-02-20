@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { FaBolt } from 'react-icons/fa';
 
 export default function Status() {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const navigate = useNavigate();
 
 	const systemStatus = [
@@ -80,7 +82,7 @@ export default function Status() {
 					<div className="max-w-4xl mx-auto">
 						<div className="mb-12 sm:mb-16 md:mb-20 space-y-2 sm:space-y-4">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">⚡ STATUS</span>
+								<span className="text-amber-700 font-semibold"><FaBolt className="inline mr-1" /> STATUS</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">System Status</h1>
 							<p className="text-base sm:text-xl text-gray-600">

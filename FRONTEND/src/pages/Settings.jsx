@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { updateUserProfile, getUserProfile } from "../utils/userDataApi";
 
 export default function Settings() {
-    const { user, userData } = useAuth();
+    const { user } = useAuth();
     const navigate = useNavigate();
     
     const [formData, setFormData] = useState({
@@ -106,7 +106,7 @@ export default function Settings() {
                 <div className="container mx-auto px-4 max-w-3xl">
                     <div className="mb-12">
                         <h1 className="text-5xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                            <span>⚙️</span>Account Settings
+                            <span className="text-amber-600 text-4xl">⚙</span>Account Settings
                         </h1>
                         <p className="text-lg text-gray-600">
                             Manage your profile information and preferences
@@ -130,7 +130,7 @@ export default function Settings() {
                             {/* Personal Information Section */}
                             <div>
                                 <h2 className="text-2xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-200">
-                                    👤 Personal Information
+                                    Personal Information
                                 </h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
@@ -211,7 +211,7 @@ export default function Settings() {
                             {/* Address Information Section */}
                             <div>
                                 <h2 className="text-2xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-200">
-                                    📍 Address
+                                    Address
                                 </h2>
                                 <div className="space-y-4">
                                     <div>
@@ -277,7 +277,7 @@ export default function Settings() {
                             {/* Educational Information Section */}
                             <div>
                                 <h2 className="text-2xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-200">
-                                    🎓 Educational Information
+                                    Educational Information
                                 </h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
@@ -329,7 +329,7 @@ export default function Settings() {
                                         </>
                                     ) : (
                                         <>
-                                            <span>💾</span> Save Changes
+                                            Save Changes
                                         </>
                                     )}
                                 </button>

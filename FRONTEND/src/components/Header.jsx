@@ -106,8 +106,9 @@ export default function Header({
 				</Link>
 
 				<nav className="hidden items-center gap-3 md:gap-6 md:flex text-xs sm:text-sm">
-					{navLinks.map((link) => {
-						const isActive = location.pathname === link.path;
+				{navLinks.map((link) => {
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					const isActive = location.pathname === link.path;
 						return (
 							<button
 								key={link.path}

@@ -16,9 +16,9 @@ export default function RouteDiagnostic() {
 		addLog(`Testing navigation to: ${path}`);
 		try {
 			navigate(path);
-			addLog(`✅ Navigate called successfully`);
+			addLog(`Navigate called successfully`);
 		} catch (error) {
-			addLog(`❌ Navigation error: ${error.message}`);
+			addLog(`Navigation error: ${error.message}`);
 		}
 	};
 
@@ -59,7 +59,7 @@ export default function RouteDiagnostic() {
 			borderTop: "2px solid #00ff00"
 		}}>
 			<div style={{ marginBottom: "15px" }}>
-				<h3 style={{ margin: "0 0 10px 0", color: "#fff" }}>🔍 Route Diagnostic Tool</h3>
+				<h3 style={{ margin: "0 0 10px 0", color: "#fff" }}>Route Diagnostic Tool</h3>
 				<div style={{ marginBottom: "10px" }}>
 					<strong>Current Path:</strong> {location.pathname}
 				</div>
@@ -153,7 +153,7 @@ export default function RouteDiagnostic() {
 			</div>
 
 			<div style={{ marginTop: "10px", fontSize: "10px", color: "#888" }}>
-				💡 Tip: If navigation works here but not in production, you need server configuration (see DEPLOYMENT_GUIDE.md)
+				Tip: If navigation works here but not in production, you need server configuration (see DEPLOYMENT_GUIDE.md)
 			</div>
 		</div>
 	);

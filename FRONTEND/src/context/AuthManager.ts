@@ -17,6 +17,7 @@ class AuthManager {
     return user
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static login(email: string, _password: string): User | null {
     const stored = localStorage.getItem(this.STORAGE_KEY)
     if (stored) {

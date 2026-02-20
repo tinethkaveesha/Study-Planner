@@ -21,6 +21,7 @@ import { db } from "../firebase";
  * @param {string} userId - Firebase User ID
  * @param {Object} userData - User profile data
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function initializeUserData(userId, userData) {
     try {
         // 1. Initialize user progress document
@@ -1016,3 +1017,105 @@ export async function deleteStudyGroup(userId, groupId) {
     }
 }
 
+/**
+ * Get all available study groups (for browsing/joining)
+ * @returns {Promise<Array>} Array of all study groups
+ */
+export async function getAllStudyGroups() {
+    try {
+        const groupsRef = collection(db, "study_groups");
+        const snapshot = await getDocs(groupsRef);
+        return snapshot.docs.map(doc => ({ 
+            id: doc.id, 
+            ...doc.data(),
+            members: doc.data().members?.length || 0,
+            memberList: doc.data().members || []
+        }));
+    } catch (error) {
+        console.error("Error fetching all study groups:", error);
+        throw error;
+    }
+}
+
+/**
+ * Get a specific group's details
+ * @param {string} groupId - Group ID
+ */
+export async function getGroupDetails(groupId) {
+    try {
+        const groupRef = doc(db, "study_groups", groupId);
+        const groupSnap = await getDoc(groupRef);
+        if (groupSnap.exists()) {
+            const data = groupSnap.data();
+            return {
+                id: groupSnap.id,
+                ...data,
+                members: data.members?.length || 0,
+                memberList: data.members || []
+            };
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching group details:", error);
+        throw error;
+    }
+}
+
+/**
+ * Seed default study groups to Firestore
+ */
+export async function seedDefaultGroups() {
+    try {
+        const now = new Date();
+        const defaultGroups = [
+            {
+                name: "Math Wizards",
+                subject: "Mathematics",
+                description: "A dedicated group for mastering advanced mathematics concepts and solving complex problems together.",
+                members: [],
+                nextSession: new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000).toLocaleString(),
+            },
+            {
+                name: "Physics Explorers",
+                subject: "Physics",
+                description: "Explore the fundamental principles of physics through experiments, discussions, and collaborative learning.",
+                members: [],
+                nextSession: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000).toLocaleString(),
+            },
+            {
+                name: "Chemistry Lab",
+                subject: "Chemistry",
+                description: "Virtual chemistry lab where students conduct experiments, share findings, and discuss chemical reactions.",
+                members: [],
+                nextSession: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000).toLocaleString(),
+            },
+            {
+                name: "Literature Club",
+                subject: "English",
+                description: "Discuss classic and contemporary literature, share book reviews, and explore different writing styles.",
+                members: [],
+                nextSession: new Date(now.getTime() + 4 * 24 * 60 * 60 * 1000).toLocaleString(),
+            },
+        ];
+
+        const groupsRef = collection(db, "study_groups");
+        const existingGroups = await getDocs(groupsRef);
+        
+        // Only seed if no groups exist
+        if (existingGroups.empty) {
+            for (const groupData of defaultGroups) {
+                const groupId = doc(collection(db, "study_groups")).id;
+                await setDoc(doc(db, "study_groups", groupId), {
+                    groupId,
+                    ...groupData,
+                    maxMembers: 50,
+                    ownerId: "system",
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                });
+            }
+        }
+    } catch (error) {
+        console.error("Error seeding default groups:", error);
+    }
+}

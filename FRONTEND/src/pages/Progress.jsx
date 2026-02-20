@@ -126,7 +126,10 @@ export default function Progress() {
 						5 * 60 * 1000
 					) || [];
 					console.log("Assessments loaded:", assessmentScores.length);
-				} catch (assessmentsError) {
+				} catch (
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					assessmentsError
+				) {
 					console.warn("Error loading assessments:", assessmentScores);
 					assessmentScores = [];
 				}
@@ -199,7 +202,7 @@ export default function Progress() {
 				setSubjectAnalysis(subjectMarks || {});
 				setAssessments(assessmentScores || []);
 				
-				console.log("✅ Progress data loaded successfully");
+				console.log("Progress data loaded successfully");
 			} catch (error) {
 				console.error("❌ Error loading progress:", error);
 				setProgressData((prev) => ({
@@ -299,7 +302,7 @@ export default function Progress() {
 					{/* Getting Started Guide */}
 					{!hasActivityData && !hasAcademicData && (
 						<div className="rounded-2xl border border-blue-200 bg-blue-50 p-8 shadow-lg mb-12">
-							<h2 className="text-xl font-bold text-blue-900 mb-4">🚀 Getting Started</h2>
+							<h2 className="text-xl font-bold text-blue-900 mb-4">Getting Started</h2>
 							<p className="text-blue-900 mb-4">Your progress tracking is empty. Here's how to get started:</p>
 							<div className="space-y-3 text-blue-900">
 								<div className="flex gap-3">

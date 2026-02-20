@@ -1,36 +1,37 @@
 import { useNavigate } from "react-router-dom";
+import { FaCalendar, FaChartBar, FaBook, FaUsers, FaBrain, FaMobileAlt } from 'react-icons/fa';
 
 export default function Features() {
 	const navigate = useNavigate();
 
 	const features = [
 		{
-			icon: "📅",
+			icon: <FaCalendar className="text-4xl sm:text-5xl" />,
 			title: "Smart Scheduler",
 			description: "Intelligently organize your study sessions with our AI-powered scheduling system that adapts to your pace and learning style.",
 		},
 		{
-			icon: "📊",
+			icon: <FaChartBar className="text-4xl sm:text-5xl" />,
 			title: "Advanced Analytics",
 			description: "Track your progress with detailed insights and analytics to identify strengths and areas for improvement.",
 		},
 		{
-			icon: "📚",
+			icon: <FaBook className="text-4xl sm:text-5xl" />,
 			title: "Resource Library",
 			description: "Access curated learning materials, notes, and study guides all in one place, organized by subject.",
 		},
 		{
-			icon: "👥",
+			icon: <FaUsers className="text-4xl sm:text-5xl" />,
 			title: "Study Groups",
 			description: "Collaborate with peers, share resources, and complete group projects seamlessly with integrated communication.",
 		},
 		{
-			icon: "🧠",
+			icon: <FaBrain className="text-4xl sm:text-5xl" />,
 			title: "Interactive Quizzes",
 			description: "Test your knowledge with AI-generated quizzes and get instant feedback for better learning outcomes.",
 		},
 		{
-			icon: "📱",
+			icon: <FaMobileAlt className="text-4xl sm:text-5xl" />,
 			title: "Cross-Platform",
 			description: "Study anywhere, anytime with our responsive design on desktop, tablet, and mobile devices.",
 		},
@@ -43,7 +44,7 @@ export default function Features() {
 					<div className="max-w-5xl mx-auto">
 						<div className="mb-12 sm:mb-16 md:mb-20 space-y-2 sm:space-y-4 text-center">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">✨ FEATURES</span>
+								<span className="text-amber-700 font-semibold">FEATURES</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">
 								Powerful Features
@@ -59,7 +60,7 @@ export default function Features() {
 									key={idx}
 									className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all"
 								>
-									<div className="text-4xl sm:text-5xl mb-4">{feature.icon}</div>
+									<div className="text-amber-700 mb-4">{feature.icon}</div>
 									<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
 										{feature.title}
 									</h3>

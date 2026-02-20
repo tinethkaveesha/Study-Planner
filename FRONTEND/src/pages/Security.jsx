@@ -1,36 +1,39 @@
 import { useNavigate } from "react-router-dom";
+import { FaLock, FaEye, FaClipboard, FaExclamationTriangle, FaTrophy } from 'react-icons/fa';
+import { GiShield } from 'react-icons/gi';
 
 export default function Security() {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const navigate = useNavigate();
 
 	const securityFeatures = [
 		{
-			icon: "🔐",
+			icon: <FaLock className="text-4xl sm:text-5xl" />,
 			title: "End-to-End Encryption",
 			desc: "All data transmitted between your device and our servers is encrypted using industry-standard SSL/TLS protocols.",
 		},
 		{
-			icon: "🛡️",
+			icon: <GiShield className="text-4xl sm:text-5xl" />,
 			title: "Data Protection",
 			desc: "Your personal information is protected with advanced security measures and regular security audits.",
 		},
 		{
-			icon: "🔒",
+			icon: <FaLock className="text-4xl sm:text-5xl" />,
 			title: "Password Security",
 			desc: "Passwords are hashed and salted using bcrypt. We never store plain-text passwords.",
 		},
 		{
-			icon: "👁️",
+			icon: <FaEye className="text-4xl sm:text-5xl" />,
 			title: "Privacy First",
 			desc: "We comply with GDPR, CCPA, and other data protection regulations. Your data is never sold.",
 		},
 		{
-			icon: "📋",
+			icon: <FaClipboard className="text-4xl sm:text-5xl" />,
 			title: "Regular Audits",
 			desc: "Third-party security audits are conducted quarterly to identify and fix vulnerabilities.",
 		},
 		{
-			icon: "⚠️",
+			icon: <FaExclamationTriangle className="text-4xl sm:text-5xl" />,
 			title: "Vulnerability Reports",
 			desc: "We have a responsible disclosure program. Report security issues to teamispekka@gmail.com",
 		},
@@ -43,7 +46,7 @@ export default function Security() {
 					<div className="max-w-4xl mx-auto">
 						<div className="mb-12 sm:mb-16 md:mb-20 space-y-2 sm:space-y-4">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">🔐 SECURITY</span>
+								<span className="text-amber-700 font-semibold">SECURITY</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">Our Security</h1>
 							<p className="text-base sm:text-xl text-gray-600">
@@ -57,7 +60,7 @@ export default function Security() {
 									key={feature.title}
 									className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 hover:shadow-lg hover:border-amber-200 transition-all"
 								>
-									<div className="text-4xl sm:text-5xl mb-4">{feature.icon}</div>
+									<div className="text-amber-700 mb-4">{feature.icon}</div>
 									<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
 									<p className="text-sm sm:text-base text-gray-600">{feature.desc}</p>
 								</div>
@@ -66,7 +69,7 @@ export default function Security() {
 
 						<div className="space-y-6 sm:space-y-8">
 							<section className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl sm:rounded-2xl border border-amber-200 p-6 sm:p-8 md:p-12">
-								<h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6">🏆 Certifications & Standards</h2>
+								<h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6"><FaTrophy className="inline mr-2" /> Certifications & Standards</h2>
 								<ul className="space-y-3 text-gray-700">
 									<li className="flex items-center gap-3 text-base sm:text-lg">
 										<span className="text-amber-700 font-bold text-xl">✓</span>

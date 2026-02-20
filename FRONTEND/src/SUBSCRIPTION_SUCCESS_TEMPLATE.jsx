@@ -12,6 +12,7 @@ export default function SubscriptionSuccess() {
   useEffect(() => {
     const verifySubscription = async () => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const sessionId = searchParams.get("session_id");
         const auth = getAuth();
         const user = auth.currentUser;

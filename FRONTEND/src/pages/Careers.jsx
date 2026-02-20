@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { FaBullseye, FaHandshake, FaRocket, FaSeedling, FaMapPin } from 'react-icons/fa';
 
 export default function Careers() {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const navigate = useNavigate();
 
 	const jobOpenings = [
@@ -43,10 +45,10 @@ export default function Careers() {
 	];
 
 	const values = [
-		{ icon: "🎯", title: "Educate First", desc: "We're passionate about transforming education for millions of students worldwide." },
-		{ icon: "🤝", title: "Collaborate", desc: "We believe in the power of teamwork and diverse perspectives." },
-		{ icon: "🚀", title: "Innovate", desc: "We constantly push boundaries to create better learning experiences." },
-		{ icon: "🌱", title: "Grow", desc: "We invest in our team's growth and professional development." },
+		{ icon: <FaBullseye className="text-4xl sm:text-5xl" />, title: "Educate First", desc: "We're passionate about transforming education for millions of students worldwide." },
+		{ icon: <FaHandshake className="text-4xl sm:text-5xl" />, title: "Collaborate", desc: "We believe in the power of teamwork and diverse perspectives." },
+		{ icon: <FaRocket className="text-4xl sm:text-5xl" />, title: "Innovate", desc: "We constantly push boundaries to create better learning experiences." },
+		{ icon: <FaSeedling className="text-4xl sm:text-5xl" />, title: "Grow", desc: "We invest in our team's growth and professional development." },
 	];
 
 	return (
@@ -56,7 +58,7 @@ export default function Careers() {
 					<div className="max-w-4xl mx-auto">
 						<div className="mb-12 sm:mb-16 md:mb-20 space-y-2 sm:space-y-4">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">💼 CAREERS</span>
+								<span className="text-amber-700 font-semibold">CAREERS</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">Join Our Mission</h1>
 							<p className="text-base sm:text-xl text-gray-600">
@@ -67,7 +69,7 @@ export default function Careers() {
 						<div className="grid md:grid-cols-2 gap-6 sm:gap-8 mb-16">
 							{values.map((value) => (
 								<div key={value.title} className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 hover:shadow-lg hover:border-amber-200 transition-all">
-									<div className="text-4xl sm:text-5xl mb-4">{value.icon}</div>
+									<div className="text-amber-700 mb-4">{value.icon}</div>
 									<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">{value.title}</h3>
 									<p className="text-gray-600 text-sm sm:text-base">{value.desc}</p>
 								</div>
@@ -92,7 +94,7 @@ export default function Careers() {
 											</span>
 										</div>
 										<p className="text-gray-600 text-sm sm:text-base flex items-center gap-2 mb-4">
-											📍 {job.location}
+											<FaMapPin className="text-amber-700" /> {job.location}
 										</p>
 										<button className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-amber-700 to-orange-600 text-white rounded-lg hover:shadow-lg font-semibold text-sm sm:text-base transition-all">
 											Apply Now

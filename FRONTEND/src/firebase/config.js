@@ -4,13 +4,13 @@ import { getAuth, setPersistence, browserSessionPersistence } from "firebase/aut
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyDemoKeyXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "study-planner-demo.firebaseapp.com",
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL || "https://study-planner-demo.firebaseio.com",
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "study-planner-demo",
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "study-planner-demo.appspot.com",
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "123456789",
-  appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:123456789:web:abcdef123456",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDemoKeyXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "study-planner-demo.firebaseapp.com",
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || "https://study-planner-demo.firebaseio.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "study-planner-demo",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "study-planner-demo.appspot.com",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "123456789",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:123456789:web:abcdef123456",
 };
 
 let app, database, auth, db;

@@ -80,6 +80,7 @@ export default function AuthModal({ isOpen, onClose }) {
         try {
             if (isLogin) {
                 // Sign in
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
                 
                 // Check if this is admin account

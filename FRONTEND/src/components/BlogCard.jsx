@@ -58,9 +58,9 @@ export default function BlogCard({ post, isAuthor, onDelete, onPostClick }) {
 
                 {/* Stats */}
                 <div className="flex gap-4 py-4 text-sm text-gray-600">
-                    <span>👁️ {post.views || 0}</span>
-                    <span>❤️ {post.likes || 0}</span>
-                    <span>💬 {post.comments || 0}</span>
+                    <span>Views: {post.views || 0}</span>
+                    <span>Likes: {post.likes || 0}</span>
+                    <span>Comments: {post.comments || 0}</span>
                 </div>
 
                 {/* Tags */}
@@ -96,13 +96,13 @@ export default function BlogCard({ post, isAuthor, onDelete, onPostClick }) {
                                 onClick={() => navigate(`/blog/edit/${post.id}`)}
                                 className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all"
                             >
-                                ✏️
+                                Edit
                             </button>
                             <button
                                 onClick={onDelete}
                                 className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all"
                             >
-                                🗑️
+                                Delete
                             </button>
                         </>
                     )}

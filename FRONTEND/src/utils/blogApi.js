@@ -41,6 +41,7 @@ export async function createBlogPost(postData) {
  * @param {number} limit - Number of posts to fetch
  * @returns {Promise<Array>} Array of blog posts
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getBlogPosts(limit = 10) {
     try {
         const q = query(

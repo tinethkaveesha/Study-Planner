@@ -1,46 +1,47 @@
 import { useNavigate } from "react-router-dom";
+import { FaWindows, FaApple, FaLinux, FaRobot, FaMobileAlt, FaGlobe } from 'react-icons/fa';
 
 export default function Download() {
 	const navigate = useNavigate();
 
 	const downloads = [
 		{
-			icon: "🪟",
+			icon: <FaWindows className="text-5xl sm:text-6xl" />,
 			name: "Windows",
 			description: "Study Planner for Windows 10 and later",
 			version: "v1.0.2",
 			size: "85 MB",
 		},
 		{
-			icon: "🍎",
+			icon: <FaApple className="text-5xl sm:text-6xl" />,
 			name: "macOS",
 			description: "Study Planner for macOS 10.12 and later",
 			version: "v1.0.2",
 			size: "92 MB",
 		},
 		{
-			icon: "🐧",
+			icon: <FaLinux className="text-5xl sm:text-6xl" />,
 			name: "Linux",
 			description: "Study Planner for Ubuntu, Debian, and other distributions",
 			version: "v1.0.2",
 			size: "78 MB",
 		},
 		{
-			icon: "🤖",
+			icon: <FaRobot className="text-5xl sm:text-6xl" />,
 			name: "Android",
 			description: "Study Planner for Android 8.0 and later",
 			version: "v1.0.2",
 			size: "42 MB",
 		},
 		{
-			icon: "📱",
+			icon: <FaMobileAlt className="text-5xl sm:text-6xl" />,
 			name: "iOS",
 			description: "Study Planner for iPhone and iPad",
 			version: "v1.0.2",
 			size: "48 MB",
 		},
 		{
-			icon: "🌐",
+			icon: <FaGlobe className="text-5xl sm:text-6xl" />,
 			name: "Web",
 			description: "Access Study Planner directly in your browser",
 			version: "v1.0.2",
@@ -62,7 +63,7 @@ export default function Download() {
 					<div className="max-w-5xl mx-auto">
 						<div className="mb-12 sm:mb-16 md:mb-20 space-y-2 sm:space-y-4 text-center">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">⬇️ DOWNLOAD</span>
+								<span className="text-amber-700 font-semibold">DOWNLOAD</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">
 								Download Study Planner
@@ -78,7 +79,7 @@ export default function Download() {
 									key={download.name}
 									className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all flex flex-col"
 								>
-									<div className="text-5xl sm:text-6xl mb-4">{download.icon}</div>
+									<div className="text-amber-700 mb-4">{download.icon}</div>
 									<h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
 										{download.name}
 									</h3>

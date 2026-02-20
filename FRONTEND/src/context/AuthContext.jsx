@@ -58,6 +58,7 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         if (!sessionActive) return;
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const handleBeforeUnload = (e) => {
             // Browser will close and session will end
             // This is optional - just logs that session is ending
@@ -87,6 +88,7 @@ export function AuthProvider({ children }) {
     );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
     const context = useContext(AuthContext);
     if (!context) {

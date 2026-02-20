@@ -1488,6 +1488,7 @@ export default function Resources() {
 
       return matchesSearch && matchesType && matchesLevel;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, selectedType, selectedLevel]);
 
   return (

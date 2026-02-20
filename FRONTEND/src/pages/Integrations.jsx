@@ -1,53 +1,54 @@
 import { useNavigate } from "react-router-dom";
+import { FaCalendar, FaComments, FaBell, FaLaptop, FaEnvelope, FaLink, FaRocket, FaMobileAlt } from 'react-icons/fa';
 
 export default function Integrations() {
 	const navigate = useNavigate();
 
 	const integrations = [
 		{
-			icon: "📅",
+			icon: <FaCalendar className="text-4xl sm:text-5xl" />,
 			name: "Google Calendar",
 			description: "Sync your Study Planner schedule with Google Calendar for seamless time management.",
 			status: "Available",
 		},
 		{
-			icon: "💬",
+			icon: <FaComments className="text-4xl sm:text-5xl" />,
 			name: "Microsoft Teams",
 			description: "Collaborate with study groups directly through Microsoft Teams integration.",
 			status: "Available",
 		},
 		{
-			icon: "🔔",
+			icon: <FaBell className="text-4xl sm:text-5xl" />,
 			name: "Slack",
 			description: "Get reminders and notifications about your study sessions right in Slack.",
 			status: "Available",
 		},
 		{
-			icon: "💻",
+			icon: <FaLaptop className="text-4xl sm:text-5xl" />,
 			name: "GitHub",
 			description: "Integrate your coding projects and track progress on programming assignments.",
 			status: "Available",
 		},
 		{
-			icon: "📧",
+			icon: <FaEnvelope className="text-4xl sm:text-5xl" />,
 			name: "Outlook",
 			description: "Connect your Outlook calendar to stay synchronized with your study schedule.",
 			status: "Available",
 		},
 		{
-			icon: "🔗",
+			icon: <FaLink className="text-4xl sm:text-5xl" />,
 			name: "REST API",
 			description: "Build custom integrations with our powerful REST API and webhooks.",
 			status: "Available",
 		},
 		{
-			icon: "🚀",
+			icon: <FaRocket className="text-4xl sm:text-5xl" />,
 			name: "Zapier",
 			description: "Automate workflows with thousands of apps through Zapier integration.",
 			status: "Coming Soon",
 		},
 		{
-			icon: "📱",
+			icon: <FaMobileAlt className="text-4xl sm:text-5xl" />,
 			name: "WhatsApp",
 			description: "Receive study reminders and notifications via WhatsApp.",
 			status: "Coming Soon",
@@ -61,7 +62,7 @@ export default function Integrations() {
 					<div className="max-w-5xl mx-auto">
 						<div className="mb-12 sm:mb-16 md:mb-20 space-y-2 sm:space-y-4 text-center">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">🔗 INTEGRATIONS</span>
+								<span className="text-amber-700 font-semibold">INTEGRATIONS</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">
 								Integrations
@@ -80,7 +81,7 @@ export default function Integrations() {
 										className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all"
 									>
 										<div className="flex items-start justify-between gap-4 mb-4">
-											<div className="text-4xl sm:text-5xl">{integration.icon}</div>
+											<div className="text-amber-700">{integration.icon}</div>
 											<span
 												className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold flex-shrink-0 ${
 													integration.status === "Available"

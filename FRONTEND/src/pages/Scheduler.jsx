@@ -3,7 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import { getScheduledSessions, saveScheduledSession, deleteScheduledSession } from '../utils/userDataApi';
 import { getCachedData, setCachedData } from '../utils/cacheUtils';
 import { FiCalendar, FiClock } from 'react-icons/fi';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaCircle } from 'react-icons/fa';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FaCheckCircle } from 'react-icons/fa';
 import { TiPlus} from 'react-icons/ti';
 import { LuAlarmClock, LuNotepadText } from 'react-icons/lu';
 
@@ -12,8 +14,19 @@ export default function Scheduler() {
 	const [scheduledSessions, setScheduledSessions] = useState([]);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [showDayDetails, setShowDayDetails] = useState(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoading, setIsLoading] = useState(false);
+	const [editingSession, setEditingSession] = useState(null);
+	const [showEditForm, setShowEditForm] = useState(false);
 	const [formData, setFormData] = useState({
+		subject: '',
+		date: '',
+		startTime: '',
+		duration: '',
+		priority: 'medium',
+		notes: ''
+	});
+	const [editFormData, setEditFormData] = useState({
 		subject: '',
 		date: '',
 		startTime: '',
@@ -143,7 +156,7 @@ export default function Scheduler() {
 				notes: ''
 			});
 
-			alert('✅ Session scheduled successfully!');
+			alert('Session scheduled successfully!');
 		} catch (error) {
 			console.error('Error adding session:', error);
 			alert('Failed to schedule session: ' + error.message);
@@ -170,10 +183,76 @@ export default function Scheduler() {
 				() => Promise.resolve()
 			);
 
-			alert('✅ Session deleted successfully!');
+			alert('Session deleted successfully!');
 		} catch (error) {
 			console.error('Error deleting session:', error);
 			alert('Failed to delete session: ' + error.message);
+		}
+	};
+
+	const handleEditClick = (session) => {
+		setEditingSession(session);
+		setEditFormData({
+			subject: session.subject,
+			date: session.date,
+			startTime: session.startTime,
+			duration: session.duration.toString(),
+			priority: session.priority,
+			notes: session.notes
+		});
+		setShowEditForm(true);
+	};
+
+	const handleEditInputChange = (e) => {
+		const { name, value } = e.target;
+		setEditFormData(prev => ({ ...prev, [name]: value }));
+	};
+
+	const handleSaveEdit = async (e) => {
+		e.preventDefault();
+		if (!user) {
+			alert('Please sign in to edit sessions');
+			return;
+		}
+
+		if (!editFormData.subject || !editFormData.date || !editFormData.startTime || !editFormData.duration) {
+			alert('Please fill in all required fields');
+			return;
+		}
+
+		try {
+			const updatedSession = {
+				...editingSession,
+				subject: editFormData.subject,
+				date: editFormData.date,
+				startTime: editFormData.startTime,
+				duration: parseFloat(editFormData.duration),
+				priority: editFormData.priority,
+				notes: editFormData.notes
+			};
+
+			// Update in Firestore - delete old and save new, or update directly
+			await deleteScheduledSession(user.uid, editingSession.id);
+			await saveScheduledSession(user.uid, updatedSession);
+
+			const updatedSessions = scheduledSessions.map(s => 
+				s.id === editingSession.id ? updatedSession : s
+			);
+			setScheduledSessions(updatedSessions);
+
+			// Update cache
+			await setCachedData(
+				`scheduled_sessions_${user.uid}`,
+				updatedSessions,
+				() => Promise.resolve()
+			);
+
+			setShowEditForm(false);
+			setEditingSession(null);
+			alert('Session updated successfully!');
+		} catch (error) {
+			console.error('Error updating session:', error);
+			alert('Failed to update session: ' + error.message);
 		}
 	};
 
@@ -259,9 +338,9 @@ export default function Scheduler() {
 	};
 
 	const priorityConfig = {
-		low: { emoji: '🟢', label: 'Low', bgColor: 'bg-green-100', textColor: 'text-green-700' },
-		medium: { emoji: '🟡', label: 'Medium', bgColor: 'bg-yellow-100', textColor: 'text-yellow-700' },
-		high: { emoji: '🔴', label: 'High', bgColor: 'bg-red-100', textColor: 'text-red-700' }
+		low: { icon: <FaCircle className="text-green-600" />, label: 'Low', bgColor: 'bg-green-100', textColor: 'text-green-700' },
+		medium: { icon: <FaCircle className="text-yellow-600" />, label: 'Medium', bgColor: 'bg-yellow-100', textColor: 'text-yellow-700' },
+		high: { icon: <FaCircle className="text-red-600" />, label: 'High', bgColor: 'bg-red-100', textColor: 'text-red-700' }
 	};
 
 	const monthName = selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -420,9 +499,9 @@ export default function Scheduler() {
 											onChange={handleInputChange}
 											className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent transition-all appearance-none bg-white cursor-pointer"
 										>
-											<option value="low">🟢 Low</option>
-											<option value="medium">🟡 Medium</option>
-											<option value="high">🔴 High</option>
+												<option value="low">Low</option>
+												<option value="medium">Medium</option>
+												<option value="high">High</option>
 										</select>
 									</div>
 
@@ -444,7 +523,7 @@ export default function Scheduler() {
 										type="submit"
 										className="w-full py-3 bg-gradient-to-r from-amber-700 to-amber-800 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-200 transform hover:scale-105"
 									>
-										📝 Add to Schedule
+										Add to Schedule
 									</button>
 								</form>
 							</div>
@@ -477,13 +556,21 @@ export default function Scheduler() {
 													</div>
 													<div className="flex items-center gap-3">
 														<span className={`px-3 py-1 rounded-lg font-semibold text-sm ${config.bgColor} ${config.textColor}`}>
-															{config.emoji}
+														{config.icon}
 														</span>
 														<button
-															onClick={() => handleDeleteSession(session.id)}
-															className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all"
+														onClick={() => handleEditClick(session)}
+														className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 p-2 rounded-lg transition-all"
+														title="Edit session"
+													>
+														Edit
+													</button>
+													<button
+														onClick={() => handleDeleteSession(session.id)}
+														className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all"
+														title="Delete session"
 														>
-															🗑️
+																Delete
 														</button>
 													</div>
 												</div>
@@ -523,9 +610,18 @@ export default function Scheduler() {
 															<FiCalendar className="inline mr-1 text-amber-600" /> {dateStr} at {session.startTime}
 														</p>
 													</div>
-													<span className={`px-3 py-1 rounded-lg font-semibold text-sm ${config.bgColor} ${config.textColor}`}>
-														{config.emoji}
-													</span>
+													<div className="flex items-center gap-2">
+														<span className={`px-3 py-1 rounded-lg font-semibold text-sm ${config.bgColor} ${config.textColor}`}>
+															{config.icon}
+														</span>
+														<button
+															onClick={() => handleEditClick(session)}
+															className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 p-2 rounded-lg transition-all"
+															title="Edit session"
+														>
+															Edit
+														</button>
+													</div>
 												</div>
 											);
 										})
@@ -535,7 +631,138 @@ export default function Scheduler() {
 						</div>
 					</div>
 				</div>
-			</section>
+
+			{/* Edit Session Modal */}
+			{showEditForm && editingSession && (
+				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+					<div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full p-8 animate-slide-up max-h-[90vh] overflow-y-auto">
+						<div className="flex justify-between items-start mb-6">
+							<div>
+								<h2 className="text-3xl font-bold text-gray-900">Edit Session</h2>
+								<p className="text-gray-600 mt-2">{editingSession.subject}</p>
+							</div>
+							<button
+								onClick={() => {
+									setShowEditForm(false);
+									setEditingSession(null);
+								}}
+								className="text-gray-400 hover:text-gray-600 text-3xl font-bold"
+							>
+								×
+							</button>
+						</div>
+
+						<form onSubmit={handleSaveEdit} className="space-y-4">
+							<div className="grid md:grid-cols-2 gap-4">
+								<div>
+									<label className="block text-sm font-semibold text-gray-700 mb-2">
+										Subject <span className="text-red-500">*</span>
+									</label>
+									<input
+										type="text"
+										name="subject"
+										value={editFormData.subject}
+										onChange={handleEditInputChange}
+										placeholder="e.g., Mathematics"
+										className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent transition-all"
+									/>
+								</div>
+								<div>
+									<label className="block text-sm font-semibold text-gray-700 mb-2">
+										Date <span className="text-red-500">*</span>
+									</label>
+									<input
+										type="date"
+										name="date"
+										value={editFormData.date}
+										onChange={handleEditInputChange}
+										className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent transition-all"
+									/>
+								</div>
+							</div>
+
+							<div className="grid md:grid-cols-2 gap-4">
+								<div>
+									<label className="block text-sm font-semibold text-gray-700 mb-2">
+										Start Time <span className="text-red-500">*</span>
+									</label>
+									<input
+										type="time"
+										name="startTime"
+										value={editFormData.startTime}
+										onChange={handleEditInputChange}
+										className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent transition-all"
+									/>
+								</div>
+								<div>
+									<label className="block text-sm font-semibold text-gray-700 mb-2">
+										Duration (hours) <span className="text-red-500">*</span>
+									</label>
+									<input
+										type="number"
+										name="duration"
+										value={editFormData.duration}
+										onChange={handleEditInputChange}
+										min="0.5"
+										step="0.5"
+										placeholder="2"
+										className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent transition-all"
+									/>
+								</div>
+							</div>
+
+							<div>
+								<label className="block text-sm font-semibold text-gray-700 mb-2">
+									Priority Level
+								</label>
+								<select
+									name="priority"
+									value={editFormData.priority}
+									onChange={handleEditInputChange}
+									className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent transition-all appearance-none bg-white cursor-pointer"
+								>
+									<option value="low">Low</option>
+									<option value="medium">Medium</option>
+									<option value="high">High</option>
+								</select>
+							</div>
+
+							<div>
+								<label className="block text-sm font-semibold text-gray-700 mb-2">
+									Notes
+								</label>
+								<textarea
+									name="notes"
+									value={editFormData.notes}
+									onChange={handleEditInputChange}
+									placeholder="Add notes for this session..."
+									rows="3"
+									className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent transition-all resize-none"
+								></textarea>
+							</div>
+
+							<div className="flex gap-3">
+								<button
+									type="submit"
+									className="flex-1 py-3 bg-gradient-to-r from-amber-700 to-amber-800 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+								>
+									Save Changes
+								</button>
+								<button
+									type="button"
+									onClick={() => {
+										setShowEditForm(false);
+										setEditingSession(null);
+									}}
+									className="flex-1 py-3 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all"
+								>
+									Cancel
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			)}
 
 			{/* Day Details Modal */}
 			{showDayDetails && (
@@ -560,7 +787,7 @@ export default function Scheduler() {
 								onClick={() => setShowDayDetails(false)}
 								className="text-gray-400 hover:text-gray-600 text-3xl font-bold"
 							>
-								✕
+								×
 							</button>
 						</div>
 
@@ -612,7 +839,7 @@ export default function Scheduler() {
 														</p>
 													</div>
 													<span className={`px-3 py-1 rounded-full font-semibold text-sm ${config.textColor}`}>
-														{config.emoji} {config.label}
+														{config.icon} {config.label}
 													</span>
 												</div>
 												{session.notes && (
@@ -622,15 +849,24 @@ export default function Scheduler() {
 														</p>
 													</div>
 												)}
-												<button
-													onClick={() => {
-														handleDeleteSession(session.id);
-														setShowDayDetails(false);
-													}}
-													className="mt-3 text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1 rounded text-sm font-medium transition-all"
-												>
-													<FaTrashAlt className="inline mr-1" /> Delete
-												</button>
+												<div className="flex gap-2 mt-3">
+													<button
+														onClick={() => handleEditClick(session)}
+														className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 px-3 py-1 rounded text-sm font-medium transition-all"
+														title="Edit session"
+													>
+														Edit
+													</button>
+													<button
+														onClick={() => {
+															handleDeleteSession(session.id);
+															setShowDayDetails(false);
+														}}
+														className="text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1 rounded text-sm font-medium transition-all"
+													>
+														<FaTrashAlt className="inline mr-1" /> Delete
+													</button>
+												</div>
 											</div>
 										);
 									})}
@@ -647,6 +883,8 @@ export default function Scheduler() {
 					</div>
 				</div>
 			)}
+			</section>
+
 		</main>
 	);
 }

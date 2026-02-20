@@ -12,8 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export default defineConfig([
   globalIgnores(['dist', 'node_modules', '*.config.js']),
   {
-    files: ['**/*.{ts,tsx,js,jsx}'],
-    excludedFiles: ['*.config.js', '*.config.ts'],
+    files: ['**/*.{ts,tsx,js,jsx}', '!*.config.js', '!*.config.ts'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -29,9 +28,7 @@ export default defineConfig([
           jsx: true,
         },
         tsconfigRootDir: __dirname,
-        projectService: {
-          allowDefaultProject: ['**/*.js', '**/*.jsx'],
-        },
+        projectService: true,
       },
     },
   },

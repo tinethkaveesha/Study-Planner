@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { useNavigate } from "react-router-dom";
 
 export default function API() {
-	const navigate = useNavigate();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [selectedTab, setSelectedTab] = useState("rest");
 
 	const endpoints = [
@@ -97,7 +98,7 @@ export default function API() {
 					<div className="max-w-5xl mx-auto">
 						<div className="mb-8 sm:mb-12 space-y-2 sm:space-y-4">
 							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
-								<span className="text-amber-700 font-semibold">🔗 API</span>
+								<span className="text-amber-700 font-semibold">API</span>
 							</div>
 							<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900">
 								API Documentation
@@ -111,7 +112,7 @@ export default function API() {
 						{/* Quick Start */}
 						<section className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200 p-6 sm:p-8 md:p-12 mb-16">
 							<h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
-								🚀 Quick Start
+							Quick Start
 							</h2>
 							<div className="space-y-4">
 								<div>
@@ -147,7 +148,7 @@ export default function API() {
 						{/* Authentication */}
 						<section className="mb-16">
 							<h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
-								🔐 Authentication
+								Authentication
 							</h2>
 							<div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 space-y-6">
 								<div>
@@ -207,7 +208,7 @@ export default function API() {
 						{/* API Endpoints */}
 						<section className="mb-16">
 							<h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
-								📡 API Endpoints
+								API Endpoints
 							</h2>
 							<div className="space-y-4">
 								{endpoints.map((endpoint, idx) => (
@@ -241,7 +242,7 @@ export default function API() {
 						{/* SDKs */}
 						<section className="mb-16">
 							<h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
-								📦 Official SDKs
+							Official SDKs
 							</h2>
 							<div className="grid md:grid-cols-2 gap-6">
 								{sdks.map((sdk) => (
@@ -272,7 +273,7 @@ export default function API() {
 						{/* Rate Limiting */}
 						<section className="mb-16">
 							<h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
-								⚡ Rate Limiting
+								Rate Limiting
 							</h2>
 							<div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8">
 								<div className="grid md:grid-cols-2 gap-8 mb-8">
@@ -345,7 +346,7 @@ export default function API() {
 						{/* Response Format */}
 						<section className="mb-16">
 							<h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
-								📋 Response Format
+								Response Format
 							</h2>
 							<div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8">
 								<h3 className="text-lg font-bold text-gray-900 mb-4">

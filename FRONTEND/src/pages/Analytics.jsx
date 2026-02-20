@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getAcademicProgress, getUserAssessments, recordSubjectMarks } from "../utils/userDataApi";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getCachedData, setCachedData } from "../utils/cacheUtils";
 import {
 	LineChart,
@@ -30,6 +31,7 @@ export default function Analytics() {
 	const { user } = useAuth();
 	const [academicProgress, setAcademicProgress] = useState(null);
 	const [recentAssessments, setRecentAssessments] = useState([]);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [progressLoading, setProgressLoading] = useState(false);
 	
 	// Store all exam type data separately to prevent data loss on type switch
@@ -168,7 +170,7 @@ export default function Analytics() {
 				setCustomsubjects(ordinaryData.customSubjects || []);
 				setLastSaved(ordinaryTimestamps);
 				
-				console.log("✅ All marks data loaded from localStorage:", loadedData);
+				console.log("All marks data loaded from localStorage:", loadedData);
 			} catch (error) {
 				console.error("Error loading marks data:", error);
 			}
@@ -176,7 +178,7 @@ export default function Analytics() {
 		};
 
 		loadMarksFromCache();
-	}, [user, getExamTypeKey]);
+	}, [user, getExamTypeKey, allMarksDataByType]);
 
 	// Load academic progress from Firestore - FILTER BY EXAM TYPE
 	useEffect(() => {
@@ -283,7 +285,7 @@ export default function Analytics() {
 				
 				// Clear pending marks
 				setPendingMarks(new Set());
-				console.log(`✅ Auto-saved ${savedCount} marks`);
+				console.log(`Auto-saved ${savedCount} marks`);
 			}
 		} catch (error) {
 			console.error("Error auto-saving marks:", error);
@@ -366,7 +368,7 @@ export default function Analytics() {
 				setLastSaved(newTimestamps);
 				setPendingMarks(new Set());
 
-				alert(`✅ Saved ${savedCount} marks to Firestore for ${examType.toUpperCase()}! Check Progress page to see your academic performance.`);
+				alert(`Saved ${savedCount} marks to Firestore for ${examType.toUpperCase()}! Check Progress page to see your academic performance.`);
 				// Reload academic progress for current exam type
 				const progress = await getAcademicProgress(user.uid, examType);
 				const assessments = await getUserAssessments(user.uid);
@@ -800,11 +802,11 @@ export default function Analytics() {
 												<td className="px-4 py-4 text-center">
 													{pendingMarks.has(subject) ? (
 														<span className="text-xs font-semibold text-yellow-600 bg-yellow-100 px-2 py-1 rounded inline-block">
-															💾 Saving...
+															Saving...
 														</span>
 													) : lastSaved[subject] ? (
 														<div className="text-xs">
-															<span className="font-semibold text-green-600">✅ Saved</span>
+															<span className="font-semibold text-green-600">Saved</span>
 															<br />
 															<span className="text-gray-500 text-xs">{lastSaved[subject]}</span>
 														</div>

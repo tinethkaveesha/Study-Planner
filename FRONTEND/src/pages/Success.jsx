@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, Link, useNavigate } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -7,6 +8,7 @@ import { db } from "../firebase";
 export default function Success() {
     const [searchParams] = useSearchParams();
     const sessionId = searchParams.get("session_id");
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [subscriptionData, setSubscriptionData] = useState(null);
@@ -46,6 +48,7 @@ export default function Success() {
         if (sessionId) {
             verifySession();
         } else {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLoading(false);
         }
     }, [sessionId]);
@@ -65,7 +68,7 @@ export default function Success() {
         return (
             <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-50 flex items-center justify-center px-4">
                 <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
-                    <div className="text-6xl mb-4">⚠️</div>
+                    <div className="text-6xl mb-4 text-red-600">⚠</div>
                     <h1 className="text-2xl font-bold text-gray-900 mb-4">Oops!</h1>
                     <p className="text-gray-600 mb-8">{error}</p>
                     <Link

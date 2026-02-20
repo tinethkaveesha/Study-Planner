@@ -102,7 +102,10 @@ export default function BlogDetail() {
         try {
             await deleteBlogComment(commentId, postId);
             setComments(comments.filter((c) => c.id !== commentId));
-        } catch (err) {
+        } catch (
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            err
+        ) {
             setError("Failed to delete comment");
         }
     };
@@ -192,8 +195,8 @@ export default function BlogDetail() {
                                 </div>
                             </div>
                             <div className="flex gap-6 text-sm">
-                                <span>👁️ {post.views || 0} views</span>
-                                <span>💬 {post.comments || 0} comments</span>
+                                <span>Views: {post.views || 0}</span>
+                                <span>Comments: {post.comments || 0}</span>
                             </div>
                         </div>
 
@@ -228,10 +231,10 @@ export default function BlogDetail() {
                                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                             >
-                                {isLiked ? "❤️" : "🤍"} {likesCount}
+                                {isLiked ? "Liked" : "Like"} {likesCount}
                             </button>
                             <button className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-all">
-                                📤 Share
+                                Share
                             </button>
                         </div>
                     </div>
@@ -240,7 +243,7 @@ export default function BlogDetail() {
                 {/* Comments Section */}
                 <div className="bg-white rounded-3xl shadow-xl overflow-hidden p-8 sm:p-12">
                     <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                        💬 Comments ({comments.length})
+                        Comments ({comments.length})
                     </h2>
 
                     {/* Add Comment Form */}
