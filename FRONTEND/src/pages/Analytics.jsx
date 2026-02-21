@@ -829,7 +829,7 @@ export default function Analytics() {
 										onClick={saveMarksToFirestore}
 										className="px-8 py-3 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-all font-semibold"
 									>
-										<FaSave className="inline mr-2" /> Save Marks to Firestore
+										<FaSave className="inline mr-2" /> Save Marks
 									</button>
 									<button
 										onClick={generateStudyPlan}
