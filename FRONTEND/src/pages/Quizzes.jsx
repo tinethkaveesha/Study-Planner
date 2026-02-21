@@ -235,6 +235,11 @@ export default function Quizzes() {
 			<section className="py-16 md:py-24 bg-white">
 				<div className="container mx-auto px-4">
 					<div className="mx-auto mb-16 max-w-3xl">
+						<div className="mb-10 sm:space-y-2">
+							<div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
+								<span className="text-amber-700 font-semibold">Powered by AI</span>
+							</div>
+						</div>
 						<h1 className="text-5xl font-bold text-gray-900 mb-4 flex items-center gap-3">
 							<FaGraduationCap className="text-amber-700" /> Quiz Generator
 						</h1>
@@ -304,7 +309,7 @@ export default function Quizzes() {
 										disabled={generatingQuiz}
 										className="w-full py-2 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
 									>
-										{generatingQuiz ? "Generating..." : "Generate"}
+										{generatingQuiz ? "Generating..." : "AI Generate"}
 									</button>
 								</div>
 							</div>
